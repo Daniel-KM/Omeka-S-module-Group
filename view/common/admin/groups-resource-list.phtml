@@ -14,15 +14,17 @@ $this->headScript()->appendFile($this->assetUrl('js/group.js', 'Group'));
 <div class="property group">
 <?php if ($isUser): ?>
     <h4><?php echo $this->translate('Groups'); ?></h4>
+    <?php if (empty($groups)): ?>
+    <div class="value no-value"><?php echo $this->translate('There are no groups for this user.'); ?></div>
+    <?php endif; ?>
 <?php endif; ?>
     <div class="value">
 <?php if (empty($groups)): ?>
+    <?php if (!$isUser): ?>
     <div class="no-resources">
-        <p><?php echo $isUser
-            ? $this->translate('There are no groups for this user.')
-            : $this->translate('There are no groups for this resource.');
-        ?></p>
+        <p><?php echo $this->translate('There are no groups for this resource.'); ?></p>
     </div>
+    <?php endif; ?>
 <?php else: ?>
         <?php
         $escape = $this->plugin('escapeHtml');
