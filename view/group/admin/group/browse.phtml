@@ -1,0 +1,180 @@
+<?php
+use Group\Api\Adapter\GroupAdapter;
+
+$escape = $this->plugin('escapeHtml');
+$this->htmlElement('body')->appendAttribute('class', 'groups browse');
+$sortHeadings = [
+    [
+        'label' => $this->translate('Name'),
+        'value' => 'name'
+    ],
+    [
+        'label' => $this->translate('Total count'),
+        'value' => 'count'
+    ],
+    [
+        'label' => $this->translate('Total users'),
+        'value' => 'users'
+    ],
+    [
+        'label' => $this->translate('Total resources'),
+        'value' => 'resources'
+    ],
+    [
+        'label' => $this->translate('Total item sets'),
+        'value' => 'item_sets'
+    ],
+    [
+        'label' => $this->translate('Total items'),
+        'value' => 'items'
+    ],
+    [
+        'label' => $this->translate('Total media'),
+        'value' => 'media'
+    ],
+    [
+        'label' => $this->translate('Recent'),
+        'value' => 'id'
+    ],
+];
+$createRight = $this->userIsAllowed(GroupAdapter::class, 'create');
+$updateRight = $this->userIsAllowed(GroupAdapter::class, 'update');
+$deleteRight = $this->userIsAllowed(GroupAdapter::class, 'delete');
+?>
+
+<?php echo $this->pageTitle($this->translate('Groups')); ?>
+
+<?php echo $this->searchFilters(); ?>
+
+ <div class="browse-controls">
+    <?php echo $this->pagination(); ?>
+    <?php // echo $this->hyperlink($this->translate('Advanced search'), $this->url(null, ['action' => 'search'], ['query' => $this->params()->fromQuery()], true), ['class' => 'advanced-search']); ?>
+    <?php echo $this->sortSelector($sortHeadings); ?>
+</div>
+
+<form method="post" id="batch-form" class="disable-unsaved-warning">
+
+<div id="page-actions">
+    <?php if ($createRight): ?>
+    <?php echo $this->hyperlink($this->translate('Add new group'), $this->url('admin/group', ['action' => 'add'], true), ['class' => 'button']); ?>
+    <?php endif; ?>
+<?php if ($groups): ?>
+    <?php if ($deleteRight): ?>
+    <a href="#"
+        class="button delete batch-actions sidebar-content"
+        data-sidebar-content-url="<?php echo $escape($this->url(null, ['action' => 'batch-delete-confirm'], true)); ?>"
+        aria-label="<?php echo $escape($this->translate('Delete')); ?>"
+        title="<?php echo $escape($this->translate('Delete')); ?>"><?php echo $escape($this->translate('Delete')); ?></a>
+    <?php endif; ?>
+<?php endif; ?>
+</div>
+
+<?php $this->trigger('view.browse.before'); ?>
+<?php if (empty($groups)): ?>
+<div class="no-resources">
+    <p><?php echo $this->translate('There are no groups.'); ?></p>
+</div>
+<?php $this->trigger('view.browse.after'); ?>
+
+<?php else: ?>
+<table class="tablesaw <?php if ($deleteRight) echo 'batch-edit'; ?>" data-tablesaw-mode="stack">
+    <thead>
+        <tr>
+            <th class="column-group">
+                <?php if ($deleteRight): ?>
+                <input type="checkbox" class="select-all">
+                <?php endif; ?>
+                <?php echo $this->translate('Group'); ?>
+            </th>
+            <th><?php echo $this->translate('Total count'); ?></th>
+            <th><?php echo $this->translate('Users'); ?></th>
+            <th><?php echo $this->translate('Resources'); ?></th>
+            <th><?php echo $this->translate('Item sets'); ?></th>
+            <th><?php echo $this->translate('Items'); ?></th>
+            <th><?php echo $this->translate('Media'); ?></th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php
+        foreach ($groups as $group):
+            $name = $group->name();
+        ?>
+        <tr>
+            <td>
+                <?php if ($deleteRight): ?>
+                    <input type="checkbox" name="resource_ids[]" value="<?php echo $group->id(); ?>">
+                <?php endif; ?>
+                <span class="group-name"<?php
+                    if ($updateRight) echo ' contenteditable="true" data-update-url="' . $group->url('update') . '"';
+                ?>><?php
+                    echo $name;
+                ?></span>
+                <ul class="actions">
+                    <?php if ($updateRight): ?>
+                    <li><a href="#"
+                        class="o-icon-edit contenteditable"
+                        aria-label="<?php echo $escape($this->translate('Edit name')); ?>"
+                        title="<?php echo $escape($this->translate('Edit name')); ?>"></a></li>
+                    <?php endif; ?>
+                    <?php if ($deleteRight): ?>
+                    <li><a href="#"
+                        class="o-icon-delete sidebar-content"
+                        data-sidebar-content-url="<?php echo $escape($group->url('delete-confirm')); ?>"
+                        aria-label="<?php echo $escape($this->translate('Delete')); ?>"
+                        title="<?php echo $escape($this->translate('Delete')); ?>"></a></li>
+                    <?php endif; ?>
+                    <li><a href="#"
+                        data-sidebar-content-url="<?php echo $escape($group->url('show-details')); ?>"
+                        class="o-icon-more sidebar-content"
+                        aria-label="<?php echo $escape($this->translate('Details')); ?>"
+                        title="<?php echo $escape($this->translate('Details')); ?>"></a></li>
+                </ul>
+            </td>
+            <td><?php if ($groupCount[$name]['count']) echo $groupCount[$name]['count']; ?></td>
+            <td><?php if ($groupCount[$name]['users']) echo $this->hyperlink(
+                $groupCount[$name]['users'], $group->urlEntities('user'), ['class' => 'group-browse-user']
+            ); ?></td>
+            <td><?php if ($groupCount[$name]['resources']) echo $groupCount[$name]['resources']; ?></td>
+            <td><?php if ($groupCount[$name]['item_sets']) echo $this->hyperlink(
+                $groupCount[$name]['item_sets'], $group->urlEntities('item-set'), ['class' => 'group-browse-item-sets']
+            ); ?></td>
+            <td><?php if ($groupCount[$name]['media']) echo $this->hyperlink(
+                $groupCount[$name]['items'], $group->urlEntities('item'), ['class' => 'group-browse-items']
+            ); ?></td>
+            <td><?php if ($groupCount[$name]['media']) echo $this->hyperlink(
+                $groupCount[$name]['media'], $group->urlEntities('media'), ['class' => 'group-browse-media']
+            ); ?></td>
+        </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>
+
+</form>
+
+<?php $this->trigger('view.browse.after'); ?>
+<div class="browse-controls">
+    <?php echo $this->pagination(); ?>
+</div>
+
+<div class="sidebar">
+    <a href="#"
+        class="sidebar-close o-icon-close"
+        aria-label="<?php echo $escape($this->translate('Close')); ?>"
+        title="<?php echo $escape($this->translate('Close')); ?>"></a>
+    <div class="sidebar-content"></div>
+</div>
+
+<script>
+// Complete the batch delete form after confirmation.
+$('.sidebar').on('submit', '#batch-delete-confirm', function(e) {
+    var confirmForm = $(this);
+    if (confirmForm.hasClass('batch-delete-all')) {
+        confirmForm.append($('.batch-query').clone());
+    } else {
+        $('#batch-form').find('input:checked').each(function() {
+            confirmForm.append($(this).clone().attr('type', 'hidden'));
+        });
+    }
+});
+</script>
+<?php endif; ?>

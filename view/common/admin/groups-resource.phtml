@@ -1,0 +1,46 @@
+<style>
+.group .actions {
+    float: right;
+}
+</style>
+<?php
+$escape = $this->plugin('escapeHtml');
+$resourceName = $resource->getControllerName();
+$updateRight = false; // $this->userIsAllowed(GroupUser::class, 'update');
+?>
+<div class="meta-group group">
+    <h4><?php echo $this->translate('Groups'); ?></h4>
+<?php if (empty($groups)): ?>
+    <div class="value no-value">
+        <?php echo $escape($this->translate('No group.')); ?>
+    </div>
+<?php else: ?>
+    <?php foreach ($groups as $group): ?>
+    <div class="value group"><?php echo $this->hyperlink($group->name(), $group->adminUrl()); ?>
+    <?php if ($updateRight): ?>
+    <span class="single actions"><a href="#"
+        class="o-icon-delete"
+        data-delete-confirm-url="<?php echo $escape($group->url('delete-confirm')); ?>"
+        aria-label="<?php echo $escape($this->translate('Unassign group')); ?>"
+        title="<?php echo $escape($this->translate('Unassign group')); ?>"></a></span>
+    <?php endif; ?>
+    <span class="single actions"><a href="<?php echo $escape($group->urlEntities('media')); ?>"
+        class="o-icon-media"
+        aria-label="<?php echo $escape($this->translate('Media within this group')); ?>"
+        title="<?php echo $escape($this->translate('Media within this group')); ?>"></a></span>
+    <span class="single actions"><a href="<?php echo $escape($group->urlEntities('item')); ?>"
+        class="o-icon-items"
+        aria-label="<?php echo $escape($this->translate('Items within this group')); ?>"
+        title="<?php echo $escape($this->translate('Items within this group')); ?>"></a></span>
+    <span class="single actions"><a href="<?php echo $escape($group->urlEntities('item-set')); ?>"
+        class="o-icon-item-sets"
+        aria-label="<?php echo $escape($this->translate('Item sets within this group')); ?>"
+        title="<?php echo $escape($this->translate('Item sets within this group')); ?>"></a></span>
+    <span class="single actions"><a href="<?php echo $escape($group->urlEntities('user')); ?>"
+        class="o-icon-user"
+        aria-label="<?php echo $escape($this->translate('Users within this group')); ?>"
+        title="<?php echo $escape($this->translate('Users within this group')); ?>"></a></span>
+    </div>
+    <?php endforeach; ?>
+<?php endif; ?>
+</div>

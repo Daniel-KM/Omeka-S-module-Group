@@ -1,0 +1,31 @@
+<?php
+$this->htmlElement('body')->appendAttribute('class', 'groups show');
+$escape = $this->plugin('escapeHtml');
+?>
+
+<?php echo $this->pageTitle($resource->name(), 1, $this->translate('Groups')); ?>
+
+<div id="page-actions">
+</div>
+<div class="breadcrumbs">
+    <a href="<?php echo $this->url('admin/group'); ?>" class="o-icon-left"><?php echo $this->translate('Back to group list'); ?></a>
+</div>
+
+<?php $this->trigger('view.show.before'); ?>
+<div class="property">
+    <h4><?php echo $escape($this->translate('Name')); ?></h4>
+    <div class="value"><?php echo $escape($resource->name()); ?></div>
+</div>
+<div class="property">
+    <h4><?php echo $escape($this->translate('Comment')); ?></h4>
+    <div class="value"><?php echo $escape($resource->comment()); ?></div>
+</div>
+<div class="property">
+    <h4><?php echo $escape($this->translate('Internal id')); ?></h4>
+    <div class="value"><?php echo $escape($resource->id()); ?></div>
+</div>
+<?php $this->trigger('view.show.after'); ?>
+
+<p>
+    <em><?php echo $escape($this->translate('Groups are editable on the browse page.')); ?></em>
+</p>
