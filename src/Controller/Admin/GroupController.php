@@ -186,7 +186,7 @@ class GroupController extends AbstractActionController
 
         $data = [];
         $data['o:name'] = $name;
-        $response = $this->api()->update('groups', $id, $data, ['isPartial' => true]);
+        $response = $this->api()->update('groups', $id, $data, [], ['isPartial' => true]);
         if (!$response) {
             return $this->jsonErrorName();
         }
