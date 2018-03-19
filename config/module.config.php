@@ -87,19 +87,8 @@ return [
                 'label' => 'Groups', // @translate
                 'class' => 'o-icon-users',
                 'route' => 'admin/group',
-                'controller' => 'group',
-                'action' => 'browse',
                 'resource' => Controller\Admin\GroupController::class,
                 'privilege' => 'browse',
-                'useRouteMatch' => true,
-                'pages' => [
-                    [
-                        'label' => 'Groups', // @translate
-                        'route' => 'admin/group',
-                        'controller' => 'group',
-                        'visible' => true,
-                    ],
-                ],
             ],
         ],
     ],
