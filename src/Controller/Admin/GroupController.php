@@ -1,7 +1,6 @@
 <?php
 namespace Group\Controller\Admin;
 
-use Group\Entity\Group;
 use Group\Form\GroupForm;
 use Omeka\Form\ConfirmForm;
 use Omeka\Stdlib\Message;

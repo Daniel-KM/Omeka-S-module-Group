@@ -2,7 +2,6 @@
 namespace Group\Mvc\Controller\Plugin;
 
 use Doctrine\ORM\EntityManager;
-use Group\Entity\Group;
 use Group\Entity\GroupResource;
 use Group\Entity\GroupUser;
 use Omeka\Api\Manager as ApiManager;
@@ -10,7 +9,6 @@ use Omeka\Entity\AbstractEntity;
 use Omeka\Entity\Item;
 use Omeka\Entity\ItemSet;
 use Omeka\Entity\Media;
-use Omeka\Entity\Resource;
 use Omeka\Entity\User;
 use Omeka\Permissions\Acl;
 use Zend\Mvc\Controller\Plugin\AbstractPlugin;
@@ -341,6 +339,11 @@ class ApplyGroups extends AbstractPlugin
             }
             $groups = array_map(function ($v) {
                 return $v->id();
+            }, $groups);
+            $firstGroup = reset($groups);
+        } elseif (is_array($firstGroup)) {
+            $groups = array_map(function ($v) {
+                return isset($v['o:id']) ? $v['o:id'] : (isset($v['o:name']) ? $v['o:name'] : reset($v));
             }, $groups);
             $firstGroup = reset($groups);
         }
