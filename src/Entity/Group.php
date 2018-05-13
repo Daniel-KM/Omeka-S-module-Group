@@ -45,7 +45,7 @@ class Group extends AbstractEntity
      * This relation cannot be set in the core, so it is not a doc block.
      *
      * Many Groups have Many Users.
-     * @var Collection|User[]
+     * @var ArrayCollection|User[]
      * @ManyToMany(
      *     targetEntity="Omeka\Entity\User",
      *     mappedBy="group",
@@ -79,7 +79,7 @@ class Group extends AbstractEntity
      * not in Omeka S.
      *
      * One Group has Many relations to User via GroupUsers.
-     * @var Collection|GroupUser[]
+     * @var ArrayCollection|GroupUser[]
      * @OneToMany(
      *     targetEntity="Group\Entity\GroupUser",
      *     mappedBy="group",

@@ -58,7 +58,7 @@ class GroupRepresentation extends AbstractEntityRepresentation
     /**
      * Get the resources associated with this group.
      *
-     * @return array Array of AbstractResourceEntityRepresentation
+     * @return AbstractResourceEntityRepresentation[]
      */
     public function resources()
     {
@@ -78,7 +78,7 @@ class GroupRepresentation extends AbstractEntityRepresentation
     /**
      * Get the users associated with this group.
      *
-     * @return array Array of UserRepresentation
+     * @return UserRepresentation[]
      */
     public function users()
     {
