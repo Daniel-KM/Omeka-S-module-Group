@@ -1,0 +1,14 @@
+<?php
+$translate = $this->plugin('translate');
+?>
+<div id="group-module" class="mapping-group">
+    <a href="#" class="expand" aria-label="<?php echo $translate('Expand'); ?>">
+        <h4><?php echo $translate('Group'); ?></h4>
+    </a>
+    <div class="collapsible">
+        <select name="group" class="flags" data-flag-class="group" data-flag-unique="1" data-flag-label="<?php echo $translate('Groups'); ?>">
+            <option><?php echo $translate('Select below'); ?></option>
+            <option value="1" data-flag-name="column-group"><?php echo $translate('Group'); ?></option>
+        </select>
+    </div>
+</div>

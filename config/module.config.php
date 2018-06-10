@@ -32,22 +32,32 @@ return [
             'ViewJsonStrategy',
         ],
     ],
-    'csv_import' => [
+    'csvimport' => [
         'mappings' => [
             'item_sets' => [
-                Mapping\GroupMapping::class,
+                'mappings' => [
+                    Mapping\GroupMapping::class,
+                ]
             ],
             'items' => [
-                Mapping\GroupMapping::class,
+                'mappings' => [
+                    Mapping\GroupMapping::class,
+                ],
             ],
             'media' => [
-                Mapping\GroupMapping::class,
+                'mappings' => [
+                    Mapping\GroupMapping::class,
+                ],
             ],
             'resources' => [
-                Mapping\GroupMapping::class,
+                'mappings' => [
+                    Mapping\GroupMapping::class,
+                ],
             ],
             'users' => [
-                Mapping\GroupMapping::class,
+                'mappings' => [
+                    Mapping\GroupMapping::class,
+                ],
             ],
         ],
         'automapping' => [
@@ -59,7 +69,7 @@ return [
             ],
         ],
         'user_settings' => [
-            'csv_import_automap_user_list' => [
+            'csvimport_automap_user_list' => [
                 'group' => 'group',
             ],
         ],

@@ -12,59 +12,77 @@ class GroupMapping extends AbstractMapping
 
     public function getSidebar(PhpRenderer $view)
     {
-        return $view->partial('common/admin/group-sidebar');
+        return $view->partial('common/admin/group-mapping-sidebar');
     }
 
     public function processRow(array $row)
     {
         // Reset the data and the map between rows.
         $this->setHasErr(false);
-        $data = [];
-        $map = [];
+        $this->data = [];
+        $this->map = [];
 
         // First, pull in the global settings.
+        $this->processGlobalArgs();
+
+        // TODO Allow to bypass the default multivalue separator for users and resources.
+        $multivalueMap = isset($this->args['column-multivalue']) ? $this->args['column-multivalue'] : [];
+        foreach ($row as $index => $values) {
+            if (array_key_exists($index, $multivalueMap) && strlen($multivalueMap[$index])) {
+                $values = explode($multivalueMap[$index], $values);
+                $values = array_map(function ($v) {
+                    return trim($v, "\t\n\r   ");
+                }, $values);
+            } else {
+                $values = [$values];
+            }
+            $values = array_filter($values, 'strlen');
+            if ($values) {
+                $this->processCell($index, $values);
+            }
+        }
+
+        return $this->data;
+    }
+
+    protected function processGlobalArgs()
+    {
+        $data = &$this->data;
+
         // Set columns.
         if (isset($this->args['column-group'])) {
-            $map['group'] = $this->args['column-group'];
+            $this->map['group'] = $this->args['column-group'];
             $data['o-module-group:group'] = [];
         }
 
         // Set default values.
         if (!empty($this->args['o-module-group:group'])) {
             $data['o-module-group:group'] = [];
-            foreach ($this->args['o-module-group:group'] as $id) {
+            $args = is_array($this->args['o-module-group:group'])
+                ? $this->args['o-module-group:group']
+                // TODO Explode global groups.
+                : [$this->args['o-module-group:group']];
+            foreach ($args as $id) {
                 $isId = preg_match('~^\d+$~', $id);
                 $data['o-module-group:group'][] = $isId
                     ? ['o:id' => (int) $id]
                     : ['o:name' => $id];
             }
         }
+    }
 
-        // Second, map the row.
-        $multivalueMap = isset($this->args['column-multivalue']) ? $this->args['column-multivalue'] : [];
-        // TODO Allow to bypass the default multivalue separator for users and resources.
-        $multivalueSeparator = isset($this->args['multivalue_separator']) ? $this->args['multivalue_separator'] : '';
-        foreach ($row as $index => $values) {
-            if (empty($multivalueMap[$index])) {
-                $values = [$values];
-            } else {
-                $values = explode($multivalueSeparator, $values);
-                $values = array_map(function ($v) {
-                    return trim($v, "\t\n\r   ");
-                }, $values);
-            }
-            $values = array_filter($values, 'strlen');
-            if (isset($map['group'][$index])) {
-                foreach ($values as $value) {
-                    $group = $this->findGroup($value);
-                    if ($group) {
-                        $data['o-module-group:group'][] = $group->id();
-                    }
+    protected function processCell($index, array $values)
+    {
+        $data = &$this->data;
+
+        if (isset($this->map['group'][$index])) {
+            foreach ($values as $value) {
+                $group = $this->findGroup($value);
+                if ($group && !in_array($group->id(), $data['o-module-group:group'])) {
+                    $data['o-module-group:group'][] = $group->id();
                 }
             }
         }
-
-        return $data;
     }
 
     protected function findGroup($identifier)
