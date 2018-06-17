@@ -56,7 +56,6 @@ use Omeka\Entity\Media;
 use Omeka\Entity\Resource;
 use Omeka\Entity\User;
 use Omeka\Module\AbstractModule;
-use Omeka\Permissions\Acl;
 use Zend\EventManager\Event;
 use Zend\EventManager\SharedEventManagerInterface;
 use Zend\Mvc\MvcEvent;
@@ -157,24 +156,50 @@ SQL;
         $roles = $acl->getRoles();
         $entityRights = ['read'];
         $adapterRights = ['search', 'read'];
-        $acl->allow(null, Group::class, $entityRights);
-        $acl->allow(null, GroupUser::class, $entityRights);
-        $acl->allow(null, GroupResource::class, $entityRights);
+        $acl->allow(
+            null,
+            [
+                \Group\Entity\Group::class,
+                \Group\Entity\GroupUser::class,
+                \Group\Entity\GroupResource::class,
+            ],
+            $entityRights
+        );
         // Deny access to the api for non admin.
-        // $acl->deny(null, [\Group\Api\Adapter\GroupAdapter::class], null);
+        /*
+        $acl->deny(
+            null,
+            [\Group\Api\Adapter\GroupAdapter::class],
+            null
+        );
+        */
 
         // Only admin can manage groups.
-        $adminRoles = [Acl::ROLE_GLOBAL_ADMIN, Acl::ROLE_SITE_ADMIN];
-        $entityRights = ['read', 'create', 'update', 'delete'];
-        // The right "assign" is used to display the form or not.
-        $groupEntityRights = ['read', 'create', 'update', 'delete', 'assign'];
-        $adapterRights = ['search', 'read', 'create', 'update', 'delete'];
-        $controllerRights = ['show', 'browse', 'add', 'edit', 'delete', 'delete-confirm'];
-        $acl->allow($adminRoles, Group::class, $entityRights);
-        $acl->allow($adminRoles, GroupUser::class, $groupEntityRights);
-        $acl->allow($adminRoles, GroupResource::class, $groupEntityRights);
-        $acl->allow($adminRoles, GroupAdapter::class, $adapterRights);
-        $acl->allow($adminRoles, GroupController::class, $controllerRights);
+        $adminRoles = [
+            \Omeka\Permissions\Acl::ROLE_GLOBAL_ADMIN,
+            \Omeka\Permissions\Acl::ROLE_SITE_ADMIN,
+        ];
+        $acl->allow(
+            $adminRoles,
+            [\Group\Entity\Group::class],
+            ['read', 'create', 'update', 'delete']
+        );
+        $acl->allow(
+            $adminRoles,
+            [\Group\Entity\GroupUser::class, \Group\Entity\GroupResource::class],
+            // The right "assign" is used to display the form or not.
+            ['read', 'create', 'update', 'delete', 'assign']
+        );
+        $acl->allow(
+            $adminRoles,
+            [\Group\Api\Adapter\GroupAdapter::class],
+            ['search', 'read', 'create', 'update', 'delete']
+        );
+        $acl->allow(
+            $adminRoles,
+            [\Group\Controller\Admin\GroupController::class],
+            ['show', 'browse', 'add', 'edit', 'delete', 'delete-confirm']
+        );
     }
 
     public function attachListeners(SharedEventManagerInterface $sharedEventManager)

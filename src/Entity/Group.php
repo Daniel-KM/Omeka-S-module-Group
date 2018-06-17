@@ -4,8 +4,6 @@ namespace Group\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Omeka\Entity\AbstractEntity;
-use Omeka\Entity\Resource;
-use Omeka\Entity\User;
 
 /**
  * A table with the name group may create an issue in Doctrine 2, so "groups"
