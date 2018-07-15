@@ -5,7 +5,7 @@
 </style>
 <?php
 $escape = $this->plugin('escapeHtml');
-$resourceName = $resource->getControllerName();
+$resourceName = $resource && $resource->getControllerName();
 $updateRight = false; // $this->userIsAllowed(GroupUser::class, 'update');
 ?>
 <div class="meta-group group">

@@ -28,7 +28,7 @@ $this->headScript()->appendFile($this->assetUrl('js/group.js', 'Group'));
 <?php else: ?>
         <?php
         $escape = $this->plugin('escapeHtml');
-        $resourceName = $resource->getControllerName();
+        $resourceName = $resource && $resource->getControllerName();
         $updateRight = false; // $this->userIsAllowed(Group::class, 'update');
         ?>
         <ul class="group-list">

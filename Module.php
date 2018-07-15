@@ -1048,11 +1048,11 @@ SQL;
      */
     protected function displayViewAdmin(
         Event $event,
-        AbstractEntityRepresentation $resource,
+        AbstractEntityRepresentation $resource = null,
         $listAsDiv = false
     ) {
         // TODO Add an acl check for right to view groups (controller level).
-        $isUser = $resource->getControllerName() === 'user';
+        $isUser = $resource && $resource->getControllerName() === 'user';
         $groups = $this->listGroups($resource, 'representation');
         $partial = $listAsDiv
             ? 'common/admin/groups-resource'
@@ -1211,9 +1211,9 @@ SQL;
      * @param string $contentType "json" (default), "representation" or "reference".
      * @return array
      */
-    protected function listGroups(AbstractEntityRepresentation $resource, $contentType = null)
+    protected function listGroups(AbstractEntityRepresentation $resource = null, $contentType = null)
     {
-        if (empty($resource->id())) {
+        if (is_null($resource) || empty($resource->id())) {
             return [];
         }
         $resourceJson = $resource->jsonSerialize();
