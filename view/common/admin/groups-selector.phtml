@@ -1,4 +1,5 @@
 <?php
+$translate = $this->plugin('translate');
 $escape = $this->plugin('escapeHtml');
 
 // Groups are already sorted.
@@ -16,11 +17,11 @@ if (extension_loaded('mbstring')) {
 }
 ?>
 <div id="group-selector" class='selector sidebar active'>
-    <a href="#" class="mobile-only sidebar-close o-icon-close"><span class="screen-reader-text"><?php echo $this->translate('Close Me'); ?></span></a>
-    <h3><?php echo $this->translate('Click on a group to add it to the edit panel.'); ?></h3>
-    <input type="text" class="selector-filter" placeholder="<?php echo $escape($this->translate('Filter groups')); ?>">
+    <a href="#" class="mobile-only sidebar-close o-icon-close"><span class="screen-reader-text"><?php echo $translate('Close Me'); ?></span></a>
+    <h3><?php echo $translate('Click on a group to add it to the edit panel.'); ?></h3>
+    <input type="text" class="selector-filter" placeholder="<?php echo $escape($translate('Filter groups')); ?>">
     <ul>
-        <li class="total-count-heading"><?php echo $this->translate('All groups'); ?> (<span class="selector-total-count"><?php echo count($groups); ?></span>)
+        <li class="total-count-heading"><?php echo $translate('All groups'); ?> (<span class="selector-total-count"><?php echo count($groups); ?></span>)
             <ul class="selectable-list">
                 <?php foreach ($groupsByInitial as $initial => $groups): ?>
                     <li class="selector-parent">

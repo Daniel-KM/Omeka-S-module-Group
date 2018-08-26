@@ -1,8 +1,9 @@
 <?php
+$translate = $this->plugin('translate');
+$escape = $this->plugin('escapeHtml');
 $this->headLink()->appendStylesheet($this->assetUrl('css/group.css', 'Group'));
 $this->headScript()->appendFile($this->assetUrl('js/group.js', 'Group'));
-$escape = $this->plugin('escapeHtml');
-$removeStr = $escape($this->translate('Remove group'));
+$removeStr = $escape($translate('Remove group'));
 $groupTemplate = '
 <tr>
     <td class="group-name"></td>
@@ -17,11 +18,11 @@ $groupTemplate = '
 </tr>';
 ?>
 <fieldset id="groups" class="section group" aria-labelledby="groups-label">
-    <legend id="groups-legend"><?php echo $this->translate('Groups'); ?></legend>
+    <legend id="groups-legend"><?php echo $translate('Groups'); ?></legend>
     <table id="group-resources" data-tablesaw-mode="stack" class="tablesaw tablesaw-stack <?php echo ($resource && $groups) ? '' : 'empty'; ?>">
         <thead>
         <tr>
-            <th><?php echo $this->translate('Group'); ?></th>
+            <th><?php echo $translate('Group'); ?></th>
         </tr>
         </thead>
         <tbody>
@@ -39,20 +40,20 @@ $groupTemplate = '
                     <li>
                         <a href="<?php echo $escape($group->urlEntities('user')); ?>"
                             class="o-icon-user"
-                            aria-label="<?php echo $escape($this->translate('Users within this group')); ?>"
-                            title="<?php echo $escape($this->translate('Users within this group')); ?>"></a>
+                            aria-label="<?php echo $escape($translate('Users within this group')); ?>"
+                            title="<?php echo $escape($translate('Users within this group')); ?>"></a>
                         <a href="<?php echo $escape($group->urlEntities('item-set')); ?>"
                             class="o-icon-item-sets"
-                            aria-label="<?php echo $escape($this->translate('Item sets within this group')); ?>"
-                            title="<?php echo $escape($this->translate('Item sets within this group')); ?>"></a>
+                            aria-label="<?php echo $escape($translate('Item sets within this group')); ?>"
+                            title="<?php echo $escape($translate('Item sets within this group')); ?>"></a>
                         <a href="<?php echo $escape($group->urlEntities('item')); ?>"
                             class="o-icon-items"
-                            aria-label="<?php echo $escape($this->translate('Items within this group')); ?>"
-                            title="<?php echo $escape($this->translate('Items within this group')); ?>"></a>
+                            aria-label="<?php echo $escape($translate('Items within this group')); ?>"
+                            title="<?php echo $escape($translate('Items within this group')); ?>"></a>
                         <a href="<?php echo $escape($group->urlEntities('media')); ?>"
                             class="o-icon-media"
-                            aria-label="<?php echo $escape($this->translate('Media within this group')); ?>"
-                            title="<?php echo $escape($this->translate('Media within this group')); ?>"></a>
+                            aria-label="<?php echo $escape($translate('Media within this group')); ?>"
+                            title="<?php echo $escape($translate('Media within this group')); ?>"></a>
                         <a href="#" class="o-icon-delete" title="<?php echo $removeStr; ?>" aria-label="<?php echo $removeStr; ?>"></a>
                     </li>
                 </ul>
@@ -65,12 +66,12 @@ $groupTemplate = '
     </table>
     <div class="no-resources">
         <p>
-            <?php echo $this->translate('There are no groups for this resource.'); ?>
+            <?php echo $translate('There are no groups for this resource.'); ?>
             <br />
-            <?php echo $this->translate('Add existing groups using the interface to the right.'); ?>
+            <?php echo $translate('Add existing groups using the interface to the right.'); ?>
         </p>
     </div>
-    <button id="group-selector-button" class="mobile-only"><?php echo $this->translate('Add a group'); ?></button>
+    <button id="group-selector-button" class="mobile-only"><?php echo $translate('Add a group'); ?></button>
     <span id="group-template" data-template="<?php echo $escape($groupTemplate); ?>"></span>
     <?php echo $this->groupSelector(); ?>
 </fieldset>

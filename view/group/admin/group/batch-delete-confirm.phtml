@@ -1,5 +1,8 @@
+<?php
+$translate = $this->plugin('translate');
+?>
 <div id="sidebar-confirm">
-    <h3><?php echo $this->translate('Delete groups'); ?></h3>
-    <p><?php echo $this->translate('Are you sure you would like to delete the selected groups?'); ?></p>
+    <h3><?php echo $translate('Delete groups'); ?></h3>
+    <p><?php echo $translate('Are you sure you would like to delete the selected groups?'); ?></p>
     <?php echo $this->form($this->form); ?>
 </div>

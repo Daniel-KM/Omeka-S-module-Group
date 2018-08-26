@@ -1,39 +1,40 @@
 <?php
 use Group\Api\Adapter\GroupAdapter;
 
+$translate = $this->plugin('translate');
 $escape = $this->plugin('escapeHtml');
 $this->htmlElement('body')->appendAttribute('class', 'groups browse');
 $sortHeadings = [
     [
-        'label' => $this->translate('Name'),
+        'label' => $translate('Name'),
         'value' => 'name'
     ],
     [
-        'label' => $this->translate('Total count'),
+        'label' => $translate('Total count'),
         'value' => 'count'
     ],
     [
-        'label' => $this->translate('Total users'),
+        'label' => $translate('Total users'),
         'value' => 'users'
     ],
     [
-        'label' => $this->translate('Total resources'),
+        'label' => $translate('Total resources'),
         'value' => 'resources'
     ],
     [
-        'label' => $this->translate('Total item sets'),
+        'label' => $translate('Total item sets'),
         'value' => 'item_sets'
     ],
     [
-        'label' => $this->translate('Total items'),
+        'label' => $translate('Total items'),
         'value' => 'items'
     ],
     [
-        'label' => $this->translate('Total media'),
+        'label' => $translate('Total media'),
         'value' => 'media'
     ],
     [
-        'label' => $this->translate('Recent'),
+        'label' => $translate('Recent'),
         'value' => 'id'
     ],
 ];
@@ -42,13 +43,13 @@ $updateRight = $this->userIsAllowed(GroupAdapter::class, 'update');
 $deleteRight = $this->userIsAllowed(GroupAdapter::class, 'delete');
 ?>
 
-<?php echo $this->pageTitle($this->translate('Groups')); ?>
+<?php echo $this->pageTitle($translate('Groups')); ?>
 
 <?php echo $this->searchFilters(); ?>
 
  <div class="browse-controls">
     <?php echo $this->pagination(); ?>
-    <?php // echo $this->hyperlink($this->translate('Advanced search'), $this->url(null, ['action' => 'search'], ['query' => $this->params()->fromQuery()], true), ['class' => 'advanced-search']); ?>
+    <?php // echo $this->hyperlink($translate('Advanced search'), $this->url(null, ['action' => 'search'], ['query' => $this->params()->fromQuery()], true), ['class' => 'advanced-search']); ?>
     <?php echo $this->sortSelector($sortHeadings); ?>
 </div>
 
@@ -56,15 +57,15 @@ $deleteRight = $this->userIsAllowed(GroupAdapter::class, 'delete');
 
 <div id="page-actions">
     <?php if ($createRight): ?>
-    <?php echo $this->hyperlink($this->translate('Add new group'), $this->url('admin/group', ['action' => 'add'], true), ['class' => 'button']); ?>
+    <?php echo $this->hyperlink($translate('Add new group'), $this->url('admin/group', ['action' => 'add'], true), ['class' => 'button']); ?>
     <?php endif; ?>
 <?php if ($groups): ?>
     <?php if ($deleteRight): ?>
     <a href="#"
         class="button delete batch-actions sidebar-content"
         data-sidebar-content-url="<?php echo $escape($this->url(null, ['action' => 'batch-delete-confirm'], true)); ?>"
-        aria-label="<?php echo $escape($this->translate('Delete')); ?>"
-        title="<?php echo $escape($this->translate('Delete')); ?>"><?php echo $escape($this->translate('Delete')); ?></a>
+        aria-label="<?php echo $escape($translate('Delete')); ?>"
+        title="<?php echo $escape($translate('Delete')); ?>"><?php echo $escape($translate('Delete')); ?></a>
     <?php endif; ?>
 <?php endif; ?>
 </div>
@@ -72,7 +73,7 @@ $deleteRight = $this->userIsAllowed(GroupAdapter::class, 'delete');
 <?php $this->trigger('view.browse.before'); ?>
 <?php if (empty($groups)): ?>
 <div class="no-resources">
-    <p><?php echo $this->translate('There are no groups.'); ?></p>
+    <p><?php echo $translate('There are no groups.'); ?></p>
 </div>
 <?php $this->trigger('view.browse.after'); ?>
 
@@ -84,14 +85,14 @@ $deleteRight = $this->userIsAllowed(GroupAdapter::class, 'delete');
                 <?php if ($deleteRight): ?>
                 <input type="checkbox" class="select-all">
                 <?php endif; ?>
-                <?php echo $this->translate('Group'); ?>
+                <?php echo $translate('Group'); ?>
             </th>
-            <th><?php echo $this->translate('Total count'); ?></th>
-            <th><?php echo $this->translate('Users'); ?></th>
-            <th><?php echo $this->translate('Resources'); ?></th>
-            <th><?php echo $this->translate('Item sets'); ?></th>
-            <th><?php echo $this->translate('Items'); ?></th>
-            <th><?php echo $this->translate('Media'); ?></th>
+            <th><?php echo $translate('Total count'); ?></th>
+            <th><?php echo $translate('Users'); ?></th>
+            <th><?php echo $translate('Resources'); ?></th>
+            <th><?php echo $translate('Item sets'); ?></th>
+            <th><?php echo $translate('Items'); ?></th>
+            <th><?php echo $translate('Media'); ?></th>
         </tr>
     </thead>
     <tbody>
@@ -113,21 +114,21 @@ $deleteRight = $this->userIsAllowed(GroupAdapter::class, 'delete');
                     <?php if ($updateRight): ?>
                     <li><a href="#"
                         class="o-icon-edit contenteditable"
-                        aria-label="<?php echo $escape($this->translate('Edit name')); ?>"
-                        title="<?php echo $escape($this->translate('Edit name')); ?>"></a></li>
+                        aria-label="<?php echo $escape($translate('Edit name')); ?>"
+                        title="<?php echo $escape($translate('Edit name')); ?>"></a></li>
                     <?php endif; ?>
                     <?php if ($deleteRight): ?>
                     <li><a href="#"
                         class="o-icon-delete sidebar-content"
                         data-sidebar-content-url="<?php echo $escape($group->url('delete-confirm')); ?>"
-                        aria-label="<?php echo $escape($this->translate('Delete')); ?>"
-                        title="<?php echo $escape($this->translate('Delete')); ?>"></a></li>
+                        aria-label="<?php echo $escape($translate('Delete')); ?>"
+                        title="<?php echo $escape($translate('Delete')); ?>"></a></li>
                     <?php endif; ?>
                     <li><a href="#"
                         data-sidebar-content-url="<?php echo $escape($group->url('show-details')); ?>"
                         class="o-icon-more sidebar-content"
-                        aria-label="<?php echo $escape($this->translate('Details')); ?>"
-                        title="<?php echo $escape($this->translate('Details')); ?>"></a></li>
+                        aria-label="<?php echo $escape($translate('Details')); ?>"
+                        title="<?php echo $escape($translate('Details')); ?>"></a></li>
                 </ul>
             </td>
             <td><?php if ($groupCount[$name]['count']) echo $groupCount[$name]['count']; ?></td>
@@ -159,8 +160,8 @@ $deleteRight = $this->userIsAllowed(GroupAdapter::class, 'delete');
 <div class="sidebar">
     <a href="#"
         class="sidebar-close o-icon-close"
-        aria-label="<?php echo $escape($this->translate('Close')); ?>"
-        title="<?php echo $escape($this->translate('Close')); ?>"></a>
+        aria-label="<?php echo $escape($translate('Close')); ?>"
+        title="<?php echo $escape($translate('Close')); ?>"></a>
     <div class="sidebar-content"></div>
 </div>
 
