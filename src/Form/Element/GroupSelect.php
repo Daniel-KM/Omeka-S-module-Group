@@ -28,7 +28,7 @@ class GroupSelect extends Select
         $response = $this->getApiManager()->search('groups', $query);
         foreach ($response->getContent() as $representation) {
             $name = $representation->name();
-            $key = $nameAsValue ? $representation->id() : $name;
+            $key = $nameAsValue ? $name : $representation->id();
             $valueOptions[$key] = $name;
         }
 
@@ -50,11 +50,16 @@ class GroupSelect extends Select
                         return $v->name();
                     },
                 ],
-                'name_as_value' => false,
+                'name_as_value' => true,
             ];
-            $options = $options
-                ? array_merge_recursive($defaultOptions, $options)
-                : $defaultOptions;
+            if (isset($options['resource_value_options'])) {
+                $options['resource_value_options'] += $defaultOptions['resource_value_options'];
+            } else {
+                $options['resource_value_options'] = $defaultOptions['resource_value_options'];
+            }
+            if (!isset($options['name_as_value'])) {
+                $options['name_as_value'] = $defaultOptions['name_as_value'];
+            }
 
             $urlHelper = $this->getUrlHelper();
             $defaultAttributes = [
