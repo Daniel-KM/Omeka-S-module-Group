@@ -64,7 +64,7 @@ class GroupSelect extends Select
             $urlHelper = $this->getUrlHelper();
             $defaultAttributes = [
                 'class' => 'chosen-select',
-                'data-placeholder' => 'Select groups', // @translate
+                'data-placeholder' => 'Select groups…', // @translate
                 'data-api-base-url' => $urlHelper('api/default', ['resource' => 'groups']),
             ];
             $this->setAttributes($defaultAttributes);
