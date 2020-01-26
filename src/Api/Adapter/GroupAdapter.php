@@ -133,6 +133,10 @@ class GroupAdapter extends AbstractEntityAdapter
 
     public function buildQuery(QueryBuilder $qb, array $query)
     {
+        $isOldOmeka = \Omeka\Module::VERSION < 2;
+        $alias = $isOldOmeka ? $this->getEntityClass() : 'omeka_root';
+        $expr = $qb->expr();
+
         if (isset($query['id'])) {
             $this->buildQueryValuesItself($qb, $query['id'], 'id');
         }
@@ -174,17 +178,17 @@ class GroupAdapter extends AbstractEntityAdapter
                 // Note: This query may be used if the annotation is set in
                 // core on Resource. In place, the relation is recreated.
                 // ->innerJoin(
-                //     $this->getEntityClass() . ($queryKey === 'user_id' ?  '.users' : '.resources'),
+                //     $alias . ($queryKey === 'user_id' ?  '.users' : '.resources'),
                 //     $entityAlias, 'WITH',
-                //     $qb->expr()->in("$entityAlias.id", $this->createNamedParameter($qb, $entities))
+                //     $expr->in("$entityAlias.id", $this->createNamedParameter($qb, $entities))
                 // );
                 ->innerJoin(
                     $groupEntity,
                     $groupEntityAlias,
                     'WITH',
-                    $qb->expr()->andX(
-                        $qb->expr()->eq($groupEntityAlias . '.group', $this->getEntityClass() . '.id'),
-                        $qb->expr()->in(
+                    $expr->andX(
+                        $expr->eq($groupEntityAlias . '.group', $alias . '.id'),
+                        $expr->in(
                             $groupEntityAlias . '.' . $groupEntityColumn,
                             $this->createNamedParameter($qb, $entities)
                         )
@@ -198,7 +202,7 @@ class GroupAdapter extends AbstractEntityAdapter
                         $resourceType,
                         $resourceAlias,
                         'WITH',
-                        $qb->expr()->eq(
+                        $expr->eq(
                             $groupEntityAlias . '.resource',
                             $resourceAlias . '.id'
                         )
@@ -224,7 +228,7 @@ class GroupAdapter extends AbstractEntityAdapter
                         $entityJoinClass,
                         $entityJoinAlias,
                         'WITH',
-                        $qb->expr()->eq($entityJoinAlias . '.group', Group::class)
+                        $expr->eq($entityJoinAlias . '.group', Group::class)
                     );
                 if (!in_array($query['resource_type'], ['users', 'resources'])) {
                     $entityAlias = $this->createAlias();
@@ -233,7 +237,7 @@ class GroupAdapter extends AbstractEntityAdapter
                             $mapResourceTypes[$query['resource_type']],
                             $entityAlias,
                             'WITH',
-                            $qb->expr()->eq(
+                            $expr->eq(
                                 $entityJoinClass . '.resource',
                                 $entityAlias . '.id'
                             )

@@ -38,13 +38,17 @@ trait QueryBuilderTrait
      */
     protected function buildQueryOneValue(QueryBuilder $qb, $value, $column)
     {
+        $isOldOmeka = \Omeka\Module::VERSION < 2;
+        $alias = $isOldOmeka ? $this->getEntityClass() : 'omeka_root';
+        $expr = $qb->expr();
+
         if (is_null($value)) {
-            $qb->andWhere($qb->expr()->isNull(
-                $this->getEntityClass() . '.' . $column
+            $qb->andWhere($expr->isNull(
+                $alias . '.' . $column
             ));
         } else {
-            $qb->andWhere($qb->expr()->eq(
-                $this->getEntityClass() . '.' . $column,
+            $qb->andWhere($expr->eq(
+                $alias . '.' . $column,
                 $this->createNamedParameter($qb, $value)
             ));
         }
@@ -65,31 +69,39 @@ trait QueryBuilderTrait
             return !is_null($v);
         });
         if ($values) {
+            $isOldOmeka = \Omeka\Module::VERSION < 2;
+            $alias = $isOldOmeka ? $this->getEntityClass() : 'omeka_root';
+            $expr = $qb->expr();
+
             $valueAlias = $this->createAlias();
             $qb->innerJoin(
-                $this->getEntityClass() . '.' . $column,
+                $alias . '.' . $column,
                 $valueAlias,
                 'WITH',
                 $hasNull
-                    ? $qb->expr()->orX(
-                        $qb->expr()->in(
+                    ? $expr->orX(
+                        $expr->in(
                             $valueAlias . '.' . $target,
                             $this->createNamedParameter($qb, $values)
                         ),
-                        $qb->expr()->isNull(
+                        $expr->isNull(
                             $valueAlias . '.' . $target
                         )
                     )
-                    : $qb->expr()->in(
+                    : $expr->in(
                         $valueAlias . '.' . $target,
                         $this->createNamedParameter($qb, $values)
                     )
-            );
+                );
         }
         // Check no value only.
         elseif ($hasNull) {
-            $qb->andWhere($qb->expr()->isNull(
-                $this->getEntityClass() . '.' . $column
+            $isOldOmeka = \Omeka\Module::VERSION < 2;
+            $alias = $isOldOmeka ? $this->getEntityClass() : 'omeka_root';
+            $expr = $qb->expr();
+
+            $qb->andWhere($expr->isNull(
+                $alias . '.' . $column
             ));
         }
     }
@@ -97,7 +109,7 @@ trait QueryBuilderTrait
     /**
      * Helper to search one or multiple ids.
      *
-     * @internal There is no "0" for id, but "null" may be allowed.
+     * There is no "0" for id, but "null" may be allowed.
      *
      * @param QueryBuilder $qb
      * @param mixed $values One or multiple ids.
@@ -120,7 +132,7 @@ trait QueryBuilderTrait
     /**
      * Helper to search one id.
      *
-     * @internal There is no "0" for id, but "null" may be allowed.
+     * There is no "0" for id, but "null" may be allowed.
      *
      * @param QueryBuilder $qb
      * @param mixed $value
@@ -135,7 +147,7 @@ trait QueryBuilderTrait
     /**
      * Helper to search multiple ids.
      *
-     * @internal There is no "0" for id, but "null" may be allowed.
+     * There is no "0" for id, but "null" may be allowed.
      *
      * @param QueryBuilder $qb
      * @param array $values Multiple ids.
@@ -186,29 +198,33 @@ trait QueryBuilderTrait
             return !is_null($v);
         });
         if ($values) {
+            $isOldOmeka = \Omeka\Module::VERSION < 2;
+            $alias = $isOldOmeka ? $this->getEntityClass() : 'omeka_root';
+            $expr = $qb->expr();
+
             $valueAlias = $this->createAlias();
             $qb
                 ->innerJoin(
                     $this->getEntityClass(),
                     $valueAlias,
                     'WITH',
-                    $qb->expr()->eq(
-                        $this->getEntityClass() . '.id',
+                    $expr->eq(
+                        $alias . '.id',
                         $valueAlias . '.id'
                     )
                 )
                 ->andWhere(
                     $hasNull
-                    ? $qb->expr()->orX(
-                        $qb->expr()->in(
+                    ? $expr->orX(
+                        $expr->in(
                             $valueAlias . '.' . $target,
                             $this->createNamedParameter($qb, $values)
                         ),
-                        $qb->expr()->isNull(
+                        $expr->isNull(
                             $valueAlias . '.' . $target
                         )
                     )
-                    : $qb->expr()->in(
+                    : $expr->in(
                         $valueAlias . '.' . $target,
                         $this->createNamedParameter($qb, $values)
                     )
@@ -216,8 +232,12 @@ trait QueryBuilderTrait
         }
         // Check no value only.
         elseif ($hasNull) {
-            $qb->andWhere($qb->expr()->isNull(
-                $this->getEntityClass() . '.' . $target
+            $isOldOmeka = \Omeka\Module::VERSION < 2;
+            $alias = $isOldOmeka ? $this->getEntityClass() : 'omeka_root';
+            $expr = $qb->expr();
+
+            $qb->andWhere($expr->isNull(
+                $alias . '.' . $target
             ));
         }
     }
@@ -225,7 +245,7 @@ trait QueryBuilderTrait
     /**
      * Helper to search one or multiple ids on the same entity.
      *
-     * @internal There is no "0" for id, but "null" may be allowed.
+     * There is no "0" for id, but "null" may be allowed.
      *
      * @param QueryBuilder $qb
      * @param mixed $values One or multiple ids.
@@ -247,7 +267,7 @@ trait QueryBuilderTrait
     /**
      * Helper to search multiple ids on the same entity.
      *
-     * @internal There is no "0" for id, but "null" may be allowed.
+     * There is no "0" for id, but "null" may be allowed.
      *
      * @param QueryBuilder $qb
      * @param array $values Multiple ids.

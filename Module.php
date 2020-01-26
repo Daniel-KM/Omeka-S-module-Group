@@ -466,13 +466,20 @@ SQL;
             return;
         }
 
+        /** @var \Omeka\Api\Adapter\MediaAdapter $adapter */
         $adapter = $event->getTarget();
+        $isOldOmeka = \Omeka\Module::VERSION < 2;
+        $alias = $isOldOmeka ? $adapter->getEntityClass() : 'omeka_root';
+
         $itemAlias = $adapter->createAlias();
+
         $qb = $event->getParam('queryBuilder');
-        $qb->innerJoin('Omeka\Entity\Media.item', $itemAlias);
+        $expr = $qb->expr();
+
+        $qb->innerJoin($alias . '.item', $itemAlias);
 
         // Users can view media they do not own that belong to public items.
-        $expression = $qb->expr()->eq("$itemAlias.isPublic", true);
+        $expression = $expr->eq("$itemAlias.isPublic", true);
 
         $identity = $services
             ->get('Omeka\AuthenticationService')->getIdentity();
@@ -495,20 +502,21 @@ SQL;
                 "$groupUserAlias.user = $identityParam AND $groupResourceAlias.group = $groupUserAlias.group"
             );
 
-            $expression = $qb->expr()->orX(
+            $expression = $expr->orX(
                 $expression,
                 // Users can view all media they own.
-                $qb->expr()->eq(
+                $expr->eq(
                     "$itemAlias.owner",
                     $identityParam
                 ),
                 // Users can view media with at least one group in common.
-                $qb->expr()->eq(
+                $expr->eq(
                     "$groupResourceAlias.group",
                     "$groupUserAlias.group"
                 )
             );
         }
+
         $qb->andWhere($expression);
     }
 
@@ -543,10 +551,16 @@ SQL;
         $query = $event->getParam('request')->getContent();
 
         if (!empty($query['has_groups'])) {
-            $qb = $event->getParam('queryBuilder');
+            /** @var \Omeka\Api\Adapter\AbstractEntityAdapter $adapter */
             $adapter = $event->getTarget();
+            $qb = $event->getParam('queryBuilder');
+            $expr = $qb->expr();
+
+            $isOldOmeka = \Omeka\Module::VERSION < 2;
+            $alias = $isOldOmeka ? $adapter->getEntityClass() : 'omeka_root';
+
             $groupEntityAlias = $adapter->createAlias();
-            $entityAlias = $adapter->getEntityClass();
+            $entityAlias = $alias;
             if ($adapter->getResourceName() === 'users') {
                 $groupEntity = GroupUser::class;
                 $groupEntityColumn = 'user';
@@ -558,7 +572,7 @@ SQL;
                 $groupEntity,
                 $groupEntityAlias,
                 'WITH',
-                $qb->expr()->eq($groupEntityAlias . '.' . $groupEntityColumn, $entityAlias . '.id')
+                $expr->eq($groupEntityAlias . '.' . $groupEntityColumn, $entityAlias . '.id')
             );
         }
 
@@ -568,9 +582,15 @@ SQL;
                 return;
             }
             $isId = preg_match('~^\d+$~', reset($groups));
-            $qb = $event->getParam('queryBuilder');
+
+            /** @var \Omeka\Api\Adapter\AbstractEntityAdapter $adapter */
             $adapter = $event->getTarget();
-            $entityAlias = $adapter->getEntityClass();
+            $qb = $event->getParam('queryBuilder');
+            $expr = $qb->expr();
+
+            $isOldOmeka = \Omeka\Module::VERSION < 2;
+            $alias = $isOldOmeka ? $adapter->getEntityClass() : 'omeka_root';
+            $entityAlias = $alias;
             if ($adapter->getResourceName() === 'users') {
                 $groupEntity = GroupUser::class;
                 $groupEntityColumn = 'user';
@@ -592,7 +612,7 @@ SQL;
                 );
             if ($isId) {
                 $qb
-                    ->andWhere($qb->expr()->in($groupEntityAlias . '.group', $groups));
+                    ->andWhere($expr->in($groupEntityAlias . '.group', $groups));
             } else {
                 $qb
                     ->innerJoin(
@@ -601,7 +621,7 @@ SQL;
                         'WITH',
                         "$groupEntityAlias.group = $groupAlias.id"
                     )
-                    ->andWhere($qb->expr()->in($groupAlias . '.name', $groups));
+                    ->andWhere($expr->in($groupAlias . '.name', $groups));
             }
             */
             // All resources with all groups ("AND").
@@ -619,20 +639,20 @@ SQL;
                         $groupEntity,
                         $groupEntityAlias,
                         'WITH',
-                        $qb->expr()->andX(
-                            $qb->expr()->eq($groupEntityAlias . '.' . $groupEntityColumn, $entityAlias . '.id'),
-                            $qb->expr()->eq($groupEntityAlias . '.group', $groupAlias . '.id')
+                        $expr->andX(
+                            $expr->eq($groupEntityAlias . '.' . $groupEntityColumn, $entityAlias . '.id'),
+                            $expr->eq($groupEntityAlias . '.group', $groupAlias . '.id')
                         )
                     );
                 if ($isId) {
                     $qb
-                        ->andWhere($qb->expr()->eq(
+                        ->andWhere($expr->eq(
                             $groupAlias . '.id',
                             $adapter->createNamedParameter($qb, $group)
                         ));
                 } else {
                     $qb
-                        ->andWhere($qb->expr()->eq(
+                        ->andWhere($expr->eq(
                             $groupAlias . '.name',
                             $adapter->createNamedParameter($qb, $group)
                         ));

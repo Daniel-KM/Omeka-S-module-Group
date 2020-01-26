@@ -81,6 +81,12 @@ it is recommended not to change the rights of the admins, or to set a group
 before.
 
 
+TODO
+----
+
+- Remove complicate processes used to bypass some Omeka < 2.0 issues.
+
+
 Warning
 -------
 
@@ -137,7 +143,7 @@ Current maintainers:
 Copyright
 ---------
 
-* Copyright Daniel Berthereau, 2017-2018
+* Copyright Daniel Berthereau, 2017-2020
 
 
 [Group]: https://github.com/Daniel-KM/Omeka-S-module-Group
