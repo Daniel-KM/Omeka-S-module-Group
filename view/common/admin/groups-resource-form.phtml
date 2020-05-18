@@ -2,7 +2,7 @@
 $translate = $this->plugin('translate');
 $escape = $this->plugin('escapeHtml');
 $this->headLink()->appendStylesheet($this->assetUrl('css/group.css', 'Group'));
-$this->headScript()->appendFile($this->assetUrl('js/group.js', 'Group'));
+$this->headScript()->appendFile($this->assetUrl('js/group.js', 'Group'), 'text/javascript', ['defer' => 'defer']);
 $removeStr = $escape($translate('Remove group'));
 $groupTemplate = '
 <tr>

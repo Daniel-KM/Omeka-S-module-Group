@@ -2,7 +2,7 @@
 $translate = $this->plugin('translate');
 $escape = $this->plugin('escapeHtml');
 $this->htmlElement('body')->appendAttribute('class', 'groups add');
-// $this->headScript()->appendFile($this->assetUrl('js/advanced-search.js', 'Omeka'));
+// $this->headScript()->appendFile($this->assetUrl('js/advanced-search.js', 'Omeka'), 'text/javascript', ['defer' => 'defer']);
 $form->prepare();
 ?>
 <?php echo $this->pageTitle($translate('New group'), 1, $translate('Group')); ?>

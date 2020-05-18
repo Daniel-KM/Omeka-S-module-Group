@@ -1,7 +1,7 @@
 <?php
 $translate = $this->plugin('translate');
 $this->headLink()->appendStylesheet($this->assetUrl('css/group.css', 'Group'));
-$this->headScript()->appendFile($this->assetUrl('js/group.js', 'Group'));
+$this->headScript()->appendFile($this->assetUrl('js/group.js', 'Group'), 'text/javascript', ['defer' => 'defer']);
 ?>
 <style>
 .group .group-list {

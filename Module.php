@@ -834,7 +834,7 @@ SQL;
     {
         $view = $event->getTarget();
         $view->headLink()->appendStylesheet($view->assetUrl('css/group.css', 'Group'));
-        $view->headScript()->appendFile($view->assetUrl('js/group.js', 'Group'));
+        $view->headScript()->appendFile($view->assetUrl('js/group.js', 'Group'), 'text/javascript', ['defer' => 'defer']);
     }
 
     public function addUserFormElement(Event $event)
