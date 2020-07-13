@@ -840,6 +840,10 @@ SQL;
 
     public function addUserFormElement(Event $event)
     {
+        // Groups are for admins only.
+        if (!$this->getServiceLocator()->get('Omeka\Status')->isAdminRequest()) {
+            return;
+        }
         if (!$this->checkAcl(User::class, 'update') || !$this->checkAcl(User::class, 'assign')) {
             return;
         }
@@ -860,6 +864,10 @@ SQL;
 
     public function addUserFormFilter(Event $event)
     {
+        // Groups are for admins only.
+        if (!$this->getServiceLocator()->get('Omeka\Status')->isAdminRequest()) {
+            return;
+        }
         if (!$this->checkAcl(User::class, 'update') || !$this->checkAcl(User::class, 'assign')) {
             return;
         }
@@ -874,6 +882,11 @@ SQL;
 
     public function addUserFormValue(Event $event)
     {
+        // Groups are for admins only.
+        if (!$this->getServiceLocator()->get('Omeka\Status')->isAdminRequest()) {
+            return;
+        }
+
         $user = $event->getTarget()->vars()->user;
         $form = $event->getParam('form');
         $values = $this->listGroups($user, 'reference');
