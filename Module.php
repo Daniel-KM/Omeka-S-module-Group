@@ -5,7 +5,7 @@
  * Add groups to users and resources to manage the access rights and the
  * resource visibility in a more flexible way.
  *
- * Copyright Daniel Berthereau 2017
+ * Copyright Daniel Berthereau 2017-2020
  *
  * This software is governed by the CeCILL license under French law and abiding
  * by the rules of distribution of free software.  You can use, modify and/ or
@@ -67,7 +67,7 @@ use Zend\View\Renderer\PhpRenderer;
  *
  * Add groups to users and resources to manage the access in a more flexible way.
  *
- * @copyright Daniel Berthereau, 2017-2018
+ * @copyright Daniel Berthereau, 2017-2020
  * @license http://www.cecill.info/licences/Licence_CeCILL_V2.1-en.txt
  */
 class Module extends AbstractModule
@@ -210,20 +210,15 @@ SQL;
     public function attachListeners(SharedEventManagerInterface $sharedEventManager)
     {
         $services = $this->getServiceLocator();
-        $settings = $services->get('Omeka\Settings');
         $config = $services->get('Config');
-        $recursiveItemSets = $config[strtolower(__NAMESPACE__)]['config']['group_recursive_item_sets'];
-        $recursiveItems = $config[strtolower(__NAMESPACE__)]['config']['group_recursive_items'];
+        $recursiveItemSets = $config['group']['config']['group_recursive_item_sets'];
+        $recursiveItems = $config['group']['config']['group_recursive_items'];
 
         // Add the Group term definition.
         $sharedEventManager->attach(
             '*',
             'api.context',
-            function (Event $event) {
-                $context = $event->getParam('context');
-                $context['o-module-group'] = 'http://omeka.org/s/vocabs/module/group#';
-                $event->setParam('context', $context);
-            }
+            [$this, 'filterApiContext']
         );
 
         // Bypass the core filter for media (detach two events of Omeka\Module).
@@ -452,6 +447,13 @@ SQL;
         return $t->translate('The settings are available in the file module.config.php of  the module. See readme.'); // @translate
     }
 
+    public function filterApiContext(Event $event)
+    {
+        $context = $event->getParam('context');
+        $context['o-module-group'] = 'http://omeka.org/s/vocabs/module/group#';
+        $event->setParam('context', $context);
+    }
+
     /**
      * Filter media belonging to private items.
      *
@@ -677,7 +679,6 @@ SQL;
 
         $response = $event->getParam('response');
         $request = $response->getRequest();
-        $data = $request->getContent();
         if (!$resourceAdapter->shouldHydrate($request, 'o-module-group:group')) {
             return;
         }

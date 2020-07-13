@@ -1,8 +1,16 @@
 <?php
+/**
+ * @var \Zend\View\Renderer\PhpRenderer $this
+ * @var bool $isUser
+ * @var \Group\Api\Representation\GroupRepresentation[] $groups
+ * @var \Omeka\Api\Representation\AbstractEntityRepresentation|null $resource
+ */
+
 $translate = $this->plugin('translate');
 $this->headLink()->appendStylesheet($this->assetUrl('css/group.css', 'Group'));
 $this->headScript()->appendFile($this->assetUrl('js/group.js', 'Group'), 'text/javascript', ['defer' => 'defer']);
 ?>
+
 <style>
 .group .group-list {
     list-style-type: none;
@@ -14,50 +22,49 @@ $this->headScript()->appendFile($this->assetUrl('js/group.js', 'Group'), 'text/j
 </style>
 <div class="property group">
 <?php if ($isUser): ?>
-    <h4><?php echo $translate('Groups'); ?></h4>
+    <h4><?= $translate('Groups') ?></h4>
     <?php if (empty($groups)): ?>
-    <div class="value no-value"><?php echo $translate('There are no groups for this user.'); ?></div>
+    <div class="value no-value"><?= $translate('There are no groups for this user.') ?></div>
     <?php endif; ?>
 <?php endif; ?>
     <div class="value">
 <?php if (empty($groups)): ?>
     <?php if (!$isUser): ?>
     <div class="no-resources">
-        <p><?php echo $translate('There are no groups for this resource.'); ?></p>
+        <p><?= $translate('There are no groups for this resource.') ?></p>
     </div>
     <?php endif; ?>
 <?php else: ?>
         <?php
         $escape = $this->plugin('escapeHtml');
-        $resourceName = $resource && $resource->getControllerName();
         $updateRight = false; // $this->userIsAllowed(Group::class, 'update');
         ?>
         <ul class="group-list">
         <?php foreach ($groups as $group): ?>
-            <li class="value group"><?php echo $this->hyperlink($group->name(), $group->adminUrl()); ?>
+            <li class="value group"><?= $this->hyperlink($group->name(), $group->adminUrl()) ?>
                 <?php if ($updateRight): ?>
                 <span class="single actions"><a href="#"
                     class="o-icon-delete"
-                    data-delete-confirm-url="<?php echo $escape($group->url('delete-confirm')); ?>"
-                    aria-label="<?php echo $escape($translate('Unassign group')); ?>"
-                    title="<?php echo $escape($translate('Unassign group')); ?>"></a></span>
+                    data-delete-confirm-url="<?= $escape($group->url('delete-confirm')) ?>"
+                    aria-label="<?= $escape($translate('Unassign group')) ?>"
+                    title="<?= $escape($translate('Unassign group')) ?>"></a></span>
                 <?php endif; ?>
-                <span class="single actions"><a href="<?php echo $escape($group->urlEntities('media')); ?>"
+                <span class="single actions"><a href="<?= $escape($group->urlEntities('media')) ?>"
                     class="o-icon-media"
-                    aria-label="<?php echo $escape($translate('Media within this group')); ?>"
-                    title="<?php echo $escape($translate('Media within this group')); ?>"></a></span>
-                <span class="single actions"><a href="<?php echo $escape($group->urlEntities('item')); ?>"
+                    aria-label="<?= $escape($translate('Media within this group')) ?>"
+                    title="<?= $escape($translate('Media within this group')) ?>"></a></span>
+                <span class="single actions"><a href="<?= $escape($group->urlEntities('item')) ?>"
                     class="o-icon-items"
-                    aria-label="<?php echo $escape($translate('Items within this group')); ?>"
-                    title="<?php echo $escape($translate('Items within this group')); ?>"></a></span>
-                <span class="single actions"><a href="<?php echo $escape($group->urlEntities('item-set')); ?>"
+                    aria-label="<?= $escape($translate('Items within this group')) ?>"
+                    title="<?= $escape($translate('Items within this group')); ?>"></a></span>
+                <span class="single actions"><a href="<?= $escape($group->urlEntities('item-set')) ?>"
                     class="o-icon-item-sets"
-                    aria-label="<?php echo $escape($translate('Item sets within this group')); ?>"
-                    title="<?php echo $escape($translate('Item sets within this group')); ?>"></a></span>
-                <span class="single actions"><a href="<?php echo $escape($group->urlEntities('user')); ?>"
+                    aria-label="<?= $escape($translate('Item sets within this group')) ?>"
+                    title="<?= $escape($translate('Item sets within this group')) ?>"></a></span>
+                <span class="single actions"><a href="<?= $escape($group->urlEntities('user')) ?>"
                     class="o-icon-user"
-                    aria-label="<?php echo $escape($translate('Users within this group')); ?>"
-                    title="<?php echo $escape($translate('Users within this group')); ?>"></a></span>
+                    aria-label="<?= $escape($translate('Users within this group')) ?>"
+                    title="<?= $escape($translate('Users within this group')) ?>"></a></span>
             </li>
         <?php endforeach; ?>
         </ul>

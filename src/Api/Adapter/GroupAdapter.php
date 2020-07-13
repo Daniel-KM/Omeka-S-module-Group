@@ -269,7 +269,7 @@ class GroupAdapter extends AbstractEntityAdapter
                     break;
                 case 'group':
                     $query['sort_by'] = 'name';
-                    // No break.
+                    // no break.
                 default:
                     parent::sortQuery($qb, $query);
                     break;

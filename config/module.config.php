@@ -37,7 +37,7 @@ return [
             'item_sets' => [
                 'mappings' => [
                     Mapping\GroupMapping::class,
-                ]
+                ],
             ],
             'items' => [
                 'mappings' => [
