@@ -257,7 +257,7 @@ class GroupController extends AbstractActionController
             ]);
             $content = $response->getContent();
             if (empty($content)) {
-                throw new \Omeka\Api\Exception\NotFoundException(new Message(
+                throw new \Omeka\Api\Exception\NotFoundException((string) new Message(
                     '%s entity with criteria {"%s":"%s"} not found.', // @translate
                     'Group\Entity\Group', 'name', $name));
             }
