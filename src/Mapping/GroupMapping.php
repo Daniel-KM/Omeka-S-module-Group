@@ -3,7 +3,7 @@ namespace Group\Mapping;
 
 use CSVImport\Mapping\AbstractMapping;
 use Omeka\Stdlib\Message;
-use Zend\View\Renderer\PhpRenderer;
+use Laminas\View\Renderer\PhpRenderer;
 
 class GroupMapping extends AbstractMapping
 {

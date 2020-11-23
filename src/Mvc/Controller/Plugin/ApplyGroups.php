@@ -11,7 +11,7 @@ use Omeka\Entity\ItemSet;
 use Omeka\Entity\Media;
 use Omeka\Entity\User;
 use Omeka\Permissions\Acl;
-use Zend\Mvc\Controller\Plugin\AbstractPlugin;
+use Laminas\Mvc\Controller\Plugin\AbstractPlugin;
 
 class ApplyGroups extends AbstractPlugin
 {

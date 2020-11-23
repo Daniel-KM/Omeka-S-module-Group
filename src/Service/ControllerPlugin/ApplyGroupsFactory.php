@@ -3,7 +3,7 @@ namespace Group\Service\ControllerPlugin;
 
 use Group\Mvc\Controller\Plugin\ApplyGroups;
 use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Laminas\ServiceManager\Factory\FactoryInterface;
 
 class ApplyGroupsFactory implements FactoryInterface
 {

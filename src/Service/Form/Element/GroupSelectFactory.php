@@ -3,7 +3,7 @@ namespace Group\Service\Form\Element;
 
 use Group\Form\Element\GroupSelect;
 use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Laminas\ServiceManager\Factory\FactoryInterface;
 
 class GroupSelectFactory implements FactoryInterface
 {

@@ -2,8 +2,8 @@
 namespace Group\Form\Element;
 
 use Omeka\Api\Manager as ApiManager;
-use Zend\Form\Element\Select;
-use Zend\View\Helper\Url;
+use Laminas\Form\Element\Select;
+use Laminas\View\Helper\Url;
 
 class GroupSelect extends Select
 {

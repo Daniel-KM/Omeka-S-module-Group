@@ -3,7 +3,7 @@ namespace Group\Service\ViewHelper;
 
 use Group\View\Helper\GroupCount;
 use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Laminas\ServiceManager\Factory\FactoryInterface;
 
 class GroupCountFactory implements FactoryInterface
 {
