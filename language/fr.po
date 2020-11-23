@@ -6,32 +6,31 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Group\n"
-"Report-Msgid-Bugs-To: http://gitlab.com/Daniel-KM/Omeka-S-module-Group/"
-"issues\n"
-"POT-Creation-Date: 2020-05-26 09:33+0200\n"
-"PO-Revision-Date: 2020-05-26 10:04+0200\n"
-"Last-Translator: Julian Maurice <julian.maurice@biblibre.com>\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-11-16 00:00+0000\n"
+"PO-Revision-Date: 2020-11-16 00:00+0000\n"
+"Last-Translator: Daniel Berthereau <Daniel.fr@Berthereau.net>\n"
 "Language-Team: none\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 2.2.1\n"
+"X-Generator: Poedit 2.4.2\n"
 
-#: Module.php:452
+#: Module.php:447
 msgid ""
-"The settings are available in the file module.config.php of  the module. See "
-"readme."
+"The settings should be set in the file \"config/local.config.php\" of Omeka. "
+"See the file module.config.php of the module and readme."
 msgstr ""
-"Les paramètres sont disponibles dans le fichier module.config.php du module. "
-"Voir le readme."
+"Les paramètres doivent être mis dans le fichier \"config/local.config.php\" "
+"d’Omeka. Voir le fichier module.config.php du module et le readme."
 
-#: Module.php:1138
+#: Module.php:1144
 msgid "Has groups"
 msgstr "A les groupes"
 
-#: Module.php:1139
+#: Module.php:1145
 msgid "true"
 msgstr "vrai"
 
@@ -41,7 +40,7 @@ msgstr "Ajouter un autre groupe ?"
 
 #: view/common/admin/group-mapping-sidebar.phtml:9
 #: view/common/admin/groups-resource-form.phtml:21
-#: view/common/admin/groups-resource-list.phtml:17
+#: view/common/admin/groups-resource-list.phtml:25
 #: view/common/admin/groups-resource.phtml:13
 #: view/group/admin/group/browse.phtml:46 view/group/admin/group/show.phtml:7
 msgid "Groups"
@@ -57,8 +56,8 @@ msgstr "Supprimer le groupe"
 
 #: view/common/admin/groups-resource-form.phtml:43
 #: view/common/admin/groups-resource-form.phtml:44
-#: view/common/admin/groups-resource-list.phtml:59
-#: view/common/admin/groups-resource-list.phtml:60
+#: view/common/admin/groups-resource-list.phtml:66
+#: view/common/admin/groups-resource-list.phtml:67
 #: view/common/admin/groups-resource.phtml:42
 #: view/common/admin/groups-resource.phtml:43
 msgid "Users within this group"
@@ -66,8 +65,8 @@ msgstr "Utilisateurs dans ce groupe"
 
 #: view/common/admin/groups-resource-form.phtml:47
 #: view/common/admin/groups-resource-form.phtml:48
-#: view/common/admin/groups-resource-list.phtml:55
-#: view/common/admin/groups-resource-list.phtml:56
+#: view/common/admin/groups-resource-list.phtml:62
+#: view/common/admin/groups-resource-list.phtml:63
 #: view/common/admin/groups-resource.phtml:38
 #: view/common/admin/groups-resource.phtml:39
 msgid "Item sets within this group"
@@ -75,8 +74,8 @@ msgstr "Collections dans ce groupe"
 
 #: view/common/admin/groups-resource-form.phtml:51
 #: view/common/admin/groups-resource-form.phtml:52
-#: view/common/admin/groups-resource-list.phtml:51
-#: view/common/admin/groups-resource-list.phtml:52
+#: view/common/admin/groups-resource-list.phtml:58
+#: view/common/admin/groups-resource-list.phtml:59
 #: view/common/admin/groups-resource.phtml:34
 #: view/common/admin/groups-resource.phtml:35
 msgid "Items within this group"
@@ -84,32 +83,32 @@ msgstr "Contenus dans ce groupe"
 
 #: view/common/admin/groups-resource-form.phtml:55
 #: view/common/admin/groups-resource-form.phtml:56
-#: view/common/admin/groups-resource-list.phtml:47
-#: view/common/admin/groups-resource-list.phtml:48
+#: view/common/admin/groups-resource-list.phtml:54
+#: view/common/admin/groups-resource-list.phtml:55
 #: view/common/admin/groups-resource.phtml:30
 #: view/common/admin/groups-resource.phtml:31
 msgid "Media within this group"
 msgstr "Médias dans ce groupe"
 
 #: view/common/admin/groups-resource-form.phtml:69
-#: view/common/admin/groups-resource-list.phtml:26
+#: view/common/admin/groups-resource-list.phtml:34
 msgid "There are no groups for this resource."
-msgstr "Il n'y a aucun groupe pour cette ressource."
+msgstr "Il n’y a aucun groupe pour cette ressource."
 
 #: view/common/admin/groups-resource-form.phtml:71
 msgid "Add existing groups using the interface to the right."
-msgstr "Ajouter des groupes existant en utilisant l'interface à droite."
+msgstr "Ajouter des groupes existant en utilisant l’interface à droite."
 
 #: view/common/admin/groups-resource-form.phtml:74
 msgid "Add a group"
 msgstr "Ajouter un groupe"
 
-#: view/common/admin/groups-resource-list.phtml:19
+#: view/common/admin/groups-resource-list.phtml:27
 msgid "There are no groups for this user."
-msgstr "Il n'y a aucune groupe pour cet utilisateur."
+msgstr "Il n’y a aucune groupe pour cet utilisateur."
 
-#: view/common/admin/groups-resource-list.phtml:42
-#: view/common/admin/groups-resource-list.phtml:43
+#: view/common/admin/groups-resource-list.phtml:49
+#: view/common/admin/groups-resource-list.phtml:50
 #: view/common/admin/groups-resource.phtml:25
 #: view/common/admin/groups-resource.phtml:26
 msgid "Unassign group"
@@ -125,7 +124,7 @@ msgstr "Fermer"
 
 #: view/common/admin/groups-selector.phtml:21
 msgid "Click on a group to add it to the edit panel."
-msgstr "Cliquer sur un groupe pour l'ajouter au panneau de modification."
+msgstr "Cliquer sur un groupe pour l’ajouter au panneau de modification."
 
 #: view/common/admin/groups-selector.phtml:22
 msgid "Filter groups"
@@ -182,7 +181,7 @@ msgstr "Ajouter un nouveau groupe"
 
 #: view/group/admin/group/browse.phtml:76
 msgid "There are no groups."
-msgstr "Il n'y a aucun groupe."
+msgstr "Il n’y a aucun groupe."
 
 #: view/group/admin/group/browse.phtml:117
 #: view/group/admin/group/browse.phtml:118
@@ -217,17 +216,13 @@ msgstr "Identifiant interne"
 msgid "Groups are editable on the browse page."
 msgstr "Les groupes sont modifiables sur la page parcourir."
 
-#: Module.php:913
+#: Module.php:919
 msgid "Remove groups"
 msgstr "Supprimer les groupes"
 
-#: Module.php:928
+#: Module.php:934
 msgid "Add groups"
 msgstr "Ajouter des groupes"
-
-#: config/module.config.php:180
-msgid "Request too long to process."
-msgstr "Requête trop longue à traiter."
 
 #: src/Form/SearchForm.php:24
 msgid "Search by group"
@@ -241,32 +236,10 @@ msgstr "Les groupes multiples peuvent être séparés par des virgules."
 msgid "Select groups…"
 msgstr "Sélectionner les groupes…"
 
-#: src/Api/Adapter/GroupAdapter.php:88
-#, php-format
-msgid "The name \"%s\" is already taken."
-msgstr "Le nom \"%s\" est déjà pris."
-
-#: src/Api/Adapter/GroupAdapter.php:110
-#, php-format
-msgid "The name \"%s\" contains forbidden characters."
-msgstr "Le nom \"%s\" contient des caractères interdits."
-
-#: src/Api/Adapter/GroupAdapter.php:116
-msgid "A name can’t contain only numbers."
-msgstr "Un nom ne peut pas être composé uniquement de chiffres."
-
-#: src/Api/Adapter/GroupAdapter.php:124
-msgid "A name cannot be a reserved word."
-msgstr "Un nom ne peut pas être un mot réservé."
-
-#: src/Api/Adapter/GroupAdapter.php:128
-msgid "A group must have a name."
-msgstr "Un groupe doit avoir un nom."
-
 #: src/Mapping/GroupMapping.php:94
 #, php-format
 msgid "\"%s\" is not a valid group."
-msgstr "\"%s\" n'est pas un groupe valide."
+msgstr "\"%s\" n’est pas un groupe valide."
 
 #: src/Controller/Admin/GroupController.php:71
 msgid "Group successfully deleted."
@@ -283,7 +256,7 @@ msgstr "Les groupes ont été supprimés avec succès."
 
 #: src/Controller/Admin/GroupController.php:143
 msgid "Delete of all groups is not supported currently."
-msgstr "La suppression de tous les groupes n'est pas supportée actuellement."
+msgstr "La suppression de tous les groupes n’est pas supportée actuellement."
 
 #: src/Controller/Admin/GroupController.php:159
 #, php-format
@@ -316,4 +289,30 @@ msgstr "Une erreur interne s'est produite."
 #: src/Controller/Admin/GroupController.php:261
 #, php-format
 msgid "%s entity with criteria {\"%s\":\"%s\"} not found."
-msgstr "L'entité %s avec le critère {\"%s\":\"%s\"} n'a pas été trouvée."
+msgstr "L'entité %s avec le critère {\"%s\":\"%s\"} n’a pas été trouvée."
+
+#: src/Api/Adapter/GroupAdapter.php:88
+#, php-format
+msgid "The name \"%s\" is already taken."
+msgstr "Le nom \"%s\" est déjà pris."
+
+#: src/Api/Adapter/GroupAdapter.php:110
+#, php-format
+msgid "The name \"%s\" contains forbidden characters."
+msgstr "Le nom \"%s\" contient des caractères interdits."
+
+#: src/Api/Adapter/GroupAdapter.php:116
+msgid "A name can’t contain only numbers."
+msgstr "Un nom ne peut pas être composé uniquement de chiffres."
+
+#: src/Api/Adapter/GroupAdapter.php:124
+msgid "A name cannot be a reserved word."
+msgstr "Un nom ne peut pas être un mot réservé."
+
+#: src/Api/Adapter/GroupAdapter.php:128
+msgid "A group must have a name."
+msgstr "Un groupe doit avoir un nom."
+
+#: config/module.config.php:180
+msgid "Request too long to process."
+msgstr "Requête trop longue à traiter."

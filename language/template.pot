@@ -1,14 +1,14 @@
-# Translation for the Group module for Omeka S.
-# Copyright (C) 2011 Roy Rosenzweig Center for History and New Media
-# This file is distributed under the same license as the Omeka package.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Group\n"
-"Report-Msgid-Bugs-To: http://gitlab.com/Daniel-KM/Omeka-S-module-Group/-/issues\n"
-"POT-Creation-Date: 2020-05-26 09:33+0200\n"
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-11-16 00:00+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,17 +17,17 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: Module.php:452
+#: Module.php:447
 msgid ""
-"The settings are available in the file module.config.php of  the module. See "
-"readme."
+"The settings should be set in the file \"config/local.config.php\" of Omeka. "
+"See the file module.config.php of the module and readme."
 msgstr ""
 
-#: Module.php:1138
+#: Module.php:1144
 msgid "Has groups"
 msgstr ""
 
-#: Module.php:1139
+#: Module.php:1145
 msgid "true"
 msgstr ""
 
@@ -37,7 +37,7 @@ msgstr ""
 
 #: view/common/admin/group-mapping-sidebar.phtml:9
 #: view/common/admin/groups-resource-form.phtml:21
-#: view/common/admin/groups-resource-list.phtml:17
+#: view/common/admin/groups-resource-list.phtml:25
 #: view/common/admin/groups-resource.phtml:13
 #: view/group/admin/group/browse.phtml:46 view/group/admin/group/show.phtml:7
 msgid "Groups"
@@ -53,8 +53,8 @@ msgstr ""
 
 #: view/common/admin/groups-resource-form.phtml:43
 #: view/common/admin/groups-resource-form.phtml:44
-#: view/common/admin/groups-resource-list.phtml:59
-#: view/common/admin/groups-resource-list.phtml:60
+#: view/common/admin/groups-resource-list.phtml:66
+#: view/common/admin/groups-resource-list.phtml:67
 #: view/common/admin/groups-resource.phtml:42
 #: view/common/admin/groups-resource.phtml:43
 msgid "Users within this group"
@@ -62,8 +62,8 @@ msgstr ""
 
 #: view/common/admin/groups-resource-form.phtml:47
 #: view/common/admin/groups-resource-form.phtml:48
-#: view/common/admin/groups-resource-list.phtml:55
-#: view/common/admin/groups-resource-list.phtml:56
+#: view/common/admin/groups-resource-list.phtml:62
+#: view/common/admin/groups-resource-list.phtml:63
 #: view/common/admin/groups-resource.phtml:38
 #: view/common/admin/groups-resource.phtml:39
 msgid "Item sets within this group"
@@ -71,8 +71,8 @@ msgstr ""
 
 #: view/common/admin/groups-resource-form.phtml:51
 #: view/common/admin/groups-resource-form.phtml:52
-#: view/common/admin/groups-resource-list.phtml:51
-#: view/common/admin/groups-resource-list.phtml:52
+#: view/common/admin/groups-resource-list.phtml:58
+#: view/common/admin/groups-resource-list.phtml:59
 #: view/common/admin/groups-resource.phtml:34
 #: view/common/admin/groups-resource.phtml:35
 msgid "Items within this group"
@@ -80,15 +80,15 @@ msgstr ""
 
 #: view/common/admin/groups-resource-form.phtml:55
 #: view/common/admin/groups-resource-form.phtml:56
-#: view/common/admin/groups-resource-list.phtml:47
-#: view/common/admin/groups-resource-list.phtml:48
+#: view/common/admin/groups-resource-list.phtml:54
+#: view/common/admin/groups-resource-list.phtml:55
 #: view/common/admin/groups-resource.phtml:30
 #: view/common/admin/groups-resource.phtml:31
 msgid "Media within this group"
 msgstr ""
 
 #: view/common/admin/groups-resource-form.phtml:69
-#: view/common/admin/groups-resource-list.phtml:26
+#: view/common/admin/groups-resource-list.phtml:34
 msgid "There are no groups for this resource."
 msgstr ""
 
@@ -100,12 +100,12 @@ msgstr ""
 msgid "Add a group"
 msgstr ""
 
-#: view/common/admin/groups-resource-list.phtml:19
+#: view/common/admin/groups-resource-list.phtml:27
 msgid "There are no groups for this user."
 msgstr ""
 
-#: view/common/admin/groups-resource-list.phtml:42
-#: view/common/admin/groups-resource-list.phtml:43
+#: view/common/admin/groups-resource-list.phtml:49
+#: view/common/admin/groups-resource-list.phtml:50
 #: view/common/admin/groups-resource.phtml:25
 #: view/common/admin/groups-resource.phtml:26
 msgid "Unassign group"
@@ -213,16 +213,12 @@ msgstr ""
 msgid "Groups are editable on the browse page."
 msgstr ""
 
-#: Module.php:913
+#: Module.php:919
 msgid "Remove groups"
 msgstr ""
 
-#: Module.php:928
+#: Module.php:934
 msgid "Add groups"
-msgstr ""
-
-#: config/module.config.php:180
-msgid "Request too long to process."
 msgstr ""
 
 #: src/Form/SearchForm.php:24
@@ -235,28 +231,6 @@ msgstr ""
 
 #: src/Form/Element/GroupSelect.php:67
 msgid "Select groups…"
-msgstr ""
-
-#: src/Api/Adapter/GroupAdapter.php:88
-#, php-format
-msgid "The name \"%s\" is already taken."
-msgstr ""
-
-#: src/Api/Adapter/GroupAdapter.php:110
-#, php-format
-msgid "The name \"%s\" contains forbidden characters."
-msgstr ""
-
-#: src/Api/Adapter/GroupAdapter.php:116
-msgid "A name can’t contain only numbers."
-msgstr ""
-
-#: src/Api/Adapter/GroupAdapter.php:124
-msgid "A name cannot be a reserved word."
-msgstr ""
-
-#: src/Api/Adapter/GroupAdapter.php:128
-msgid "A group must have a name."
 msgstr ""
 
 #: src/Mapping/GroupMapping.php:94
@@ -309,4 +283,30 @@ msgstr ""
 #: src/Controller/Admin/GroupController.php:261
 #, php-format
 msgid "%s entity with criteria {\"%s\":\"%s\"} not found."
+msgstr ""
+
+#: src/Api/Adapter/GroupAdapter.php:88
+#, php-format
+msgid "The name \"%s\" is already taken."
+msgstr ""
+
+#: src/Api/Adapter/GroupAdapter.php:110
+#, php-format
+msgid "The name \"%s\" contains forbidden characters."
+msgstr ""
+
+#: src/Api/Adapter/GroupAdapter.php:116
+msgid "A name can’t contain only numbers."
+msgstr ""
+
+#: src/Api/Adapter/GroupAdapter.php:124
+msgid "A name cannot be a reserved word."
+msgstr ""
+
+#: src/Api/Adapter/GroupAdapter.php:128
+msgid "A group must have a name."
+msgstr ""
+
+#: config/module.config.php:180
+msgid "Request too long to process."
 msgstr ""

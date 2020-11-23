@@ -444,7 +444,7 @@ SQL;
     {
         $services = $this->getServiceLocator();
         $t = $services->get('MvcTranslator');
-        return $t->translate('The settings are available in the file module.config.php of  the module. See readme.'); // @translate
+        return $t->translate('The settings should be set in the file "config/local.config.php" of Omeka. See the file module.config.php of the module and readme.'); // @translate
     }
 
     public function filterApiContext(Event $event): void
