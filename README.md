@@ -102,7 +102,7 @@ your archives regularly so you can roll back if needed.
 Troubleshooting
 ---------------
 
-See online issues on the [module issues] page on GitHub.
+See online issues on the [module issues] page on GitLab.
 
 
 License
@@ -140,7 +140,7 @@ Contact
 
 Current maintainers:
 
-* Daniel Berthereau (see [Daniel-KM] on GitHub)
+* Daniel Berthereau (see [Daniel-KM] on GitLab)
 
 
 Copyright
@@ -149,14 +149,14 @@ Copyright
 * Copyright Daniel Berthereau, 2017-2020
 
 
-[Group]: https://github.com/Daniel-KM/Omeka-S-module-Group
+[Group]: https://gitlab.com/Daniel-KM/Omeka-S-module-Group
 [Omeka S]: https://omeka.org/s
 [Guest User]: https://github.com/biblibre/omeka-s-module-GuestUser
 [Installing a module]: http://dev.omeka.org/docs/s/user-manual/modules/#installing-modules
-[module issues]: https://github.com/Daniel-KM/Omeka-S-module-Group/issues
+[module issues]: https://gitlab.com/Daniel-KM/Omeka-S-module-Group/-/issues
 [CeCILL v2.1]: https://www.cecill.info/licences/Licence_CeCILL_V2.1-en.html
 [GNU/GPL]: https://www.gnu.org/licenses/gpl-3.0.html
 [FSF]: https://www.fsf.org
 [OSI]: http://opensource.org
 [GitLab]: https://gitlab.com/Daniel-KM
-[Daniel-KM]: https://github.com/Daniel-KM "Daniel Berthereau"
+[Daniel-KM]: https://gitlab.com/Daniel-KM "Daniel Berthereau"
