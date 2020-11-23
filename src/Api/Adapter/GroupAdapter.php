@@ -133,13 +133,7 @@ class GroupAdapter extends AbstractEntityAdapter
 
     public function buildQuery(QueryBuilder $qb, array $query): void
     {
-        $isOldOmeka = \Omeka\Module::VERSION < 2;
-        $alias = $isOldOmeka ? $this->getEntityClass() : 'omeka_root';
         $expr = $qb->expr();
-
-        if (isset($query['id'])) {
-            $this->buildQueryValuesItself($qb, $query['id'], 'id');
-        }
 
         if (isset($query['name'])) {
             $this->buildQueryValuesItself($qb, $query['name'], 'name');
@@ -187,7 +181,7 @@ class GroupAdapter extends AbstractEntityAdapter
                     $groupEntityAlias,
                     'WITH',
                     $expr->andX(
-                        $expr->eq($groupEntityAlias . '.group', $alias . '.id'),
+                        $expr->eq($groupEntityAlias . '.group', 'omeka_root.id'),
                         $expr->in(
                             $groupEntityAlias . '.' . $groupEntityColumn,
                             $this->createNamedParameter($qb, $entities)
@@ -286,7 +280,7 @@ class GroupAdapter extends AbstractEntityAdapter
     protected function sanitizeString($string)
     {
         // Quote is allowed.
-        $string = strip_tags($string);
+        $string = strip_tags((string) $string);
         // The first character is a space and the last one is a no-break space.
         $string = trim($string, ' /\\?<>:*%|"`&; ' . "\t\n\r");
         $string = preg_replace('/[\(\{]/', '[', $string);

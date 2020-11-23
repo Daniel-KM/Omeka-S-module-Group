@@ -97,31 +97,31 @@ class Module extends AbstractModule
         // thing, but will this improve performance (search with a ternary key)?
         // This will be checked if a new group of something is needed (for sites).
         $sql = <<<'SQL'
-CREATE TABLE groups (
-  id INT AUTO_INCREMENT NOT NULL,
-  name VARCHAR(190) NOT NULL,
-  comment LONGTEXT DEFAULT NULL,
-  UNIQUE INDEX UNIQ_F06D39705E237E06 (name),
-  PRIMARY KEY(id)
+CREATE TABLE `groups` (
+    `id` INT AUTO_INCREMENT NOT NULL,
+    `name` VARCHAR(190) NOT NULL,
+    `comment` LONGTEXT DEFAULT NULL,
+    UNIQUE INDEX UNIQ_F06D39705E237E06 (`name`),
+    PRIMARY KEY(`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB;
-CREATE TABLE group_resource (
-  group_id INT NOT NULL,
-  resource_id INT NOT NULL,
-  INDEX IDX_B5A1B869FE54D947 (group_id),
-  INDEX IDX_B5A1B86989329D25 (resource_id),
-  PRIMARY KEY(group_id, resource_id)
+CREATE TABLE `group_resource` (
+    `group_id` INT NOT NULL,
+    `resource_id` INT NOT NULL,
+    INDEX IDX_B5A1B869FE54D947 (`group_id`),
+    INDEX IDX_B5A1B86989329D25 (`resource_id`),
+    PRIMARY KEY(`group_id`, `resource_id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB;
-CREATE TABLE group_user (
-  group_id INT NOT NULL,
-  user_id INT NOT NULL,
-  INDEX IDX_A4C98D39FE54D947 (group_id),
-  INDEX IDX_A4C98D39A76ED395 (user_id),
-  PRIMARY KEY(group_id, user_id)
+CREATE TABLE `group_user` (
+    `group_id` INT NOT NULL,
+    `user_id` INT NOT NULL,
+    INDEX IDX_A4C98D39FE54D947 (`group_id`),
+    INDEX IDX_A4C98D39A76ED395 (`user_id`),
+    PRIMARY KEY(`group_id`, `user_id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB;
-ALTER TABLE group_resource ADD CONSTRAINT FK_B5A1B869FE54D947 FOREIGN KEY (group_id) REFERENCES groups (id) ON DELETE CASCADE;
-ALTER TABLE group_resource ADD CONSTRAINT FK_B5A1B86989329D25 FOREIGN KEY (resource_id) REFERENCES resource (id) ON DELETE CASCADE;
-ALTER TABLE group_user ADD CONSTRAINT FK_A4C98D39FE54D947 FOREIGN KEY (group_id) REFERENCES groups (id) ON DELETE CASCADE;
-ALTER TABLE group_user ADD CONSTRAINT FK_A4C98D39A76ED395 FOREIGN KEY (user_id) REFERENCES user (id) ON DELETE CASCADE;
+ALTER TABLE `group_resource` ADD CONSTRAINT FK_B5A1B869FE54D947 FOREIGN KEY (`group_id`) REFERENCES `groups` (`id`) ON DELETE CASCADE;
+ALTER TABLE `group_resource` ADD CONSTRAINT FK_B5A1B86989329D25 FOREIGN KEY (`resource_id`) REFERENCES `resource` (`id`) ON DELETE CASCADE;
+ALTER TABLE `group_user` ADD CONSTRAINT FK_A4C98D39FE54D947 FOREIGN KEY (`group_id`) REFERENCES `groups` (`id`) ON DELETE CASCADE;
+ALTER TABLE `group_user` ADD CONSTRAINT FK_A4C98D39A76ED395 FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE;
 SQL;
         $connection = $serviceLocator->get('Omeka\Connection');
         $sqls = array_filter(array_map('trim', explode(';', $sql)));
@@ -470,15 +470,12 @@ SQL;
 
         /** @var \Omeka\Api\Adapter\MediaAdapter $adapter */
         $adapter = $event->getTarget();
-        $isOldOmeka = \Omeka\Module::VERSION < 2;
-        $alias = $isOldOmeka ? $adapter->getEntityClass() : 'omeka_root';
-
         $itemAlias = $adapter->createAlias();
 
         $qb = $event->getParam('queryBuilder');
         $expr = $qb->expr();
 
-        $qb->innerJoin($alias . '.item', $itemAlias);
+        $qb->innerJoin('omeka_root.item', $itemAlias);
 
         // Users can view media they do not own that belong to public items.
         $expression = $expr->eq("$itemAlias.isPublic", true);
@@ -558,11 +555,8 @@ SQL;
             $qb = $event->getParam('queryBuilder');
             $expr = $qb->expr();
 
-            $isOldOmeka = \Omeka\Module::VERSION < 2;
-            $alias = $isOldOmeka ? $adapter->getEntityClass() : 'omeka_root';
-
             $groupEntityAlias = $adapter->createAlias();
-            $entityAlias = $alias;
+            $entityAlias = 'omeka_root';
             if ($adapter->getResourceName() === 'users') {
                 $groupEntity = GroupUser::class;
                 $groupEntityColumn = 'user';
@@ -590,9 +584,7 @@ SQL;
             $qb = $event->getParam('queryBuilder');
             $expr = $qb->expr();
 
-            $isOldOmeka = \Omeka\Module::VERSION < 2;
-            $alias = $isOldOmeka ? $adapter->getEntityClass() : 'omeka_root';
-            $entityAlias = $alias;
+            $entityAlias = 'omeka_root';
             if ($adapter->getResourceName() === 'users') {
                 $groupEntity = GroupUser::class;
                 $groupEntityColumn = 'user';
@@ -1120,7 +1112,7 @@ SQL;
 
         $view = $event->getTarget();
         $query = $event->getParam('query', []);
-        $resourceType = $event->getParam('resourceType');
+        // $resourceType = $event->getParam('resourceType');
 
         $hasGroups = !empty($query['has_groups']);
         $groups = empty($query['group']) ? '' : implode(', ', $this->cleanStrings($query['group']));
@@ -1210,10 +1202,10 @@ SQL;
             case ItemSet::class:
                 return false;
             case Item::class:
-                return $groupSettings = $this->getServiceLocator()
+                return $this->getServiceLocator()
                     ->get('Config')['group']['config']['group_recursive_item_sets'];
             case Media::class:
-                return $groupSettings = $this->getServiceLocator()
+                return $this->getServiceLocator()
                     ->get('Config')['group']['config']['group_recursive_items'];
             case User::class:
             default:

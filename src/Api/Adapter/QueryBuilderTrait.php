@@ -38,17 +38,15 @@ trait QueryBuilderTrait
      */
     protected function buildQueryOneValue(QueryBuilder $qb, $value, $column): void
     {
-        $isOldOmeka = \Omeka\Module::VERSION < 2;
-        $alias = $isOldOmeka ? $this->getEntityClass() : 'omeka_root';
         $expr = $qb->expr();
 
         if (is_null($value)) {
             $qb->andWhere($expr->isNull(
-                $alias . '.' . $column
+                'omeka_root.' . $column
             ));
         } else {
             $qb->andWhere($expr->eq(
-                $alias . '.' . $column,
+                'omeka_root.' . $column,
                 $this->createNamedParameter($qb, $value)
             ));
         }
@@ -69,13 +67,11 @@ trait QueryBuilderTrait
             return !is_null($v);
         });
         if ($values) {
-            $isOldOmeka = \Omeka\Module::VERSION < 2;
-            $alias = $isOldOmeka ? $this->getEntityClass() : 'omeka_root';
             $expr = $qb->expr();
 
             $valueAlias = $this->createAlias();
             $qb->innerJoin(
-                $alias . '.' . $column,
+                'omeka_root.' . $column,
                 $valueAlias,
                 'WITH',
                 $hasNull
@@ -96,12 +92,9 @@ trait QueryBuilderTrait
         }
         // Check no value only.
         elseif ($hasNull) {
-            $isOldOmeka = \Omeka\Module::VERSION < 2;
-            $alias = $isOldOmeka ? $this->getEntityClass() : 'omeka_root';
             $expr = $qb->expr();
-
             $qb->andWhere($expr->isNull(
-                $alias . '.' . $column
+                'omeka_root.' . $column
             ));
         }
     }
@@ -198,8 +191,6 @@ trait QueryBuilderTrait
             return !is_null($v);
         });
         if ($values) {
-            $isOldOmeka = \Omeka\Module::VERSION < 2;
-            $alias = $isOldOmeka ? $this->getEntityClass() : 'omeka_root';
             $expr = $qb->expr();
 
             $valueAlias = $this->createAlias();
@@ -209,7 +200,7 @@ trait QueryBuilderTrait
                     $valueAlias,
                     'WITH',
                     $expr->eq(
-                        $alias . '.id',
+                        'omeka_root.id',
                         $valueAlias . '.id'
                     )
                 )
@@ -232,12 +223,9 @@ trait QueryBuilderTrait
         }
         // Check no value only.
         elseif ($hasNull) {
-            $isOldOmeka = \Omeka\Module::VERSION < 2;
-            $alias = $isOldOmeka ? $this->getEntityClass() : 'omeka_root';
             $expr = $qb->expr();
-
             $qb->andWhere($expr->isNull(
-                $alias . '.' . $target
+                'omeka_root.' . $target
             ));
         }
     }
