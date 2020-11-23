@@ -1,13 +1,13 @@
-<?php
+<?php declare(strict_types=1);
 namespace Group\Controller\Admin;
 
 use Group\Form\GroupForm;
-use Omeka\Form\ConfirmForm;
-use Omeka\Stdlib\Message;
 use Laminas\Http\Response;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\JsonModel;
 use Laminas\View\Model\ViewModel;
+use Omeka\Form\ConfirmForm;
+use Omeka\Stdlib\Message;
 
 class GroupController extends AbstractActionController
 {
@@ -137,7 +137,7 @@ class GroupController extends AbstractActionController
         return $this->redirect()->toRoute(null, ['action' => 'browse'], true);
     }
 
-    public function batchDeleteAllAction()
+    public function batchDeleteAllAction(): void
     {
         // TODO Support batch delete all.
         $this->messenger()->addError('Delete of all groups is not supported currently.'); // @translate

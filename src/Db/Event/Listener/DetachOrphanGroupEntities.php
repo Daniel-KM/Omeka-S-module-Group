@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 namespace Group\Db\Event\Listener;
 
 use Doctrine\ORM\Event\PreFlushEventArgs;
@@ -18,7 +18,7 @@ class DetachOrphanGroupEntities
      *
      * @param PreFlushEventArgs $event
      */
-    public function preFlush(PreFlushEventArgs $event)
+    public function preFlush(PreFlushEventArgs $event): void
     {
         $em = $event->getEntityManager();
         $uow = $em->getUnitOfWork();

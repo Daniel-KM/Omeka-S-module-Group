@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 namespace Group\Db\Filter;
 
 use Doctrine\DBAL\Types\Type;

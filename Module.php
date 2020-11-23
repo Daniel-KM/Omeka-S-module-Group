@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * Group
  *
@@ -41,6 +41,11 @@ use Group\Entity\GroupResource;
 use Group\Entity\GroupUser;
 use Group\Form\Element\GroupSelect;
 use Group\Form\SearchForm;
+use Laminas\EventManager\Event;
+use Laminas\EventManager\SharedEventManagerInterface;
+use Laminas\Mvc\MvcEvent;
+use Laminas\ServiceManager\ServiceLocatorInterface;
+use Laminas\View\Renderer\PhpRenderer;
 use Omeka\Api\Adapter\ItemAdapter;
 use Omeka\Api\Adapter\ItemSetAdapter;
 use Omeka\Api\Adapter\MediaAdapter;
@@ -56,11 +61,6 @@ use Omeka\Entity\Media;
 use Omeka\Entity\Resource;
 use Omeka\Entity\User;
 use Omeka\Module\AbstractModule;
-use Laminas\EventManager\Event;
-use Laminas\EventManager\SharedEventManagerInterface;
-use Laminas\Mvc\MvcEvent;
-use Laminas\ServiceManager\ServiceLocatorInterface;
-use Laminas\View\Renderer\PhpRenderer;
 
 /**
  * Group
@@ -77,7 +77,7 @@ class Module extends AbstractModule
         return include __DIR__ . '/config/module.config.php';
     }
 
-    public function onBootstrap(MvcEvent $event)
+    public function onBootstrap(MvcEvent $event): void
     {
         parent::onBootstrap($event);
         $this->addAclRules();
@@ -90,7 +90,7 @@ class Module extends AbstractModule
         );
     }
 
-    public function install(ServiceLocatorInterface $serviceLocator)
+    public function install(ServiceLocatorInterface $serviceLocator): void
     {
         // @todo Replace the two tables "group_user" and "group_resource" by one
         // "grouping" with one column "entity_type": it will simplify a lot of
@@ -130,7 +130,7 @@ SQL;
         }
     }
 
-    public function uninstall(ServiceLocatorInterface $serviceLocator)
+    public function uninstall(ServiceLocatorInterface $serviceLocator): void
     {
         $sql = <<<'SQL'
 DROP TABLE IF EXISTS `group_user`;
@@ -147,7 +147,7 @@ SQL;
     /**
      * Add ACL rules for this module.
      */
-    protected function addAclRules()
+    protected function addAclRules(): void
     {
         $services = $this->getServiceLocator();
         $acl = $services->get('Omeka\Acl');
@@ -207,7 +207,7 @@ SQL;
             );
     }
 
-    public function attachListeners(SharedEventManagerInterface $sharedEventManager)
+    public function attachListeners(SharedEventManagerInterface $sharedEventManager): void
     {
         $services = $this->getServiceLocator();
         $config = $services->get('Config');
@@ -447,7 +447,7 @@ SQL;
         return $t->translate('The settings are available in the file module.config.php of  the module. See readme.'); // @translate
     }
 
-    public function filterApiContext(Event $event)
+    public function filterApiContext(Event $event): void
     {
         $context = $event->getParam('context');
         $context['o-module-group'] = 'http://omeka.org/s/vocabs/module/group#';
@@ -460,7 +460,7 @@ SQL;
      * @see \Omeka\Module::filterMedia()
      * @param Event $event
      */
-    public function filterMedia(Event $event)
+    public function filterMedia(Event $event): void
     {
         $services = $this->getServiceLocator();
         $acl = $services->get('Omeka\Acl');
@@ -527,7 +527,7 @@ SQL;
      *
      * @param Event $event
      */
-    public function filterEntityJsonLd(Event $event)
+    public function filterEntityJsonLd(Event $event): void
     {
         // The groups are not shown to public.
         $acl = $this->getServiceLocator()->get('Omeka\Acl');
@@ -548,7 +548,7 @@ SQL;
         $event->setParam('jsonLd', $jsonLd);
     }
 
-    public function searchQuery(Event $event)
+    public function searchQuery(Event $event): void
     {
         $query = $event->getParam('request')->getContent();
 
@@ -669,7 +669,7 @@ SQL;
      * @todo Clarify and use acl only.
      * @param Event $event
      */
-    public function handleCreatePost(Event $event)
+    public function handleCreatePost(Event $event): void
     {
         $resourceAdapter = $event->getTarget();
         $resourceType = $resourceAdapter->getEntityClass();
@@ -705,7 +705,7 @@ SQL;
      * @todo Clarify and use acl only.
      * @param Event $event
      */
-    public function handleUpdatePost(Event $event)
+    public function handleUpdatePost(Event $event): void
     {
         $resourceAdapter = $event->getTarget();
         $resourceType = $resourceAdapter->getEntityClass();
@@ -748,7 +748,7 @@ SQL;
      * @todo Clarify and use acl only.
      * @param Event $event
      */
-    public function handleBatchUpdatePost(Event $event)
+    public function handleBatchUpdatePost(Event $event): void
     {
         $resourceAdapter = $event->getTarget();
         $resourceType = $resourceAdapter->getEntityClass();
@@ -801,7 +801,7 @@ SQL;
      * @todo Clarify and use acl only.
      * @param Event $event
      */
-    public function handleRecursiveDeleteItemSetPre(Event $event)
+    public function handleRecursiveDeleteItemSetPre(Event $event): void
     {
         $resourceAdapter = $event->getTarget();
         $resourceType = $resourceAdapter->getEntityClass();
@@ -831,14 +831,14 @@ SQL;
      *
      * @param Event $event
      */
-    public function addHeadersAdmin(Event $event)
+    public function addHeadersAdmin(Event $event): void
     {
         $view = $event->getTarget();
         $view->headLink()->appendStylesheet($view->assetUrl('css/group.css', 'Group'));
         $view->headScript()->appendFile($view->assetUrl('js/group.js', 'Group'), 'text/javascript', ['defer' => 'defer']);
     }
 
-    public function addUserFormElement(Event $event)
+    public function addUserFormElement(Event $event): void
     {
         // Groups are for admins only.
         if (!$this->getServiceLocator()->get('Omeka\Status')->isAdminRequest()) {
@@ -862,7 +862,7 @@ SQL;
         ]);
     }
 
-    public function addUserFormFilter(Event $event)
+    public function addUserFormFilter(Event $event): void
     {
         // Groups are for admins only.
         if (!$this->getServiceLocator()->get('Omeka\Status')->isAdminRequest()) {
@@ -880,7 +880,7 @@ SQL;
         ]);
     }
 
-    public function addUserFormValue(Event $event)
+    public function addUserFormValue(Event $event): void
     {
         // Groups are for admins only.
         if (!$this->getServiceLocator()->get('Omeka\Status')->isAdminRequest()) {
@@ -894,7 +894,7 @@ SQL;
             ->setAttribute('value', array_keys($values));
     }
 
-    public function addBatchUpdateFormElement(Event $event)
+    public function addBatchUpdateFormElement(Event $event): void
     {
         $form = $event->getTarget();
         $resourceType = $form->getOption('resource_type');
@@ -951,7 +951,7 @@ SQL;
         }
     }
 
-    public function addBatchUpdateFormFilter(Event $event)
+    public function addBatchUpdateFormFilter(Event $event): void
     {
         $form = $event->getTarget();
         $resourceType = $form->getOption('resource_type');
@@ -998,7 +998,7 @@ SQL;
      *
      * @param Event $event
      */
-    public function addTab(Event $event)
+    public function addTab(Event $event): void
     {
         $sectionNav = $event->getParam('section_nav');
         $sectionNav['groups'] = 'Groups'; // @translate
@@ -1012,7 +1012,7 @@ SQL;
      *
      * @param Event $event
      */
-    public function displayGroupResourceForm(Event $event)
+    public function displayGroupResourceForm(Event $event): void
     {
         $operation = $event->getName();
         if (!$this->checkAcl(Resource::class, $operation === 'view.add.form.after' ? 'create' : 'update')
@@ -1048,7 +1048,7 @@ SQL;
      *
      * @param Event $event
      */
-    public function viewShowAfterUser(Event $event)
+    public function viewShowAfterUser(Event $event): void
     {
         $resource = $event->getTarget()->vars()->user;
         $this->displayViewAdmin($event, $resource, false);
@@ -1059,7 +1059,7 @@ SQL;
      *
      * @param Event $event
      */
-    public function viewShowAfterResource(Event $event)
+    public function viewShowAfterResource(Event $event): void
     {
         echo '<div id="groups" class="section">';
         $resource = $event->getTarget()->vars()->resource;
@@ -1072,7 +1072,7 @@ SQL;
      *
      * @param Event $event
      */
-    public function viewDetails(Event $event)
+    public function viewDetails(Event $event): void
     {
         $resource = $event->getTarget()->resource;
         $this->displayViewAdmin($event, $resource, true);
@@ -1089,7 +1089,7 @@ SQL;
         Event $event,
         AbstractEntityRepresentation $resource = null,
         $listAsDiv = false
-    ) {
+    ): void {
         // TODO Add an acl check for right to view groups (controller level).
         $isUser = $resource && $resource->getControllerName() === 'user';
         $groups = $this->listGroups($resource, 'representation');
@@ -1111,7 +1111,7 @@ SQL;
      *
      * @param Event $event
      */
-    public function displayAdvancedSearch(Event $event)
+    public function displayAdvancedSearch(Event $event): void
     {
         $services = $this->getServiceLocator();
         $formElementManager = $services->get('FormElementManager');
@@ -1143,7 +1143,7 @@ SQL;
      *
      * @param Event $event
      */
-    public function filterSearchFilters(Event $event)
+    public function filterSearchFilters(Event $event): void
     {
         $translate = $event->getTarget()->plugin('translate');
         $filters = $event->getParam('filters');

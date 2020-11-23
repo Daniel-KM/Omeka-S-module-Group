@@ -1,9 +1,9 @@
-<?php
+<?php declare(strict_types=1);
 namespace Group\Mapping;
 
 use CSVImport\Mapping\AbstractMapping;
-use Omeka\Stdlib\Message;
 use Laminas\View\Renderer\PhpRenderer;
+use Omeka\Stdlib\Message;
 
 class GroupMapping extends AbstractMapping
 {
@@ -31,7 +31,7 @@ class GroupMapping extends AbstractMapping
             if (array_key_exists($index, $multivalueMap) && strlen($multivalueMap[$index])) {
                 $values = explode($multivalueMap[$index], $values);
                 $values = array_map(function ($v) {
-                    return trim($v, "\t\n\r   ");
+                    return trim($v, "\t\n\r \u{a0}\u{202f}");
                 }, $values);
             } else {
                 $values = [$values];
@@ -45,7 +45,7 @@ class GroupMapping extends AbstractMapping
         return $this->data;
     }
 
-    protected function processGlobalArgs()
+    protected function processGlobalArgs(): void
     {
         $data = &$this->data;
 
@@ -71,7 +71,7 @@ class GroupMapping extends AbstractMapping
         }
     }
 
-    protected function processCell($index, array $values)
+    protected function processCell($index, array $values): void
     {
         $data = &$this->data;
 

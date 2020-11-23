@@ -1,16 +1,16 @@
-<?php
+<?php declare(strict_types=1);
 namespace Group\View\Helper;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\DBAL\Connection;
 use Group\Entity\Group;
+use Laminas\View\Helper\AbstractHelper;
 use Omeka\Entity\Item;
 use Omeka\Entity\ItemSet;
 use Omeka\Entity\Media;
 use Omeka\Entity\Resource;
 use Omeka\Entity\User;
 use PDO;
-use Laminas\View\Helper\AbstractHelper;
 
 class GroupCount extends AbstractHelper
 {
@@ -75,7 +75,7 @@ class GroupCount extends AbstractHelper
             Media::class => Media::class,
             Resource::class => Resource::class,
         ];
-        $resourceType = isset($types[$resourceName]) ? $types[$resourceName] : '';
+        $resourceType = $types[$resourceName] ?? '';
 
         $joinTable = $resourceType === User::class ? 'group_user' : 'group_resource';
 

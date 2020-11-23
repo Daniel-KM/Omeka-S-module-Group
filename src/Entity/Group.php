@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 namespace Group\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -146,7 +146,7 @@ class Group extends AbstractEntity
         return $this->id;
     }
 
-    public function setName($name)
+    public function setName($name): void
     {
         $this->name = $name;
     }
@@ -156,7 +156,7 @@ class Group extends AbstractEntity
         return $this->name;
     }
 
-    public function setComment($comment)
+    public function setComment($comment): void
     {
         $this->comment = $comment;
     }

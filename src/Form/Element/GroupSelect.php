@@ -1,9 +1,9 @@
-<?php
+<?php declare(strict_types=1);
 namespace Group\Form\Element;
 
-use Omeka\Api\Manager as ApiManager;
 use Laminas\Form\Element\Select;
 use Laminas\View\Helper\Url;
+use Omeka\Api\Manager as ApiManager;
 
 class GroupSelect extends Select
 {
@@ -76,7 +76,7 @@ class GroupSelect extends Select
     /**
      * @param ApiManager $apiManager
      */
-    public function setApiManager(ApiManager $apiManager)
+    public function setApiManager(ApiManager $apiManager): void
     {
         $this->apiManager = $apiManager;
     }
@@ -92,7 +92,7 @@ class GroupSelect extends Select
     /**
      * @param Url $urlHelper
      */
-    public function setUrlHelper(Url $urlHelper)
+    public function setUrlHelper(Url $urlHelper): void
     {
         $this->urlHelper = $urlHelper;
     }

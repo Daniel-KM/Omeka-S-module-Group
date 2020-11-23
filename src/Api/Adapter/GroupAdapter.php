@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 namespace Group\Api\Adapter;
 
 use Doctrine\ORM\QueryBuilder;
@@ -54,7 +54,7 @@ class GroupAdapter extends AbstractEntityAdapter
 
     public function hydrate(Request $request, EntityInterface $entity,
         ErrorStore $errorStore
-    ) {
+    ): void {
         if ($this->shouldHydrate($request, 'o:name')) {
             $name = $request->getValue('o:name');
             if (!is_null($name)) {
@@ -71,7 +71,7 @@ class GroupAdapter extends AbstractEntityAdapter
         }
     }
 
-    public function validateRequest(Request $request, ErrorStore $errorStore)
+    public function validateRequest(Request $request, ErrorStore $errorStore): void
     {
         $data = $request->getContent();
         if (array_key_exists('o:name', $data)) {
@@ -79,7 +79,7 @@ class GroupAdapter extends AbstractEntityAdapter
         }
     }
 
-    public function validateEntity(EntityInterface $entity, ErrorStore $errorStore)
+    public function validateEntity(EntityInterface $entity, ErrorStore $errorStore): void
     {
         $name = $entity->getName();
         $result = $this->validateName($name, $errorStore);
@@ -131,7 +131,7 @@ class GroupAdapter extends AbstractEntityAdapter
         return $result;
     }
 
-    public function buildQuery(QueryBuilder $qb, array $query)
+    public function buildQuery(QueryBuilder $qb, array $query): void
     {
         $isOldOmeka = \Omeka\Module::VERSION < 2;
         $alias = $isOldOmeka ? $this->getEntityClass() : 'omeka_root';
@@ -250,7 +250,7 @@ class GroupAdapter extends AbstractEntityAdapter
         }
     }
 
-    public function sortQuery(QueryBuilder $qb, array $query)
+    public function sortQuery(QueryBuilder $qb, array $query): void
     {
         if (is_string($query['sort_by'])) {
             // TODO Use Doctrine native queries (here: ORM query builder).

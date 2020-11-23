@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 namespace Group\Service\ControllerPlugin;
 
 use Group\Mvc\Controller\Plugin\ApplyGroups;

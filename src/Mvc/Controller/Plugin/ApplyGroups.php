@@ -1,9 +1,10 @@
-<?php
+<?php declare(strict_types=1);
 namespace Group\Mvc\Controller\Plugin;
 
 use Doctrine\ORM\EntityManager;
 use Group\Entity\GroupResource;
 use Group\Entity\GroupUser;
+use Laminas\Mvc\Controller\Plugin\AbstractPlugin;
 use Omeka\Api\Manager as ApiManager;
 use Omeka\Entity\AbstractEntity;
 use Omeka\Entity\Item;
@@ -11,7 +12,6 @@ use Omeka\Entity\ItemSet;
 use Omeka\Entity\Media;
 use Omeka\Entity\User;
 use Omeka\Permissions\Acl;
-use Laminas\Mvc\Controller\Plugin\AbstractPlugin;
 
 class ApplyGroups extends AbstractPlugin
 {
@@ -73,7 +73,7 @@ class ApplyGroups extends AbstractPlugin
         $collectionAction = 'replace',
         $aboveGroups = false,
         $recursive = false
-    ) {
+    ): void {
         $this->isUser = $entity->getResourceId() === User::class;
         $groupEntity = $this->isUser ? GroupUser::class : GroupResource::class;
         switch ($collectionAction) {
@@ -220,7 +220,7 @@ class ApplyGroups extends AbstractPlugin
         array $groups = null,
         $aboveGroups = false,
         ItemSet $itemSet = null
-    ) {
+    ): void {
         if ($aboveGroups) {
             // Get all groups to apply, with id as key.
             $newGroups = $this->getItemGroupsFromItemSets($item, $itemSet, $groups);
@@ -343,7 +343,7 @@ class ApplyGroups extends AbstractPlugin
             $firstGroup = reset($groups);
         } elseif (is_array($firstGroup)) {
             $groups = array_map(function ($v) {
-                return isset($v['o:id']) ? $v['o:id'] : (isset($v['o:name']) ? $v['o:name'] : reset($v));
+                return $v['o:id'] ?? ($v['o:name'] ?? reset($v));
             }, $groups);
             $firstGroup = reset($groups);
         }
