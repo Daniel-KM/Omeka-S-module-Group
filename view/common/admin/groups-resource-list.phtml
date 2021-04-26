@@ -38,6 +38,7 @@ $this->headScript()->appendFile($this->assetUrl('js/group.js', 'Group'), 'text/j
         <?php
         $escape = $this->plugin('escapeHtml');
         $updateRight = false; // $this->userIsAllowed(Group::class, 'update');
+        $browseUserRight = $this->userIsAllowed('Omeka\Controller\Admin\User', 'browse');
         ?>
         <ul class="group-list">
         <?php foreach ($groups as $group): ?>
@@ -61,10 +62,12 @@ $this->headScript()->appendFile($this->assetUrl('js/group.js', 'Group'), 'text/j
                     class="o-icon-item-sets"
                     aria-label="<?= $escape($translate('Item sets within this group')) ?>"
                     title="<?= $escape($translate('Item sets within this group')) ?>"></a></span>
+                <?php if ($browseUserRight): ?>
                 <span class="single actions"><a href="<?= $escape($group->urlEntities('user')) ?>"
                     class="o-icon-user"
                     aria-label="<?= $escape($translate('Users within this group')) ?>"
                     title="<?= $escape($translate('Users within this group')) ?>"></a></span>
+                <?php endif; ?>
             </li>
         <?php endforeach; ?>
         </ul>

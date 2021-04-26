@@ -33,7 +33,6 @@
 namespace Group;
 
 use Doctrine\ORM\Events;
-use Group\Api\Adapter\GroupAdapter;
 use Group\Controller\Admin\GroupController;
 use Group\Db\Event\Listener\DetachOrphanGroupEntities;
 use Group\Entity\Group;
@@ -149,41 +148,55 @@ SQL;
      */
     protected function addAclRules(): void
     {
+        /** @var \Omeka\Permissions\Acl $acl */
         $services = $this->getServiceLocator();
         $acl = $services->get('Omeka\Acl');
 
-        // Everybody can read groups, but not view them.
-        // $roles = $acl->getRoles();
-
+        // Everybody can read own groups.
+        $roles = $acl->getRoles();
         $adminRoles = [
             \Omeka\Permissions\Acl::ROLE_GLOBAL_ADMIN,
             \Omeka\Permissions\Acl::ROLE_SITE_ADMIN,
         ];
 
-        $entityRights = ['read'];
-        // $adapterRights = ['search', 'read'];
+        // TODO Remove right to read own groups for non-admin users?
 
-        $acl->allow(
-            null,
-            [
-                \Group\Entity\Group::class,
-                \Group\Entity\GroupUser::class,
-                \Group\Entity\GroupResource::class,
-            ],
-            $entityRights
-        );
-        // Deny access to the api for non admin.
-        /*
         $acl
+            ->allow(
+                null,
+                [
+                    \Group\Entity\Group::class,
+                    \Group\Entity\GroupUser::class,
+                    \Group\Entity\GroupResource::class,
+                ],
+                ['read']
+            )
+            //  TODO Add a permission to limit to read to own groups?
+            ->allow(
+                $roles,
+                [
+                    \Group\Entity\Group::class,
+                    \Group\Entity\GroupUser::class,
+                    \Group\Entity\GroupResource::class,
+                ],
+                ['search', 'read']
+            )
+            ->allow(
+                $roles,
+                [\Group\Api\Adapter\GroupAdapter::class],
+                ['search', 'read']
+            )
+
+            // Deny access to the api for non admin.
+            /*
             ->deny(
                 null,
                 [\Group\Api\Adapter\GroupAdapter::class],
                 null
-            );
-        */
+            )
+           */
 
-        // Only admin can manage groups.
-        $acl
+            // Only admin can manage groups.
             ->allow(
                 $adminRoles,
                 [\Group\Entity\Group::class],

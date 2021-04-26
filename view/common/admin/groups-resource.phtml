@@ -3,6 +3,7 @@ $translate = $this->plugin('translate');
 $escape = $this->plugin('escapeHtml');
 $resourceName = $resource && $resource->getControllerName();
 $updateRight = false; // $this->userIsAllowed(GroupUser::class, 'update');
+$browseUserRight = $this->userIsAllowed('Omeka\Controller\Admin\User', 'browse');
 ?>
 <style>
 .group .actions {
@@ -37,11 +38,13 @@ $updateRight = false; // $this->userIsAllowed(GroupUser::class, 'update');
         class="o-icon-item-sets"
         aria-label="<?php echo $escape($translate('Item sets within this group')); ?>"
         title="<?php echo $escape($translate('Item sets within this group')); ?>"></a></span>
+    <?php if ($browseUserRight): ?>
     <span class="single actions"><a href="<?php echo $escape($group->urlEntities('user')); ?>"
         class="o-icon-user"
         aria-label="<?php echo $escape($translate('Users within this group')); ?>"
         title="<?php echo $escape($translate('Users within this group')); ?>"></a></span>
     </div>
+    <?php endif; ?>
     <?php endforeach; ?>
 <?php endif; ?>
 </div>

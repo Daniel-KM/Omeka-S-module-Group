@@ -31,6 +31,7 @@ $groupTemplate = '
             $resourceName = $resource->getControllerName();
             $group = reset($groups);
             $updateRight = $group->userIsAllowed('update');
+            $browseUserRight = $this->userIsAllowed('Omeka\Controller\Admin\User', 'browse');
         ?>
         <?php foreach ($groups as $group): ?>
         <tr>
@@ -38,10 +39,12 @@ $groupTemplate = '
                 <span><?php echo $this->hyperlink($group->name(), $group->adminUrl()); ?></span>
                 <ul class="actions">
                     <li>
+                        <?php if ($browseUserRight): ?>
                         <a href="<?php echo $escape($group->urlEntities('user')); ?>"
                             class="o-icon-user"
                             aria-label="<?php echo $escape($translate('Users within this group')); ?>"
                             title="<?php echo $escape($translate('Users within this group')); ?>"></a>
+                        <?php endif; ?>
                         <a href="<?php echo $escape($group->urlEntities('item-set')); ?>"
                             class="o-icon-item-sets"
                             aria-label="<?php echo $escape($translate('Item sets within this group')); ?>"
