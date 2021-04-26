@@ -26,21 +26,21 @@ class GroupController extends AbstractActionController
         $groupCount = $this->viewHelpers()->get('groupCount');
         $groupCount = $groupCount($groups);
 
-        $view = new ViewModel;
-        $view->setVariable('groups', $groups);
-        $view->setVariable('groupCount', $groupCount);
-        return $view;
+        return new ViewModel([
+            'groups' => $groups,
+            'groupCount' => $groupCount,
+        ]);
     }
 
     public function showAction()
     {
         $response = $this->apiReadFromIdOrName();
 
-        $view = new ViewModel;
         $entity = $response->getContent();
-        $view->setVariable('group', $entity);
-        $view->setVariable('resource', $entity);
-        return $view;
+        return new ViewModel([
+            'group' => $entity,
+            'resource' => $entity,
+        ]);
     }
 
     public function showDetailsAction()
@@ -52,11 +52,12 @@ class GroupController extends AbstractActionController
         $groupCount = $groupCount($group);
         $groupCount = reset($groupCount);
 
-        $view = new ViewModel;
-        $view->setTerminal(true);
-        $view->setVariable('resource', $group);
-        $view->setVariable('groupCount', $groupCount);
-        return $view;
+        $view = new ViewModel([
+            'resource' => $group,
+            'groupCount' => $groupCount,
+        ]);
+        return $view
+            ->setTerminal(true);
     }
 
     public function deleteAction()
@@ -86,30 +87,33 @@ class GroupController extends AbstractActionController
         $groupCount = $groupCount($group);
         $groupCount = reset($groupCount);
 
-        $view = new ViewModel;
-        $view->setTerminal(true);
-        $view->setTemplate('common/delete-confirm-details');
-        $view->setVariable('group', $group);
-        $view->setVariable('groupCount', $groupCount);
-        $view->setVariable('resource', $group);
-        $view->setVariable('resourceLabel', 'group');
-        $view->setVariable('partialPath', 'group/admin/group/show-details');
-        return $view;
+        $view = new ViewModel([
+            'group' => $group,
+            'groupCount' => $groupCount,
+            'resource' => $group,
+            'resourceLabel' => 'group',
+            'partialPath' => 'group/admin/group/show-details',
+        ]);
+        return $view
+            ->setTemplate('common/delete-confirm-details')
+            ->setTerminal(true);
     }
 
     public function batchDeleteConfirmAction()
     {
+        /** @var \Omeka\Form\ConfirmForm $form */
         $form = $this->getForm(ConfirmForm::class);
         $routeAction = $this->params()->fromQuery('all') ? 'batch-delete-all' : 'batch-delete';
-        $form->setAttribute('action', $this->url()->fromRoute(null, ['action' => $routeAction], true));
-        $form->setButtonLabel('Confirm delete'); // @translate
-        $form->setAttribute('id', 'batch-delete-confirm');
-        $form->setAttribute('class', $routeAction);
-
-        $view = new ViewModel;
-        $view->setTerminal(true);
-        $view->setVariable('form', $form);
-        return $view;
+        $form
+            ->setAttribute('action', $this->url()->fromRoute(null, ['action' => $routeAction], true))
+            ->setAttribute('id', 'batch-delete-confirm')
+            ->setAttribute('class', $routeAction)
+            ->setButtonLabel('Confirm delete'); // @translate
+        $view = new ViewModel([
+            'form' => $form,
+        ]);
+        return $view
+            ->setTerminal(true);
     }
 
     public function batchDeleteAction()
@@ -124,6 +128,7 @@ class GroupController extends AbstractActionController
             return $this->redirect()->toRoute(null, ['action' => 'browse'], true);
         }
 
+        /** @var \Omeka\Form\ConfirmForm $form */
         $form = $this->getForm(ConfirmForm::class);
         $form->setData($this->getRequest()->getPost());
         if ($form->isValid()) {
@@ -145,10 +150,12 @@ class GroupController extends AbstractActionController
 
     public function addAction()
     {
+        /** @var \Group\Form\GroupForm $form */
         $form = $this->getForm(GroupForm::class);
-        $form->setAttribute('action', $this->url()->fromRoute(null, [], true));
-        $form->setAttribute('enctype', 'multipart/form-data');
-        $form->setAttribute('id', 'add-group');
+        $form
+            ->setAttribute('action', $this->url()->fromRoute(null, [], true))
+            ->setAttribute('enctype', 'multipart/form-data')
+            ->setAttribute('id', 'add-group');
         if ($this->getRequest()->isPost()) {
             $data = $this->params()->fromPost();
             $form->setData($data);
@@ -171,9 +178,9 @@ class GroupController extends AbstractActionController
             }
         }
 
-        $view = new ViewModel;
-        $view->setVariable('form', $form);
-        return $view;
+        return new ViewModel([
+            'form' => $form,
+        ]);
     }
 
     public function updateAction()

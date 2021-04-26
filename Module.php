@@ -5,7 +5,7 @@
  * Add groups to users and resources to manage the access rights and the
  * resource visibility in a more flexible way.
  *
- * Copyright Daniel Berthereau 2017-2020
+ * Copyright Daniel Berthereau 2017-2021
  *
  * This software is governed by the CeCILL license under French law and abiding
  * by the rules of distribution of free software.  You can use, modify and/ or
@@ -67,7 +67,7 @@ use Omeka\Module\AbstractModule;
  *
  * Add groups to users and resources to manage the access in a more flexible way.
  *
- * @copyright Daniel Berthereau, 2017-2020
+ * @copyright Daniel Berthereau, 2017-2021
  * @license http://www.cecill.info/licences/Licence_CeCILL_V2.1-en.txt
  */
 class Module extends AbstractModule
@@ -457,7 +457,7 @@ SQL;
     /**
      * Filter media belonging to private items.
      *
-     * @see \Omeka\Module::filterMedia()
+     * @see \Omeka\Module\Module::filterMedia()
      * @param Event $event
      */
     public function filterMedia(Event $event): void
@@ -987,8 +987,6 @@ SQL;
 
     /**
      * Add the tab to section navigation.
-     *
-     * @param Event $event
      */
     public function addTab(Event $event): void
     {
@@ -1001,8 +999,6 @@ SQL;
      * Display the grouping form.
      *
      * @todo Merge with user groups form.
-     *
-     * @param Event $event
      */
     public function displayGroupResourceForm(Event $event): void
     {
@@ -1037,8 +1033,6 @@ SQL;
 
     /**
      * Display the groups for a user.
-     *
-     * @param Event $event
      */
     public function viewShowAfterUser(Event $event): void
     {
@@ -1048,8 +1042,6 @@ SQL;
 
     /**
      * Display the groups for a resource.
-     *
-     * @param Event $event
      */
     public function viewShowAfterResource(Event $event): void
     {
@@ -1061,8 +1053,6 @@ SQL;
 
     /**
      * Add details for a resource.
-     *
-     * @param Event $event
      */
     public function viewDetails(Event $event): void
     {
@@ -1100,8 +1090,6 @@ SQL;
 
     /**
      * Display the advanced search form via partial.
-     *
-     * @param Event $event
      */
     public function displayAdvancedSearch(Event $event): void
     {
@@ -1132,8 +1120,6 @@ SQL;
 
     /**
      * Filter search filters.
-     *
-     * @param Event $event
      */
     public function filterSearchFilters(Event $event): void
     {
@@ -1158,11 +1144,8 @@ SQL;
      *
      * Note: Resource representation have method resourceName(), but site page
      * and user don't. Site page has no getControllerName().
-     *
-     * @param AbstractEntityRepresentation $representation
-     * @return string
      */
-    protected function columnNameOfRepresentation(AbstractEntityRepresentation $representation)
+    protected function columnNameOfRepresentation(AbstractEntityRepresentation $representation): string
     {
         $entityColumnNames = [
             'item-set' => 'item_set_id',
@@ -1170,21 +1153,16 @@ SQL;
             'media' => 'media_id',
             'user' => 'user_id',
         ];
-        $entityColumnName = $entityColumnNames[$representation->getControllerName()];
-        return $entityColumnName;
+        return $entityColumnNames[$representation->getControllerName()] ?? null;
     }
 
     /**
      * Check rights to manage groups.
-     *
-     * @param string $resourceClass
-     * @param string $privilege
-     * @return bool
      */
-    protected function checkAcl($resourceClass, $privilege)
+    protected function checkAcl(string $resourceClass, string $privilege): bool
     {
         $acl = $this->getServiceLocator()->get('Omeka\Acl');
-        $groupEntity = $resourceClass == User::class
+        $groupEntity = $resourceClass === User::class
             ? GroupUser::class
             : GroupResource::class;
         return $acl->userIsAllowed($groupEntity, $privilege);
@@ -1192,11 +1170,8 @@ SQL;
 
     /**
      * Check if groups are applied from above.
-     *
-     * @param string $resourceClass
-     * @return bool
      */
-    protected function takeGroupsFromAbove($resourceClass)
+    protected function takeGroupsFromAbove(string$resourceClass): bool
     {
         switch ($resourceClass) {
             case ItemSet::class:
@@ -1215,11 +1190,8 @@ SQL;
 
     /**
      * Check if groups apply recursively for resources below.
-     *
-     * @param string $resourceClass
-     * @return bool
      */
-    protected function isRecursive($resourceClass)
+    protected function isRecursive(string $resourceClass): bool
     {
         switch ($resourceClass) {
             case ItemSet::class:
@@ -1236,17 +1208,18 @@ SQL;
     }
 
     /**
-     * Helper to return groups of an entity.
+     * Helper to return groups of an entity, by group name.
      *
      * @param AbstractEntityRepresentation $resource
      * @param string $contentType "json" (default), "representation" or "reference".
-     * @return array
+     * @return \Group\Entity\Group[]
      */
-    protected function listGroups(AbstractEntityRepresentation $resource = null, $contentType = null)
+    protected function listGroups(AbstractEntityRepresentation $resource = null, $contentType = null): array
     {
         if (is_null($resource) || empty($resource->id())) {
             return [];
         }
+
         $resourceJson = $resource->jsonSerialize();
         $list = empty($resourceJson['o-module-group:group'])
             ? []
@@ -1279,7 +1252,7 @@ SQL;
      * @param array|string $strings
      * @return array
      */
-    protected function cleanStrings($strings)
+    protected function cleanStrings($strings): array
     {
         if (!is_array($strings)) {
             $strings = explode(',', $strings);
