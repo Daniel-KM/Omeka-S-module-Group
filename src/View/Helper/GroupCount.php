@@ -173,9 +173,9 @@ class GroupCount extends AbstractHelper
 
         $orderBy = trim($orderBy);
         if (strpos($orderBy, ' ')) {
-            $order = explode(' ', $orderBy);
+            $orderBy = explode(' ', $orderBy);
             $orderBy = $orderBy[0];
-            $orderDir = $orderBy[1];
+            $orderDir = strtoupper($orderBy[1]) === 'DESC' ? 'DESC' : 'ASC';
         } else {
             $orderBy = $orderBy ?: 'groups.name';
             $orderDir = 'ASC';
