@@ -38,13 +38,15 @@ class ResourceVisibilityFilter extends \Omeka\Db\Filter\ResourceVisibilityFilter
             // TODO Add a join the resource type to improve the sub query (which alias? which id?)
             // INNER JOIN item ON group_resource.resource_id = item.id LIMIT 1
             $constraints .= sprintf(
-                ' OR %s.id IN (
-SELECT group_resource.resource_id
-FROM group_resource
-INNER JOIN group_user ON group_resource.group_id = group_user.group_id AND group_user.user_id = %s
+                '
+OR %s.id IN (
+    SELECT group_resource.resource_id
+    FROM group_resource
+    INNER JOIN group_user ON group_resource.group_id = group_user.group_id AND group_user.user_id = %s
 )',
                 $alias,
-                $this->getConnection()->quote($identity->getId(), Type::INTEGER));
+                (int) $identity->getId()
+            );
         }
 
         return $constraints;
