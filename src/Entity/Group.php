@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+
 namespace Group\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -19,6 +20,7 @@ class Group extends AbstractEntity
 {
     /**
      * @var int
+     *
      * @Id
      * @Column(type="integer")
      * @GeneratedValue
@@ -27,10 +29,15 @@ class Group extends AbstractEntity
 
     /**
      * @var string
+     *
      * Note: The limit of 190 is related to the format of the base (utf8mb4) and
      * to the fact that there is an index and the max index size is 767, so
      * 190 x 4 = 760.
-     * @Column(length=190, unique=true)
+     *
+     * @Column(
+     *     length=190,
+     *     unique=true
+     * )
      */
     protected $name;
 
@@ -42,8 +49,9 @@ class Group extends AbstractEntity
     /* *
      * This relation cannot be set in the core, so it is not a doc block.
      *
-     * Many Groups have Many Users.
      * @var ArrayCollection|User[]
+     *
+     * Many Groups have Many Users.
      * @ManyToMany(
      *     targetEntity="Omeka\Entity\User",
      *     mappedBy="group",
@@ -76,8 +84,9 @@ class Group extends AbstractEntity
      * join relation is declared here. This property is available only in orm,
      * not in Omeka S.
      *
-     * One Group has Many relations to User via GroupUsers.
      * @var ArrayCollection|GroupUser[]
+     *
+     * One Group has Many relations to User via GroupUsers.
      * @OneToMany(
      *     targetEntity="Group\Entity\GroupUser",
      *     mappedBy="group",
@@ -89,8 +98,9 @@ class Group extends AbstractEntity
     /* *
      * This relation cannot be set in the core, so it is not a doc block.
      *
-     * Many Groups have Many Resources.
      * @var Collection|Resource[]
+     *
+     * Many Groups have Many Resources.
      * @ManyToMany(
      *     targetEntity="Omeka\Entity\Resource",
      *     mappedBy="group",
@@ -123,8 +133,9 @@ class Group extends AbstractEntity
      * join relation is declared here. This property is available only in orm,
      * not in Omeka S.
      *
-     * One Group has Many relations to Resource via GroupResources.
      * @var Collection|GroupResource[]
+     *
+     * One Group has Many relations to Resource via GroupResources.
      * @OneToMany(
      *     targetEntity="Group\Entity\GroupResource",
      *     mappedBy="group",
@@ -146,42 +157,44 @@ class Group extends AbstractEntity
         return $this->id;
     }
 
-    public function setName($name): void
+    public function setName($name): self
     {
         $this->name = $name;
+        return $this;
     }
 
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
-    public function setComment($comment): void
+    public function setComment(?string $comment): self
     {
         $this->comment = $comment;
+        return $this;
     }
 
-    public function getComment()
+    public function getComment(): ?string
     {
         return $this->comment;
     }
 
-    public function getUsers()
+    public function getUsers(): ArrayCollection
     {
         return $this->users;
     }
 
-    public function getGroupUsers()
+    public function getGroupUsers(): ArrayCollection
     {
         return $this->groupUsers;
     }
 
-    public function getResources()
+    public function getResources(): ArrayCollection
     {
         return $this->resources;
     }
 
-    public function getGroupResources()
+    public function getGroupResources(): ArrayCollection
     {
         return $this->groupResources;
     }

@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+
 namespace Group\Mvc\Controller\Plugin;
 
 use Doctrine\ORM\EntityManager;
@@ -159,11 +160,11 @@ class ApplyGroups extends AbstractPlugin
      * @param Item $item
      * @return array|null Associative array of groups with id as key.
      */
-    protected function getItemGroups(Item $item)
+    protected function getItemGroups(Item $item): ?array
     {
         $itemId = $item->getId();
         if (empty($itemId)) {
-            return;
+            return null;
         }
         $groups = $this->api
             ->search('groups',
@@ -171,8 +172,7 @@ class ApplyGroups extends AbstractPlugin
                 ['responseContent' => 'resource']
             )
             ->getContent();
-        $groups = $this->listWithIdAsKey($groups);
-        return $groups;
+        return $this->listWithIdAsKey($groups);
     }
 
     /**
@@ -183,7 +183,7 @@ class ApplyGroups extends AbstractPlugin
      * @param array $itemSetGroups
      * @return array Associative array of groups with id as key.
      */
-    protected function getItemGroupsFromItemSets(Item $item, ItemSet $itemSet = null, array $itemSetGroups = null)
+    protected function getItemGroupsFromItemSets(Item $item, ItemSet $itemSet = null, array $itemSetGroups = null): array
     {
         $itemSets = $this->listWithIdAsKey($item->getItemSets());
         if ($itemSet) {
@@ -243,13 +243,9 @@ class ApplyGroups extends AbstractPlugin
      * @param AbstractEntity $entity
      * @param array $groups Associative array of groups with id as key.
      * @param string $collectionAction "replace" (default), "remove" or "append".
-     * @return array Associative array of groups with id as key.
      */
-    protected function applyGroupsToEntity(
-        AbstractEntity $entity,
-        array $groups,
-        $collectionAction = 'replace'
-    ) {
+    protected function applyGroupsToEntity(AbstractEntity $entity, array $groups, $collectionAction = 'replace'): void
+    {
         if ($this->isUser) {
             $groupEntitiesRepository = $this->entityManager->getRepository(GroupUser::class);
             $column = 'user';
@@ -326,7 +322,7 @@ class ApplyGroups extends AbstractPlugin
      * representations or references).
      * @return array Associative array of group entities with id as key.
      */
-    protected function checkGroups(array $groups)
+    protected function checkGroups(array $groups): array
     {
         if (empty($groups)) {
             return [];
@@ -362,10 +358,10 @@ class ApplyGroups extends AbstractPlugin
     /**
      * Helper to list entities with id as key (with implicite deduplication).
      *
-     * @param array $entities A Doctrine\ORM\PersistentCollection can be passed.
+     * @param \Doctrine\ORM\PersistentCollection|array $entities
      * @return array Associative array of entities with id as key.
      */
-    protected function listWithIdAsKey($entities)
+    protected function listWithIdAsKey($entities): array
     {
         // The function array_map() is not available with PersistentCollection.
         $result = [];

@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+
 namespace Group\View\Helper;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -53,7 +54,7 @@ class GroupCount extends AbstractHelper
         $usedOnly = false,
         $orderBy = '',
         $keyPair = false
-    ) {
+    ): array {
         $qb = $this->connection->createQueryBuilder();
 
         $select = [];

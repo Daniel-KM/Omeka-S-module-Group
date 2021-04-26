@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+
 namespace Group\Service\ViewHelper;
 
 use Group\View\Helper\GroupCount;
@@ -9,7 +10,8 @@ class GroupCountFactory implements FactoryInterface
 {
     public function __invoke(ContainerInterface $services, $requestedName, array $options = null)
     {
-        $connection = $services->get('Omeka\Connection');
-        return new GroupCount($connection);
+        return new GroupCount(
+            $services->get('Omeka\Connection')
+        );
     }
 }

@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+
 namespace Group\Entity;
 
 use Omeka\Entity\User;
@@ -14,6 +15,7 @@ class GroupUser
 {
     /**
      * @var Group
+     *
      * @Id
      * @ManyToOne(
      *     targetEntity="Group\Entity\Group",
@@ -29,6 +31,7 @@ class GroupUser
 
     /**
      * @var User
+     *
      * @Id
      * @ManyToOne(
      *     targetEntity="Omeka\Entity\User",
@@ -47,17 +50,17 @@ class GroupUser
         $this->user = $user;
     }
 
-    public function getGroup()
+    public function getGroup(): Group
     {
         return $this->group;
     }
 
-    public function getUser()
+    public function getUser(): User
     {
         return $this->user;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return json_encode([
             'group' => $this->getGroup()->getId(),

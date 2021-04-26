@@ -179,7 +179,7 @@ class GroupResource extends \Group\Entity\GroupResource implements \Doctrine\ORM
     /**
      * {@inheritDoc}
      */
-    public function getGroup()
+    public function getGroup(): \Group\Entity\Group
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getGroup', []);
@@ -190,7 +190,7 @@ class GroupResource extends \Group\Entity\GroupResource implements \Doctrine\ORM
     /**
      * {@inheritDoc}
      */
-    public function getResource()
+    public function getResource(): \Omeka\Entity\Resource
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getResource', []);
@@ -201,7 +201,7 @@ class GroupResource extends \Group\Entity\GroupResource implements \Doctrine\ORM
     /**
      * {@inheritDoc}
      */
-    public function __toString()
+    public function __toString(): string
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, '__toString', []);

@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+
 namespace Group\View\Helper;
 
 use Laminas\View\Helper\AbstractHelper;
@@ -7,14 +8,13 @@ class GroupSelector extends AbstractHelper
 {
     /**
      * Return the group selector form control.
-     *
-     * @return string
      */
-    public function __invoke()
+    public function __invoke(): string
     {
-        $response = $this->getView()->api()->search('groups', ['sort_by' => 'name']);
+        $view = $this->getView();
+        $response = $view->api()->search('groups', ['sort_by' => 'name']);
         $groups = $response->getContent();
-        return $this->getView()->partial(
+        return $view->partial(
             'common/admin/groups-selector',
             [
                 'groups' => $groups,

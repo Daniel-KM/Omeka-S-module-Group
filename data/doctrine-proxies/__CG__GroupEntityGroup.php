@@ -194,18 +194,18 @@ class Group extends \Group\Entity\Group implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function setName($name): void
+    public function setName($name): \Group\Entity\Group
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setName', [$name]);
 
-        parent::setName($name);
+        return parent::setName($name);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function getName()
+    public function getName(): string
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getName', []);
@@ -216,18 +216,18 @@ class Group extends \Group\Entity\Group implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function setComment($comment): void
+    public function setComment(?string $comment): \Group\Entity\Group
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setComment', [$comment]);
 
-        parent::setComment($comment);
+        return parent::setComment($comment);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function getComment()
+    public function getComment(): ?string
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getComment', []);
@@ -238,7 +238,7 @@ class Group extends \Group\Entity\Group implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function getUsers()
+    public function getUsers(): \Doctrine\Common\Collections\ArrayCollection
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUsers', []);
@@ -249,7 +249,7 @@ class Group extends \Group\Entity\Group implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function getGroupUsers()
+    public function getGroupUsers(): \Doctrine\Common\Collections\ArrayCollection
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getGroupUsers', []);
@@ -260,7 +260,7 @@ class Group extends \Group\Entity\Group implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function getResources()
+    public function getResources(): \Doctrine\Common\Collections\ArrayCollection
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getResources', []);
@@ -271,7 +271,7 @@ class Group extends \Group\Entity\Group implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function getGroupResources()
+    public function getGroupResources(): \Doctrine\Common\Collections\ArrayCollection
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getGroupResources', []);

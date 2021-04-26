@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+
 namespace Group\Entity;
 
 use Omeka\Entity\Resource;
@@ -14,6 +15,7 @@ class GroupResource
 {
     /**
      * @var Group
+     *
      * @Id
      * @ManyToOne(
      *     targetEntity="Group\Entity\Group",
@@ -29,6 +31,7 @@ class GroupResource
 
     /**
      * @var Resource
+     *
      * @Id
      * @ManyToOne(
      *     targetEntity="Omeka\Entity\Resource",
@@ -47,17 +50,17 @@ class GroupResource
         $this->resource = $resource;
     }
 
-    public function getGroup()
+    public function getGroup(): Group
     {
         return $this->group;
     }
 
-    public function getResource()
+    public function getResource(): Resource
     {
         return $this->resource;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return json_encode([
             'group' => $this->getGroup()->getId(),

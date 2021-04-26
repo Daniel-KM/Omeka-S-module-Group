@@ -52,85 +52,6 @@ class GroupAdapter extends AbstractEntityAdapter
         return Group::class;
     }
 
-    public function hydrate(Request $request, EntityInterface $entity,
-        ErrorStore $errorStore
-    ): void {
-        if ($this->shouldHydrate($request, 'o:name')) {
-            $name = $request->getValue('o:name');
-            if (!is_null($name)) {
-                $name = trim($name);
-                $entity->setName($name);
-            }
-        }
-        if ($this->shouldHydrate($request, 'o:comment')) {
-            $comment = $request->getValue('o:comment');
-            if (!is_null($comment)) {
-                $comment = trim($comment);
-                $entity->setComment($comment);
-            }
-        }
-    }
-
-    public function validateRequest(Request $request, ErrorStore $errorStore): void
-    {
-        $data = $request->getContent();
-        if (array_key_exists('o:name', $data)) {
-            $result = $this->validateName($data['o:name'], $errorStore);
-        }
-    }
-
-    public function validateEntity(EntityInterface $entity, ErrorStore $errorStore): void
-    {
-        $name = $entity->getName();
-        $result = $this->validateName($name, $errorStore);
-        if (!$this->isUnique($entity, ['name' => $name])) {
-            $errorStore->addError('o:name', new Message(
-                'The name "%s" is already taken.', // @translate
-                $name
-            ));
-        }
-    }
-
-    /**
-     * Validate a name.
-     *
-     * @param string $name
-     * @param ErrorStore $errorStore
-     * @return bool
-     */
-    protected function validateName($name, ErrorStore $errorStore)
-    {
-        $result = true;
-        $sanitized = $this->sanitizeLightString($name);
-        if (is_string($name) && $sanitized !== '') {
-            $name = $sanitized;
-            $sanitized = $this->sanitizeString($sanitized);
-            if ($name !== $sanitized) {
-                $errorStore->addError('o:name', new Message(
-                    'The name "%s" contains forbidden characters.', // @translate
-                    $name
-                ));
-                $result = false;
-            }
-            if (preg_match('~^[\d]+$~', $name)) {
-                $errorStore->addError('o:name', 'A name can’t contain only numbers.'); // @translate
-                $result = false;
-            }
-            $reserved = [
-                'id', 'name', 'comment',
-                'show', 'browse', 'add', 'edit', 'delete', 'delete-confirm', 'batch-edit', 'batch-edit-all',
-            ];
-            if (in_array(strtolower($name), $reserved)) {
-                $errorStore->addError('o:name', 'A name cannot be a reserved word.'); // @translate
-                $result = false;
-            }
-        } else {
-            $errorStore->addError('o:name', 'A group must have a name.'); // @translate
-            $result = false;
-        }
-        return $result;
-    }
-
     public function buildQuery(QueryBuilder $qb, array $query): void
     {
         $expr = $qb->expr();
@@ -271,13 +192,91 @@ class GroupAdapter extends AbstractEntityAdapter
         }
     }
 
+    public function hydrate(Request $request, EntityInterface $entity,ErrorStore $errorStore): void
+    {
+        if ($this->shouldHydrate($request, 'o:name')) {
+            $name = $request->getValue('o:name');
+            if (!is_null($name)) {
+                $name = trim($name);
+                $entity->setName($name);
+            }
+        }
+        if ($this->shouldHydrate($request, 'o:comment')) {
+            $comment = $request->getValue('o:comment');
+            if (!is_null($comment)) {
+                $comment = trim($comment);
+                $entity->setComment($comment);
+            }
+        }
+    }
+
+    public function validateRequest(Request $request, ErrorStore $errorStore): void
+    {
+        $data = $request->getContent();
+        if (array_key_exists('o:name', $data)) {
+            $this->validateName($data['o:name'], $errorStore);
+        }
+    }
+
+    public function validateEntity(EntityInterface $entity, ErrorStore $errorStore): void
+    {
+        $name = $entity->getName();
+        $this->validateName($name, $errorStore);
+        if (!$this->isUnique($entity, ['name' => $name])) {
+            $errorStore->addError('o:name', new Message(
+                'The name "%s" is already taken.', // @translate
+                $name
+            ));
+        }
+    }
+
+    /**
+     * Validate a name.
+     *
+     * @param string $name
+     * @param ErrorStore $errorStore
+     * @return bool
+     */
+    protected function validateName($name, ErrorStore $errorStore): bool
+    {
+        $result = true;
+        $sanitized = $this->sanitizeLightString($name);
+        if (is_string($name) && $sanitized !== '') {
+            $name = $sanitized;
+            $sanitized = $this->sanitizeString($sanitized);
+            if ($name !== $sanitized) {
+                $errorStore->addError('o:name', new Message(
+                    'The name "%s" contains forbidden characters.', // @translate
+                    $name
+                ));
+                $result = false;
+            }
+            if (preg_match('~^[\d]+$~', $name)) {
+                $errorStore->addError('o:name', 'A name can’t contain only numbers.'); // @translate
+                $result = false;
+            }
+            $reserved = [
+                'id', 'name', 'comment',
+                'show', 'browse', 'add', 'edit', 'delete', 'delete-confirm', 'batch-edit', 'batch-edit-all',
+            ];
+            if (in_array(strtolower($name), $reserved)) {
+                $errorStore->addError('o:name', 'A name cannot be a reserved word.'); // @translate
+                $result = false;
+            }
+        } else {
+            $errorStore->addError('o:name', 'A group must have a name.'); // @translate
+            $result = false;
+        }
+        return $result;
+    }
+
     /**
      * Returns a sanitized string.
      *
      * @param string $string The string to sanitize.
      * @return string The sanitized string.
      */
-    protected function sanitizeString($string)
+    protected function sanitizeString($string): string
     {
         // Quote is allowed.
         $string = strip_tags((string) $string);
@@ -295,8 +294,8 @@ class GroupAdapter extends AbstractEntityAdapter
      * @param string $string The string to sanitize.
      * @return string The sanitized string.
      */
-    protected function sanitizeLightString($string)
+    protected function sanitizeLightString($string): string
     {
-        return trim(preg_replace('/\s+/', ' ', $string));
+        return trim(preg_replace('/\s+/', ' ', (string) $string));
     }
 }

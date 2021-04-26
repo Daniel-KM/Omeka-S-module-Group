@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+
 namespace Group\Api\Representation;
 
 use Omeka\Api\Representation\AbstractEntityRepresentation;
@@ -45,12 +46,12 @@ class GroupRepresentation extends AbstractEntityRepresentation
         return new GroupReference($this->resource, $this->getAdapter());
     }
 
-    public function name()
+    public function name(): string
     {
         return $this->resource->getName();
     }
 
-    public function comment()
+    public function comment(): ?string
     {
         return $this->resource->getComment();
     }
@@ -60,7 +61,7 @@ class GroupRepresentation extends AbstractEntityRepresentation
      *
      * @return AbstractResourceEntityRepresentation[]
      */
-    public function resources()
+    public function resources(): array
     {
         $result = [];
         $adapter = $this->getAdapter('resources');
@@ -80,7 +81,7 @@ class GroupRepresentation extends AbstractEntityRepresentation
      *
      * @return UserRepresentation[]
      */
-    public function users()
+    public function users(): array
     {
         $result = [];
         $adapter = $this->getAdapter('users');
@@ -101,7 +102,7 @@ class GroupRepresentation extends AbstractEntityRepresentation
      * @param string $resourceType
      * @return int
      */
-    public function count($resourceType = 'resources')
+    public function count($resourceType = 'resources'): int
     {
         if (!isset($this->cacheCounts[$resourceType])) {
             $response = $this->getServiceLocator()->get('Omeka\ApiManager')
@@ -137,7 +138,7 @@ class GroupRepresentation extends AbstractEntityRepresentation
      * @param bool $canonical Whether to return an absolute URL
      * @return string
      */
-    public function urlEntities($resourceType = null, $canonical = false)
+    public function urlEntities($resourceType = null, $canonical = false): string
     {
         $mapResource = [
             null => 'item',
@@ -149,8 +150,6 @@ class GroupRepresentation extends AbstractEntityRepresentation
         if (isset($mapResource[$resourceType])) {
             $resourceType = $mapResource[$resourceType];
         }
-        $routeMatch = $this->getServiceLocator()->get('Application')
-            ->getMvcEvent()->getRouteMatch();
         $url = $this->getViewHelper('Url');
         return $url(
             'admin/default',

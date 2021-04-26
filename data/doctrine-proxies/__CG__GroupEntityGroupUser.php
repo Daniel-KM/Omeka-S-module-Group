@@ -179,7 +179,7 @@ class GroupUser extends \Group\Entity\GroupUser implements \Doctrine\ORM\Proxy\P
     /**
      * {@inheritDoc}
      */
-    public function getGroup()
+    public function getGroup(): \Group\Entity\Group
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getGroup', []);
@@ -190,7 +190,7 @@ class GroupUser extends \Group\Entity\GroupUser implements \Doctrine\ORM\Proxy\P
     /**
      * {@inheritDoc}
      */
-    public function getUser()
+    public function getUser(): \Omeka\Entity\User
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUser', []);
@@ -201,7 +201,7 @@ class GroupUser extends \Group\Entity\GroupUser implements \Doctrine\ORM\Proxy\P
     /**
      * {@inheritDoc}
      */
-    public function __toString()
+    public function __toString(): string
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, '__toString', []);
