@@ -526,22 +526,15 @@ SQL;
      */
     public function filterEntityJsonLd(Event $event): void
     {
-        // The groups are not shown to public.
-        $acl = $this->getServiceLocator()->get('Omeka\Acl');
-        if (!$acl->userIsAllowed(GroupAdapter::class, 'search')
-            && !$acl->userIsAllowed(GroupAdapter::class, 'read')
-        ) {
-            return;
-        }
+        // The groups are not shown to public, only admin users.
+        $services = $this->getServiceLocator();
+        $controllerPlugins = $services->get('ControllerPluginManager');
+        $listGroups = $controllerPlugins->get('listGroups');
 
         $resource = $event->getTarget();
-        $columnName = $this->columnNameOfRepresentation($resource);
         $jsonLd = $event->getParam('jsonLd');
-        $api = $this->getServiceLocator()->get('Omeka\ApiManager');
-        $groups = $api
-            ->search('groups', [$columnName => $resource->id()], ['responseContent' => 'reference'])
-            ->getContent();
-        $jsonLd['o-module-group:group'] = $groups;
+        $groups = $listGroups($resource, 'reference');
+        $jsonLd['o-module-group:group'] = array_values($groups);
         $event->setParam('jsonLd', $jsonLd);
     }
 
@@ -836,6 +829,8 @@ SQL;
         if (!$this->getServiceLocator()->get('Omeka\Status')->isAdminRequest()) {
             return;
         }
+
+        // Check rights: only admins can read and update groups.
         if (!$this->checkAcl(User::class, 'update') || !$this->checkAcl(User::class, 'assign')) {
             return;
         }
@@ -860,6 +855,8 @@ SQL;
         if (!$this->getServiceLocator()->get('Omeka\Status')->isAdminRequest()) {
             return;
         }
+
+        // Check rights: only admins can read and update groups.
         if (!$this->checkAcl(User::class, 'update') || !$this->checkAcl(User::class, 'assign')) {
             return;
         }
@@ -874,14 +871,19 @@ SQL;
 
     public function addUserFormValue(Event $event): void
     {
-        // Groups are for admins only.
+        // Groups are for admins only. Other rights are checked in the listing.
         if (!$this->getServiceLocator()->get('Omeka\Status')->isAdminRequest()) {
             return;
         }
 
+        // Check rights: only admins can read and update groups.
+        if (!$this->checkAcl(User::class, 'update') || !$this->checkAcl(User::class, 'assign')) {
+            return;
+        }
+
         $user = $event->getTarget()->vars()->user;
+        $values = $this->listGroups($user, 'id');
         $form = $event->getParam('form');
-        $values = $this->listGroups($user, 'reference');
         $form->get('user-information')->get('o-module-group:group')
             ->setAttribute('value', array_keys($values));
     }
@@ -1137,23 +1139,6 @@ SQL;
             $filters[$filterLabel] = $filterValue;
         }
         $event->setParam('filters', $filters);
-    }
-
-    /**
-     * Helper to get the column id of a representation.
-     *
-     * Note: Resource representation have method resourceName(), but site page
-     * and user don't. Site page has no getControllerName().
-     */
-    protected function columnNameOfRepresentation(AbstractEntityRepresentation $representation): string
-    {
-        $entityColumnNames = [
-            'item-set' => 'item_set_id',
-            'item' => 'item_id',
-            'media' => 'media_id',
-            'user' => 'user_id',
-        ];
-        return $entityColumnNames[$representation->getControllerName()] ?? null;
     }
 
     /**

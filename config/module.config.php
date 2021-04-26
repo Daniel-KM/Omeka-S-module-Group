@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+
 namespace Group;
 
 return [
@@ -110,6 +111,7 @@ return [
     'controller_plugins' => [
         'factories' => [
             'applyGroups' => Service\ControllerPlugin\ApplyGroupsFactory::class,
+            'listGroups' => Service\ControllerPlugin\ListGroupsFactory::class,
         ],
     ],
     'router' => [
