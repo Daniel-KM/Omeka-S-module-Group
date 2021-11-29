@@ -1,5 +1,12 @@
 <?php declare(strict_types=1);
 
+/**
+ * @todo Replace the two tables "group_user" and "group_resource" by one
+ * "grouping" with one column "entity_type": it will simplify a lot of
+ * thing, but will this improve performance (search with a ternary key)?
+ * This will be checked if a new group of something is needed (for sites).
+ */
+
 namespace Group;
 
 return [

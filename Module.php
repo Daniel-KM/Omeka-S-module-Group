@@ -32,6 +32,12 @@
  */
 namespace Group;
 
+if (!class_exists(\Generic\AbstractModule::class)) {
+    require file_exists(dirname(__DIR__) . '/Generic/AbstractModule.php')
+        ? dirname(__DIR__) . '/Generic/AbstractModule.php'
+        : __DIR__ . '/src/Generic/AbstractModule.php';
+}
+
 use Doctrine\ORM\Events;
 use Group\Controller\Admin\GroupController;
 use Group\Db\Event\Listener\DetachOrphanGroupEntities;
@@ -71,6 +77,8 @@ use Omeka\Module\AbstractModule;
  */
 class Module extends AbstractModule
 {
+    const NAMESPACE = __NAMESPACE__;
+
     public function getConfig()
     {
         return include __DIR__ . '/config/module.config.php';
@@ -87,60 +95,6 @@ class Module extends AbstractModule
             Events::preFlush,
             new DetachOrphanGroupEntities
         );
-    }
-
-    public function install(ServiceLocatorInterface $serviceLocator): void
-    {
-        // @todo Replace the two tables "group_user" and "group_resource" by one
-        // "grouping" with one column "entity_type": it will simplify a lot of
-        // thing, but will this improve performance (search with a ternary key)?
-        // This will be checked if a new group of something is needed (for sites).
-        $sql = <<<'SQL'
-CREATE TABLE `groups` (
-    `id` INT AUTO_INCREMENT NOT NULL,
-    `name` VARCHAR(190) NOT NULL,
-    `comment` LONGTEXT DEFAULT NULL,
-    UNIQUE INDEX UNIQ_F06D39705E237E06 (`name`),
-    PRIMARY KEY(`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB;
-CREATE TABLE `group_resource` (
-    `group_id` INT NOT NULL,
-    `resource_id` INT NOT NULL,
-    INDEX IDX_B5A1B869FE54D947 (`group_id`),
-    INDEX IDX_B5A1B86989329D25 (`resource_id`),
-    PRIMARY KEY(`group_id`, `resource_id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB;
-CREATE TABLE `group_user` (
-    `group_id` INT NOT NULL,
-    `user_id` INT NOT NULL,
-    INDEX IDX_A4C98D39FE54D947 (`group_id`),
-    INDEX IDX_A4C98D39A76ED395 (`user_id`),
-    PRIMARY KEY(`group_id`, `user_id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB;
-ALTER TABLE `group_resource` ADD CONSTRAINT FK_B5A1B869FE54D947 FOREIGN KEY (`group_id`) REFERENCES `groups` (`id`) ON DELETE CASCADE;
-ALTER TABLE `group_resource` ADD CONSTRAINT FK_B5A1B86989329D25 FOREIGN KEY (`resource_id`) REFERENCES `resource` (`id`) ON DELETE CASCADE;
-ALTER TABLE `group_user` ADD CONSTRAINT FK_A4C98D39FE54D947 FOREIGN KEY (`group_id`) REFERENCES `groups` (`id`) ON DELETE CASCADE;
-ALTER TABLE `group_user` ADD CONSTRAINT FK_A4C98D39A76ED395 FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE;
-SQL;
-        $connection = $serviceLocator->get('Omeka\Connection');
-        $sqls = array_filter(array_map('trim', explode(';', $sql)));
-        foreach ($sqls as $sql) {
-            $connection->exec($sql);
-        }
-    }
-
-    public function uninstall(ServiceLocatorInterface $serviceLocator): void
-    {
-        $sql = <<<'SQL'
-DROP TABLE IF EXISTS `group_user`;
-DROP TABLE IF EXISTS `group_resource`;
-DROP TABLE IF EXISTS `groups`;
-SQL;
-        $connection = $serviceLocator->get('Omeka\Connection');
-        $sqls = array_filter(array_map('trim', explode(';', $sql)));
-        foreach ($sqls as $sql) {
-            $connection->exec($sql);
-        }
     }
 
     /**
