@@ -139,11 +139,14 @@ class GroupAdapter extends AbstractEntityAdapter
                     : GroupResource::class;
                 $entityJoinAlias = $this->createAlias();
                 $qb
-                    ->linnerJoin(
+                    ->innerJoin(
                         $entityJoinClass,
                         $entityJoinAlias,
                         'WITH',
-                        $expr->eq($entityJoinAlias . '.group', Group::class)
+                        $expr->eq(
+                            "$entityJoinAlias.group",
+                            'omeka_root'
+                        )
                     );
                 if (!in_array($query['resource_type'], ['users', 'resources'])) {
                     $entityAlias = $this->createAlias();

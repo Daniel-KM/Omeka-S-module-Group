@@ -56,9 +56,10 @@ class GroupCount extends AbstractHelper
         $keyPair = false
     ): array {
         $qb = $this->connection->createQueryBuilder();
+        $expr = $qb->expr();
 
         $select = [];
-        $select['name'] = 'groups.name';
+        $select['name'] = '`_groups`.`name`';
 
         $types = [
             'users' => User::class,
@@ -80,72 +81,72 @@ class GroupCount extends AbstractHelper
 
         $joinTable = $resourceType === User::class ? 'group_user' : 'group_resource';
 
-        $eqGroupGrouping = $qb->expr()->eq('groups.id', $joinTable . '.group_id');
-        $eqResourceGrouping = $qb->expr()->eq('resource.id', $joinTable . '.resource_id');
+        $eqGroupGrouping = $expr->eq('`_groups`.`id`', "`$joinTable`.`group_id`");
+        $eqResourceGrouping = $expr->eq('`resource`.`id`', "`$joinTable`.`resource_id`");
 
         // Select all types of resource separately and together.
         if (empty($resourceType)) {
             // The total of users and the full total is done separately below.
-            $select['resources'] = 'COUNT(resource.resource_type) AS "resources"';
-            $select['item_sets'] = 'SUM(CASE WHEN resource.resource_type = "Omeka\\\\Entity\\\\ItemSet" THEN 1 ELSE 0 END) AS "item_sets"';
-            $select['items'] = 'SUM(CASE WHEN resource.resource_type = "Omeka\\\\Entity\\\\Item" THEN 1 ELSE 0 END) AS "items"';
-            $select['media'] = 'SUM(CASE WHEN resource.resource_type = "Omeka\\\\Entity\\\\Media" THEN 1 ELSE 0 END) AS "media"';
+            $select['resources'] = 'COUNT(`resource`.`resource_type`) AS "resources"';
+            $select['item_sets'] = 'SUM(CASE WHEN `resource`.`resource_type` = "Omeka\\\\Entity\\\\ItemSet" THEN 1 ELSE 0 END) AS "item_sets"';
+            $select['items'] = 'SUM(CASE WHEN `resource`.`resource_type` = "Omeka\\\\Entity\\\\Item" THEN 1 ELSE 0 END) AS "items"';
+            $select['media'] = 'SUM(CASE WHEN `resource`.`resource_type` = "Omeka\\\\Entity\\\\Media" THEN 1 ELSE 0 END) AS "media"';
             if ($usedOnly) {
                 $qb
-                    ->innerJoin('groups', 'group_resource', 'group_resource', $eqGroupGrouping)
+                    ->innerJoin('_groups', 'group_resource', 'group_resource', $eqGroupGrouping)
                     ->innerJoin('group_resource', 'resource', 'resource', $eqResourceGrouping);
             } else {
                 $qb
-                    ->leftJoin('groups', 'group_resource', 'group_resource', $eqGroupGrouping)
+                    ->leftJoin('_groups', 'group_resource', 'group_resource', $eqGroupGrouping)
                     ->leftJoin('group_resource', 'resource', 'resource', $eqResourceGrouping);
             }
         }
 
         // Select all users or all resources together.
         elseif (in_array($resourceType, [User::class, Resource::class])) {
-            $select['count'] = 'COUNT(' . $joinTable . '.group_id) AS "count"';
+            $select['count'] = 'COUNT(' . "`$joinTable`.`group_id`" . ') AS "count"';
             if ($usedOnly) {
                 $qb
                     ->innerJoin(
-                        'groups',
+                        '_groups',
                         $joinTable,
                         $joinTable,
-                        $qb->expr()->andX(
+                        $expr->andX(
                             $eqGroupGrouping,
-                            $qb->expr()->isNotNull($joinTable . '.resource_id')
+                            $expr->isNotNull("`$joinTable`.`resource_id`")
                         ));
             } else {
                 $qb
-                    ->leftJoin('groups', $joinTable, $joinTable, $eqGroupGrouping);
+                    ->leftJoin('_groups', $joinTable, $joinTable, $eqGroupGrouping);
             }
         }
 
         // Select one type of resource.
         else {
-            $eqResourceType = $qb->expr()->eq('resource.resource_type', ':resource_type');
+            $eqResourceType = $expr->eq('`resource`.`resource_type`', ':resource_type');
             $qb
                 ->setParameter('resource_type', $resourceType);
             if ($usedOnly) {
-                $select['count'] = 'COUNT(group_resource.group_id) AS "count"';
+                $select['count'] = 'COUNT(`group_resource`.`group_id`) AS "count"';
                 $qb
                     ->innerJoin('groups', 'group_resource', 'group_resource', $eqGroupGrouping)
                     ->innerJoin(
                         'group_resource',
                         'resource',
                         'resource',
-                        $qb->expr()->andX(
+                        $expr->andX(
                             $eqResourceGrouping,
                             $eqResourceType
                         ));
             } else {
-                $select['count'] = 'COUNT(resource.resource_type) AS "count"';
+                $select['count'] = 'COUNT(`resource`.`resource_type`) AS "count"';
                 $qb
-                    ->leftJoin('groups', 'group_resource', 'group_resource', $eqGroupGrouping)
+                    ->leftJoin('_groups', 'group_resource', 'group_resource', $eqGroupGrouping)
                     ->leftJoin(
                         'group_resource',
                         'resource',
                         'resource',
-                        $qb->expr()->andX(
+                        $expr->andX(
                             $eqResourceGrouping,
                             $eqResourceType
                         ));
@@ -163,12 +164,12 @@ class GroupCount extends AbstractHelper
             if ($isId) {
                 $groups = array_map('intval', $groups);
                 $qb
-                    ->andWhere($qb->expr()->in('groups.id', $groups));
+                    ->andWhere($expr->in('`_groups`.`id`', $groups));
             } else {
                 // TODO How to do a "WHERE IN" with doctrine and strings?
                 $quotedGroups = array_map([$this->connection, 'quote'], $groups);
                 $qb
-                    ->andWhere($qb->expr()->in('groups.name', $quotedGroups));
+                    ->andWhere($expr->in('`_groups`.`name`', $quotedGroups));
             }
         }
 
@@ -178,14 +179,14 @@ class GroupCount extends AbstractHelper
             $orderBy = $orderBy[0];
             $orderDir = strtoupper($orderBy[1]) === 'DESC' ? 'DESC' : 'ASC';
         } else {
-            $orderBy = $orderBy ?: 'groups.name';
+            $orderBy = $orderBy ?: '`_groups`.`name`';
             $orderDir = 'ASC';
         }
 
         $qb
             ->select($select)
-            ->from('groups', 'groups')
-            ->groupBy('groups.id')
+            ->from('`groups`', '_groups')
+            ->groupBy('`_groups`.`id`')
             ->orderBy($orderBy, $orderDir);
 
         $stmt = $this->connection->executeQuery($qb, $qb->getParameters());

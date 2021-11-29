@@ -7,14 +7,16 @@ use Doctrine\Common\Collections\Collection;
 use Omeka\Entity\AbstractEntity;
 
 /**
- * A table with the name group may create an issue in Doctrine 2, so "groups"
+ * A table with the name `group` may create an issue in Doctrine 2, so "groups"
  * is used to avoid quoting all queries.
  * @link https://stackoverflow.com/questions/14080720/doctrine2-does-not-escape-table-name-on-scheme-update
  * @link https://github.com/doctrine/doctrine2/issues/4247
  * @link https://github.com/doctrine/doctrine2/issues/5874
  *
  * @Entity
- * @Table(name="groups")
+ * @Table(
+ *     name="`groups`"
+ * )
  */
 class Group extends AbstractEntity
 {
@@ -22,7 +24,9 @@ class Group extends AbstractEntity
      * @var int
      *
      * @Id
-     * @Column(type="integer")
+     * @Column(
+     *     type="integer"
+     * )
      * @GeneratedValue
      */
     protected $id;
@@ -42,7 +46,11 @@ class Group extends AbstractEntity
     protected $name;
 
     /**
-     * @Column(type="text", nullable=true)
+     * @Column(
+     *     name="`comment`",
+     *     type="text",
+     *     nullable=true
+     * )
      */
     protected $comment;
 
