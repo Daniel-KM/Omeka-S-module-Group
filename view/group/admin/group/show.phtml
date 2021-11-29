@@ -4,29 +4,29 @@ $escape = $this->plugin('escapeHtml');
 $this->htmlElement('body')->appendAttribute('class', 'groups show');
 ?>
 
-<?php echo $this->pageTitle($resource->name(), 1, $translate('Groups')); ?>
+<?= $this->pageTitle($resource->name(), 1, $translate('Groups')) ?>
 
 <div id="page-actions">
 </div>
 <div class="breadcrumbs">
-    <a href="<?php echo $this->url('admin/group'); ?>" class="o-icon-left"><?php echo $translate('Back to group list'); ?></a>
+    <a href="<?= $this->url('admin/group') ?>" class="o-icon-left"><?= $translate('Back to group list') ?></a>
 </div>
 
-<?php $this->trigger('view.show.before'); ?>
+<?php $this->trigger('view.show.before') ?>
 <div class="property">
-    <h4><?php echo $escape($translate('Name')); ?></h4>
-    <div class="value"><?php echo $escape($resource->name()); ?></div>
+    <h4><?= $escape($translate('Name')) ?></h4>
+    <div class="value"><?= $escape($resource->name()) ?></div>
 </div>
 <div class="property">
-    <h4><?php echo $escape($translate('Comment')); ?></h4>
-    <div class="value"><?php echo $escape($resource->comment()); ?></div>
+    <h4><?= $escape($translate('Comment')) ?></h4>
+    <div class="value"><?= $escape($resource->comment()) ?></div>
 </div>
 <div class="property">
-    <h4><?php echo $escape($translate('Internal id')); ?></h4>
-    <div class="value"><?php echo $escape($resource->id()); ?></div>
+    <h4><?= $escape($translate('Internal id')) ?></h4>
+    <div class="value"><?= $escape($resource->id()) ?></div>
 </div>
-<?php $this->trigger('view.show.after'); ?>
+<?php $this->trigger('view.show.after') ?>
 
 <p>
-    <em><?php echo $escape($translate('Groups are editable on the browse page.')); ?></em>
+    <em><?= $escape($translate('Groups are editable on the browse page.')) ?></em>
 </p>

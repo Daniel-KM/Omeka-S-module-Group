@@ -18,11 +18,11 @@ $groupTemplate = '
 </tr>';
 ?>
 <fieldset id="groups" class="section group" aria-labelledby="groups-label">
-    <legend id="groups-legend"><?php echo $translate('Groups'); ?></legend>
-    <table id="group-resources" data-tablesaw-mode="stack" class="tablesaw tablesaw-stack <?php echo ($resource && $groups) ? '' : 'empty'; ?>">
+    <legend id="groups-legend"><?= $translate('Groups') ?></legend>
+    <table id="group-resources" data-tablesaw-mode="stack" class="tablesaw tablesaw-stack <?= $resource && $groups ? '' : 'empty' ?>">
         <thead>
         <tr>
-            <th><?php echo $translate('Group'); ?></th>
+            <th><?= $translate('Group') ?></th>
         </tr>
         </thead>
         <tbody>
@@ -36,31 +36,31 @@ $groupTemplate = '
         <?php foreach ($groups as $group): ?>
         <tr>
             <td>
-                <span><?php echo $this->hyperlink($group->name(), $group->adminUrl()); ?></span>
+                <span><?= $this->hyperlink($group->name(), $group->adminUrl()) ?></span>
                 <ul class="actions">
                     <li>
                         <?php if ($browseUserRight): ?>
-                        <a href="<?php echo $escape($group->urlEntities('user')); ?>"
+                        <a href="<?= $escape($group->urlEntities('user')) ?>"
                             class="o-icon-user"
-                            aria-label="<?php echo $escape($translate('Users within this group')); ?>"
-                            title="<?php echo $escape($translate('Users within this group')); ?>"></a>
+                            aria-label="<?= $escape($translate('Users within this group')) ?>"
+                            title="<?= $escape($translate('Users within this group')) ?>"></a>
                         <?php endif; ?>
-                        <a href="<?php echo $escape($group->urlEntities('item-set')); ?>"
+                        <a href="<?= $escape($group->urlEntities('item-set')) ?>"
                             class="o-icon-item-sets"
-                            aria-label="<?php echo $escape($translate('Item sets within this group')); ?>"
-                            title="<?php echo $escape($translate('Item sets within this group')); ?>"></a>
-                        <a href="<?php echo $escape($group->urlEntities('item')); ?>"
+                            aria-label="<?= $escape($translate('Item sets within this group')) ?>"
+                            title="<?= $escape($translate('Item sets within this group')) ?>"></a>
+                        <a href="<?= $escape($group->urlEntities('item')) ?>"
                             class="o-icon-items"
-                            aria-label="<?php echo $escape($translate('Items within this group')); ?>"
-                            title="<?php echo $escape($translate('Items within this group')); ?>"></a>
-                        <a href="<?php echo $escape($group->urlEntities('media')); ?>"
+                            aria-label="<?= $escape($translate('Items within this group')) ?>"
+                            title="<?= $escape($translate('Items within this group')) ?>"></a>
+                        <a href="<?= $escape($group->urlEntities('media')) ?>"
                             class="o-icon-media"
-                            aria-label="<?php echo $escape($translate('Media within this group')); ?>"
-                            title="<?php echo $escape($translate('Media within this group')); ?>"></a>
-                        <a href="#" class="o-icon-delete" title="<?php echo $removeStr; ?>" aria-label="<?php echo $removeStr; ?>"></a>
+                            aria-label="<?= $escape($translate('Media within this group')) ?>"
+                            title="<?= $escape($translate('Media within this group')) ?>"></a>
+                        <a href="#" class="o-icon-delete" title="<?= $removeStr ?>" aria-label="<?= $removeStr ?>"></a>
                     </li>
                 </ul>
-                <input type="hidden" name="o-module-group:group[]" value="<?php echo $escape($group->name()) ?>">
+                <input type="hidden" name="o-module-group:group[]" value="<?= $escape($group->name()) ?>">
             </td>
         </tr>
         <?php endforeach; ?>
@@ -69,12 +69,12 @@ $groupTemplate = '
     </table>
     <div class="no-resources">
         <p>
-            <?php echo $translate('There are no groups for this resource.'); ?>
+            <?= $translate('There are no groups for this resource.') ?>
             <br />
-            <?php echo $translate('Add existing groups using the interface to the right.'); ?>
+            <?= $translate('Add existing groups using the interface to the right.') ?>
         </p>
     </div>
-    <button id="group-selector-button" class="mobile-only"><?php echo $translate('Add a group'); ?></button>
-    <span id="group-template" data-template="<?php echo $escape($groupTemplate); ?>"></span>
-    <?php echo $this->groupSelector(); ?>
+    <button id="group-selector-button" class="mobile-only"><?= $translate('Add a group') ?></button>
+    <span id="group-template" data-template="<?= $escape($groupTemplate) ?>"></span>
+    <?= $this->groupSelector() ?>
 </fieldset>

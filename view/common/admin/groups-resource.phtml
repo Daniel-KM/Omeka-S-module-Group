@@ -11,38 +11,38 @@ $browseUserRight = $this->userIsAllowed('Omeka\Controller\Admin\User', 'browse')
 }
 </style>
 <div class="meta-group group">
-    <h4><?php echo $translate('Groups'); ?></h4>
+    <h4><?= $translate('Groups') ?></h4>
 <?php if (empty($groups)): ?>
     <div class="value no-value">
-        <?php echo $escape($translate('No group.')); ?>
+        <?= $escape($translate('No group.')) ?>
     </div>
 <?php else: ?>
     <?php foreach ($groups as $group): ?>
-    <div class="value group"><?php echo $this->hyperlink($group->name(), $group->adminUrl()); ?>
+    <div class="value group"><?= $this->hyperlink($group->name(), $group->adminUrl()) ?>
     <?php if ($updateRight): ?>
     <span class="single actions"><a href="#"
         class="o-icon-delete"
-        data-delete-confirm-url="<?php echo $escape($group->url('delete-confirm')); ?>"
-        aria-label="<?php echo $escape($translate('Unassign group')); ?>"
-        title="<?php echo $escape($translate('Unassign group')); ?>"></a></span>
+        data-delete-confirm-url="<?= $escape($group->url('delete-confirm')) ?>"
+        aria-label="<?= $escape($translate('Unassign group')) ?>"
+        title="<?= $escape($translate('Unassign group')) ?>"></a></span>
     <?php endif; ?>
-    <span class="single actions"><a href="<?php echo $escape($group->urlEntities('media')); ?>"
+    <span class="single actions"><a href="<?= $escape($group->urlEntities('media')) ?>"
         class="o-icon-media"
-        aria-label="<?php echo $escape($translate('Media within this group')); ?>"
-        title="<?php echo $escape($translate('Media within this group')); ?>"></a></span>
-    <span class="single actions"><a href="<?php echo $escape($group->urlEntities('item')); ?>"
+        aria-label="<?= $escape($translate('Media within this group')) ?>"
+        title="<?= $escape($translate('Media within this group')) ?>"></a></span>
+    <span class="single actions"><a href="<?= $escape($group->urlEntities('item')) ?>"
         class="o-icon-items"
-        aria-label="<?php echo $escape($translate('Items within this group')); ?>"
-        title="<?php echo $escape($translate('Items within this group')); ?>"></a></span>
-    <span class="single actions"><a href="<?php echo $escape($group->urlEntities('item-set')); ?>"
+        aria-label="<?= $escape($translate('Items within this group')) ?>"
+        title="<?= $escape($translate('Items within this group')) ?>"></a></span>
+    <span class="single actions"><a href="<?= $escape($group->urlEntities('item-set')) ?>"
         class="o-icon-item-sets"
-        aria-label="<?php echo $escape($translate('Item sets within this group')); ?>"
-        title="<?php echo $escape($translate('Item sets within this group')); ?>"></a></span>
+        aria-label="<?= $escape($translate('Item sets within this group')) ?>"
+        title="<?= $escape($translate('Item sets within this group')) ?>"></a></span>
     <?php if ($browseUserRight): ?>
-    <span class="single actions"><a href="<?php echo $escape($group->urlEntities('user')); ?>"
+    <span class="single actions"><a href="<?= $escape($group->urlEntities('user')) ?>"
         class="o-icon-user"
-        aria-label="<?php echo $escape($translate('Users within this group')); ?>"
-        title="<?php echo $escape($translate('Users within this group')); ?>"></a></span>
+        aria-label="<?= $escape($translate('Users within this group')) ?>"
+        title="<?= $escape($translate('Users within this group')) ?>"></a></span>
     </div>
     <?php endif; ?>
     <?php endforeach; ?>

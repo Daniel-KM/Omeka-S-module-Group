@@ -3,41 +3,41 @@ $translate = $this->plugin('translate');
 $escape = $this->plugin('escapeHtml');
 ?>
 <?php $group = $resource; ?>
-<div class="resource-details" data-resource-values="<?php // echo $escape($values); ?>">
-    <h3 class="o-module-group"><?php echo $group->link($group->name()); ?> <span class="internal-id"><?php echo sprintf('(id: %d)', $group->id()); ?></span></h3>
+<div class="resource-details" data-resource-values="<?php // echo $escape($values) ?>">
+    <h3 class="o-module-group"><?= $group->link($group->name()) ?> <span class="internal-id"><?= sprintf('(id: %d)', $group->id()) ?></span></h3>
     <div class="meta-group">
-        <h4><?php echo $escape($translate('Group')); ?></h4>
+        <h4><?= $escape($translate('Group')) ?></h4>
         <div class="value">
             <?php if ($comment = $group->comment()): ?>
-            <span class="group-comment"><?php echo $escape($comment); ?></span>
+            <span class="group-comment"><?= $escape($comment) ?></span>
             <?php else: ?>
-            <span class="group-comment no-comment"><?php echo $escape($translate('No comment.')); ?></span>
+            <span class="group-comment no-comment"><?= $escape($translate('No comment.')) ?></span>
             <?php endif; ?>
         </div>
     </div>
     <div class="meta-group">
-        <h4><?php echo $escape($translate('Stats')); ?></h4>
-        <div class="value"><?php echo sprintf('%s: %s',
+        <h4><?= $escape($translate('Stats')) ?></h4>
+        <div class="value"><?= sprintf('%s: %s',
             $escape($translate('Total')),
             $groupCount['count']);
         ?></div>
-        <div class="value"><?php echo sprintf('%s: %s',
+        <div class="value"><?= sprintf('%s: %s',
             $escape($translate('Users')),
             $this->hyperlink($groupCount['users'], $group->urlEntities('users')));
         ?></div>
-        <div class="value"><?php echo sprintf('%s: %s',
+        <div class="value"><?= sprintf('%s: %s',
             $escape($translate('Resources')),
             $groupCount['resources']);
         ?></div>
-        <div class="value"><?php echo sprintf('%s: %s',
+        <div class="value"><?= sprintf('%s: %s',
             $escape($translate('Item sets')),
             $this->hyperlink($groupCount['item_sets'], $group->urlEntities('item-set')));
         ?></div>
-        <div class="value"><?php echo sprintf('%s: %s',
+        <div class="value"><?= sprintf('%s: %s',
             $escape($translate('Items')),
             $this->hyperlink($groupCount['items'], $group->urlEntities('item')));
         ?></div>
-        <div class="value"><?php echo sprintf('%s: %s',
+        <div class="value"><?= sprintf('%s: %s',
             $escape($translate('Medias')),
             $this->hyperlink($groupCount['media'], $group->urlEntities('media')));
         ?></div>

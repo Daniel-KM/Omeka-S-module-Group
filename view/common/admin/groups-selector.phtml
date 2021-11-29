@@ -17,20 +17,20 @@ if (extension_loaded('mbstring')) {
 }
 ?>
 <div id="group-selector" class='selector sidebar active'>
-    <a href="#" class="mobile-only sidebar-close o-icon-close"><span class="screen-reader-text"><?php echo $translate('Close Me'); ?></span></a>
-    <h3><?php echo $translate('Click on a group to add it to the edit panel.'); ?></h3>
-    <input type="text" class="selector-filter" placeholder="<?php echo $escape($translate('Filter groups')); ?>">
+    <a href="#" class="mobile-only sidebar-close o-icon-close"><span class="screen-reader-text"><?= $translate('Close Me') ?></span></a>
+    <h3><?= $translate('Click on a group to add it to the edit panel.') ?></h3>
+    <input type="text" class="selector-filter" placeholder="<?= $escape($translate('Filter groups')) ?>">
     <ul>
-        <li class="total-count-heading"><?php echo $translate('All groups'); ?> (<span class="selector-total-count"><?php echo count($groups); ?></span>)
+        <li class="total-count-heading"><?= $translate('All groups'); ?> (<span class="selector-total-count"><?= count($groups) ?></span>)
             <ul class="selectable-list">
                 <?php foreach ($groupsByInitial as $initial => $groups): ?>
                     <li class="selector-parent">
-                        <span><?php echo $initial; ?></span>
-                        (<span class="selector-child-count"><?php echo count($groupsByInitial[$initial]); ?></span>)
+                        <span><?= $initial ?></span>
+                        (<span class="selector-child-count"><?= count($groupsByInitial[$initial]) ?></span>)
                         <ul>
                         <?php foreach ($groups as $group): ?>
-                            <li class="selector-child" data-child-search="<?php echo $escape($group->name()); ?>" data-group-internal-id="<?php echo $escape($group->id()); ?>">
-                                <span><?php echo $escape($group->name()); ?></span>
+                            <li class="selector-child" data-child-search="<?= $escape($group->name()) ?>" data-group-internal-id="<?= $escape($group->id()) ?>">
+                                <span><?= $escape($group->name()) ?></span>
                             </li>
                         <?php endforeach; ?>
                         </ul>
