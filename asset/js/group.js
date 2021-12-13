@@ -9,7 +9,7 @@ $('#group-selector .selector-child').click(function(event) {
     $('#group-resources').removeClass('empty');
     var groupName = $(this).data('child-search');
 
-    if ($('#group-resources').find("input[value='" + groupName + "']").length) {
+    if ($('#group-resources').find(`input[value="${groupName}"]`).length) {
         return;
     }
 
