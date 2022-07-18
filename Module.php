@@ -849,7 +849,7 @@ class Module extends AbstractModule
         }
 
         $user = $event->getTarget()->vars()->user;
-        $values = $this->listGroups($user, 'id');
+        $values = $this->listGroups($user, 'reference');
         $form = $event->getParam('form');
         $form->get('user-information')->get('o-module-group:group')
             ->setAttribute('value', array_keys($values));
