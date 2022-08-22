@@ -51,7 +51,6 @@ use Group\Form\SearchForm;
 use Laminas\EventManager\Event;
 use Laminas\EventManager\SharedEventManagerInterface;
 use Laminas\Mvc\MvcEvent;
-use Laminas\ServiceManager\ServiceLocatorInterface;
 use Laminas\View\Renderer\PhpRenderer;
 use Omeka\Api\Adapter\ItemAdapter;
 use Omeka\Api\Adapter\ItemSetAdapter;

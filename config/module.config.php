@@ -6,7 +6,6 @@
  * thing, but will this improve performance (search with a ternary key)?
  * This will be checked if a new group of something is needed (for sites).
  */
-
 namespace Group;
 
 return [

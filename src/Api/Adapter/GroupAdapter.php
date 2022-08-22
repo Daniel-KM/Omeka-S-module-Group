@@ -204,7 +204,7 @@ class GroupAdapter extends AbstractEntityAdapter
         }
     }
 
-    public function hydrate(Request $request, EntityInterface $entity,ErrorStore $errorStore): void
+    public function hydrate(Request $request, EntityInterface $entity, ErrorStore $errorStore): void
     {
         if ($this->shouldHydrate($request, 'o:name')) {
             $name = $request->getValue('o:name');
@@ -292,8 +292,8 @@ class GroupAdapter extends AbstractEntityAdapter
     {
         // Quote is allowed.
         $string = strip_tags((string) $string);
-        // The first character is a space and the last one is a no-break space.
-        $string = trim($string, ' /\\?<>:*%|"`&; ' . "\t\n\r");
+        // The first character is a space and "a0" is a no-break space.
+        $string = trim($string, " /\\?<>:*%|\"`&;\u{a0}\t\n\r");
         $string = preg_replace('/[\(\{]/', '[', $string);
         $string = preg_replace('/[\)\}]/', ']', $string);
         $string = preg_replace('/[[:cntrl:]\/\\\?<>\*\%\|\"`\&\;#+\^\$\s]/', ' ', $string);

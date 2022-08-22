@@ -2,11 +2,11 @@
 
 namespace Group\Mvc\Controller\Plugin;
 
+use Group\Api\Adapter\GroupAdapter;
 use Laminas\Mvc\Controller\Plugin\AbstractPlugin;
 use Omeka\Api\Manager as ApiManager;
 use Omeka\Api\Representation\AbstractEntityRepresentation;
 use Omeka\Permissions\Acl;
-use Group\Api\Adapter\GroupAdapter;
 
 class ListGroups extends AbstractPlugin
 {

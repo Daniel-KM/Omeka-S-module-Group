@@ -27,7 +27,7 @@ class GroupMapping extends AbstractMapping
         $this->processGlobalArgs();
 
         // TODO Allow to bypass the default multivalue separator for users and resources.
-        $multivalueMap = isset($this->args['column-multivalue']) ? $this->args['column-multivalue'] : [];
+        $multivalueMap = $this->args['column-multivalue'] ?? [];
         foreach ($row as $index => $values) {
             if (array_key_exists($index, $multivalueMap) && strlen($multivalueMap[$index])) {
                 $values = explode($multivalueMap[$index], $values);
