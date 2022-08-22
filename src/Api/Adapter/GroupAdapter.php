@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+
 namespace Group\Api\Adapter;
 
 use Doctrine\ORM\QueryBuilder;
@@ -35,6 +36,14 @@ class GroupAdapter extends AbstractEntityAdapter
         // 'items' => 'items',
         // 'media' => 'media',
         // 'recent' => 'recent',
+    ];
+
+    protected $scalarFields = [
+        'id' => 'id',
+        'name' => 'name',
+        // "group" is an alias of "name".
+        'group' => 'name',
+        'comment' => 'comment',
     ];
 
     public function getResourceName()
