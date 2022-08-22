@@ -5,7 +5,8 @@
  * Add groups to users and resources to manage the access rights and the
  * resource visibility in a more flexible way.
  *
- * Copyright Daniel Berthereau 2017-2021
+ * @copyright Daniel Berthereau, 2017-2022
+ * @license http://www.cecill.info/licences/Licence_CeCILL_V2.1-en.txt
  *
  * This software is governed by the CeCILL license under French law and abiding
  * by the rules of distribution of free software.  You can use, modify and/ or
@@ -39,6 +40,7 @@ if (!class_exists(\Generic\AbstractModule::class)) {
 }
 
 use Doctrine\ORM\Events;
+use Generic\AbstractModule;
 use Group\Controller\Admin\GroupController;
 use Group\Db\Event\Listener\DetachOrphanGroupEntities;
 use Group\Entity\Group;
@@ -65,24 +67,15 @@ use Omeka\Entity\ItemSet;
 use Omeka\Entity\Media;
 use Omeka\Entity\Resource;
 use Omeka\Entity\User;
-use Omeka\Module\AbstractModule;
 
 /**
  * Group
  *
  * Add groups to users and resources to manage the access in a more flexible way.
- *
- * @copyright Daniel Berthereau, 2017-2021
- * @license http://www.cecill.info/licences/Licence_CeCILL_V2.1-en.txt
  */
 class Module extends AbstractModule
 {
     const NAMESPACE = __NAMESPACE__;
-
-    public function getConfig()
-    {
-        return include __DIR__ . '/config/module.config.php';
-    }
 
     public function onBootstrap(MvcEvent $event): void
     {
