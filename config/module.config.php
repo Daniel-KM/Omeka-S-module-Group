@@ -187,6 +187,8 @@ return [
     'js_translate_strings' => [
         'Request too long to process.', // @translate
     ],
+    // Don't edit these options here: copy this key in your own omeka config/local.config.php
+    // and modify options as you want.
     'group' => [
         'config' => [
             // Apply the groups of item sets to items and medias.

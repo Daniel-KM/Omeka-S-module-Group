@@ -88,7 +88,7 @@ before.
 TODO
 ----
 
-- Remove complicate processes used to bypass some Omeka < 2.0 issues.
+- [ ] Remove complicate processes used to bypass some Omeka < 2.0 issues.
 
 
 Warning
