@@ -184,16 +184,18 @@ class GroupCount extends AbstractHelper
         }
 
         $qb
+            // ->select(...$select)
             ->select($select)
             ->from('`groups`', '_groups')
             ->groupBy('`_groups`.`id`')
             ->orderBy($orderBy, $orderDir);
 
         $stmt = $this->connection->executeQuery($qb, $qb->getParameters());
-        $fetchMode = $keyPair && $resourceType
-            ? PDO::FETCH_KEY_PAIR
-            : (PDO::FETCH_GROUP | PDO::FETCH_UNIQUE);
-        $result = $stmt->fetchAll($fetchMode);
+        if ($keyPair && $resourceType) {
+            $result = $stmt->fetchAllKeyValue();
+        } else {
+            $result = $stmt->fetchAll(PDO::FETCH_GROUP | PDO::FETCH_UNIQUE);
+        }
 
         // Manage the exception (all counts of users and resources).
         if (empty($resourceType)) {

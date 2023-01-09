@@ -125,7 +125,7 @@ return [
             'admin' => [
                 'child_routes' => [
                     'group' => [
-                        'type' => 'Segment',
+                        'type' => \Laminas\Router\Http\Segment::class,
                         'options' => [
                             'route' => '/group[/:action]',
                             'constraints' => [
@@ -139,7 +139,7 @@ return [
                         ],
                     ],
                     'group-id' => [
-                        'type' => 'Segment',
+                        'type' => \Laminas\Router\Http\Segment::class,
                         'options' => [
                             'route' => '/group/:id[/:action]',
                             'constraints' => [
@@ -154,7 +154,7 @@ return [
                         ],
                     ],
                     'group-name' => [
-                        'type' => 'Segment',
+                        'type' => \Laminas\Router\Http\Segment::class,
                         'options' => [
                             // The action is required to avoid collision with admin/group.
                             // A validation is done in the adapter.

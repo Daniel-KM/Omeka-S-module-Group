@@ -778,8 +778,9 @@ class Module extends AbstractModule
     public function addHeadersAdmin(Event $event): void
     {
         $view = $event->getTarget();
-        $view->headLink()->appendStylesheet($view->assetUrl('css/group.css', 'Group'));
-        $view->headScript()->appendFile($view->assetUrl('js/group.js', 'Group'), 'text/javascript', ['defer' => 'defer']);
+        $assetUrl = $view->plugin('assetUrl');
+        $view->headLink()->appendStylesheet($assetUrl('css/group.css', 'Group'));
+        $view->headScript()->appendFile($assetUrl('js/group.js', 'Group'), 'text/javascript', ['defer' => 'defer']);
     }
 
     public function addUserFormElement(Event $event): void

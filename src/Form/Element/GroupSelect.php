@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+
 namespace Group\Form\Element;
 
 use Laminas\Form\Element\Select;
@@ -12,7 +13,12 @@ class GroupSelect extends Select
      */
     protected $apiManager;
 
-    public function getValueOptions()
+    /**
+     * @var Url
+     */
+    protected $url;
+
+    public function getValueOptions(): array
     {
         $query = $this->getOption('query');
         if (!is_array($query)) {
@@ -73,34 +79,24 @@ class GroupSelect extends Select
         return parent::setOptions($options);
     }
 
-    /**
-     * @param ApiManager $apiManager
-     */
-    public function setApiManager(ApiManager $apiManager): void
+    public function setApiManager(ApiManager $apiManager): self
     {
         $this->apiManager = $apiManager;
+        return $this;
     }
 
-    /**
-     * @return ApiManager
-     */
-    public function getApiManager()
+    public function getApiManager(): ApiManager
     {
         return $this->apiManager;
     }
 
-    /**
-     * @param Url $urlHelper
-     */
-    public function setUrlHelper(Url $urlHelper): void
+    public function setUrlHelper(Url $urlHelper): self
     {
         $this->urlHelper = $urlHelper;
+        return $this;
     }
 
-    /**
-     * @return Url
-     */
-    public function getUrlHelper()
+    public function getUrlHelper(): Url
     {
         return $this->urlHelper;
     }
