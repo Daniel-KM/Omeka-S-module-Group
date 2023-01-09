@@ -21,57 +21,60 @@ $this->headScript()->appendFile($this->assetUrl('js/group.js', 'Group'), 'text/j
 }
 </style>
 
-<div class="property group">
-<?php if ($isUser): ?>
-    <h4><?= $translate('Groups') ?></h4>
+<dl>
+    <div class="property group">
+    <?php if ($isUser): ?>
+        <dt><?= $translate('Groups') ?></dt>
+        <?php if (empty($groups)): ?>
+        <dd class="value no-value"><?= $translate('There are no groups for this user.') ?></dd>
+        <?php endif; ?>
+    <?php endif; ?>
+
+        <dd class="value">
     <?php if (empty($groups)): ?>
-    <div class="value no-value"><?= $translate('There are no groups for this user.') ?></div>
+        <?php if (!$isUser): ?>
+        <div class="no-resources">
+            <p><?= $translate('There are no groups for this resource.') ?></p>
+        </div>
+        <?php endif; ?>
+    <?php else: ?>
+            <?php
+            $escape = $this->plugin('escapeHtml');
+            $updateRight = false; // $this->userIsAllowed(Group::class, 'update');
+            $browseUserRight = $this->userIsAllowed('Omeka\Controller\Admin\User', 'browse');
+            ?>
+            <ul class="group-list">
+            <?php foreach ($groups as $group): ?>
+                <li class="value group"><?= $this->hyperlink($group->name(), $group->adminUrl()) ?>
+                    <?php if ($updateRight): ?>
+                    <span class="single actions"><a href="#"
+                        class="o-icon-delete"
+                        data-delete-confirm-url="<?= $escape($group->url('delete-confirm')) ?>"
+                        aria-label="<?= $escape($translate('Unassign group')) ?>"
+                        title="<?= $escape($translate('Unassign group')) ?>"></a></span>
+                    <?php endif; ?>
+                    <span class="single actions"><a href="<?= $escape($group->urlEntities('media')) ?>"
+                        class="o-icon-media"
+                        aria-label="<?= $escape($translate('Media within this group')) ?>"
+                        title="<?= $escape($translate('Media within this group')) ?>"></a></span>
+                    <span class="single actions"><a href="<?= $escape($group->urlEntities('item')) ?>"
+                        class="o-icon-items"
+                        aria-label="<?= $escape($translate('Items within this group')) ?>"
+                        title="<?= $escape($translate('Items within this group')); ?>"></a></span>
+                    <span class="single actions"><a href="<?= $escape($group->urlEntities('item-set')) ?>"
+                        class="o-icon-item-sets"
+                        aria-label="<?= $escape($translate('Item sets within this group')) ?>"
+                        title="<?= $escape($translate('Item sets within this group')) ?>"></a></span>
+                    <?php if ($browseUserRight): ?>
+                    <span class="single actions"><a href="<?= $escape($group->urlEntities('user')) ?>"
+                        class="o-icon-user"
+                        aria-label="<?= $escape($translate('Users within this group')) ?>"
+                        title="<?= $escape($translate('Users within this group')) ?>"></a></span>
+                    <?php endif; ?>
+                </li>
+            <?php endforeach; ?>
+            </ul>
     <?php endif; ?>
-<?php endif; ?>
-    <div class="value">
-<?php if (empty($groups)): ?>
-    <?php if (!$isUser): ?>
-    <div class="no-resources">
-        <p><?= $translate('There are no groups for this resource.') ?></p>
+        </dd>
     </div>
-    <?php endif; ?>
-<?php else: ?>
-        <?php
-        $escape = $this->plugin('escapeHtml');
-        $updateRight = false; // $this->userIsAllowed(Group::class, 'update');
-        $browseUserRight = $this->userIsAllowed('Omeka\Controller\Admin\User', 'browse');
-        ?>
-        <ul class="group-list">
-        <?php foreach ($groups as $group): ?>
-            <li class="value group"><?= $this->hyperlink($group->name(), $group->adminUrl()) ?>
-                <?php if ($updateRight): ?>
-                <span class="single actions"><a href="#"
-                    class="o-icon-delete"
-                    data-delete-confirm-url="<?= $escape($group->url('delete-confirm')) ?>"
-                    aria-label="<?= $escape($translate('Unassign group')) ?>"
-                    title="<?= $escape($translate('Unassign group')) ?>"></a></span>
-                <?php endif; ?>
-                <span class="single actions"><a href="<?= $escape($group->urlEntities('media')) ?>"
-                    class="o-icon-media"
-                    aria-label="<?= $escape($translate('Media within this group')) ?>"
-                    title="<?= $escape($translate('Media within this group')) ?>"></a></span>
-                <span class="single actions"><a href="<?= $escape($group->urlEntities('item')) ?>"
-                    class="o-icon-items"
-                    aria-label="<?= $escape($translate('Items within this group')) ?>"
-                    title="<?= $escape($translate('Items within this group')); ?>"></a></span>
-                <span class="single actions"><a href="<?= $escape($group->urlEntities('item-set')) ?>"
-                    class="o-icon-item-sets"
-                    aria-label="<?= $escape($translate('Item sets within this group')) ?>"
-                    title="<?= $escape($translate('Item sets within this group')) ?>"></a></span>
-                <?php if ($browseUserRight): ?>
-                <span class="single actions"><a href="<?= $escape($group->urlEntities('user')) ?>"
-                    class="o-icon-user"
-                    aria-label="<?= $escape($translate('Users within this group')) ?>"
-                    title="<?= $escape($translate('Users within this group')) ?>"></a></span>
-                <?php endif; ?>
-            </li>
-        <?php endforeach; ?>
-        </ul>
-<?php endif; ?>
-    </div>
-</div>
+</dl>
