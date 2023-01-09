@@ -1,10 +1,18 @@
 <?php
-$translate = $this->plugin('translate');
-$escape = $this->plugin('escapeHtml');
+/**
+ * @var \Laminas\View\Renderer\PhpRenderer $this
+ * @var \Group\Form\GroupForm $form
+ */
+
+$plugins = $this->getHelperPluginManager();
+$translate = $plugins->get('translate');
+
 $this->htmlElement('body')->appendAttribute('class', 'groups add');
+
 // $this->headScript()->appendFile($this->assetUrl('js/advanced-search.js', 'Omeka'), 'text/javascript', ['defer' => 'defer']);
 $form->prepare();
 ?>
+
 <?= $this->pageTitle($translate('New group'), 1, $translate('Group')) ?>
 <?= $this->form()->openTag($form) ?>
 

@@ -1,6 +1,13 @@
 <?php
-$translate = $this->plugin('translate');
+/**
+ * @var \Laminas\View\Renderer\PhpRenderer $this
+ */
+
+$plugins = $this->getHelperPluginManager();
+$translate = $plugins->get('translate');
+
 ?>
+
 <div id="group-module" class="mapping-group">
     <a href="#" class="expand" aria-label="<?= $translate('Expand') ?>">
         <h4><?= $translate('Group') ?></h4>

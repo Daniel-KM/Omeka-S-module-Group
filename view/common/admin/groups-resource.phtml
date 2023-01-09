@@ -1,15 +1,24 @@
 <?php
-$translate = $this->plugin('translate');
-$escape = $this->plugin('escapeHtml');
-$resourceName = $resource && $resource->getControllerName();
+/**
+ * @var \Laminas\View\Renderer\PhpRenderer $this
+ * @var \Group\Api\Representation\GroupRepresentation[] $groups
+ * @var \Omeka\Api\Representation\AbstractEntityRepresentation $resource
+ */
+
+$plugins = $this->getHelperPluginManager();
+$escape = $plugins->get('escapeHtml');
+$translate = $plugins->get('translate');
+
 $updateRight = false; // $this->userIsAllowed(GroupUser::class, 'update');
 $browseUserRight = $this->userIsAllowed('Omeka\Controller\Admin\User', 'browse');
 ?>
+
 <style>
 .group .actions {
     float: right;
 }
 </style>
+
 <div class="meta-group group">
     <h4><?= $translate('Groups') ?></h4>
 <?php if (empty($groups)): ?>

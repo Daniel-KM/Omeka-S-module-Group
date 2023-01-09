@@ -1,4 +1,9 @@
 <?php
+/**
+ * @var \Laminas\View\Renderer\PhpRenderer $this
+ * @var \Group\Form\SearchForm $searchGroupForm
+ */
+
 $searchGroupForm->prepare();
 $element = $searchGroupForm->get('has_groups');
 echo $this->formRow($element);

@@ -952,8 +952,10 @@ class Module extends AbstractModule
      */
     public function addTab(Event $event): void
     {
+        $services = $this->getServiceLocator();
+        $translator = $services->get('MvcTranslator');
         $sectionNav = $event->getParam('section_nav');
-        $sectionNav['groups'] = 'Groups'; // @translate
+        $sectionNav['groups'] = $translator->translate('Groups'); // @translate
         $event->setParam('section_nav', $sectionNav);
     }
 

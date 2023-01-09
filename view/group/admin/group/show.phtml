@@ -1,6 +1,15 @@
 <?php
-$translate = $this->plugin('translate');
-$escape = $this->plugin('escapeHtml');
+/**
+ * @var \Laminas\View\Renderer\PhpRenderer $this
+ * @var \Group\Api\Representation\GroupRepresentation $group
+ * @var \Omeka\Api\Representation\AbstractEntityRepresentation $resource
+ */
+
+$plugins = $this->getHelperPluginManager();
+$url = $plugins->get('url');
+$escape = $plugins->get('escapeHtml');
+$translate = $plugins->get('translate');
+
 $this->htmlElement('body')->appendAttribute('class', 'groups show');
 ?>
 
@@ -9,7 +18,7 @@ $this->htmlElement('body')->appendAttribute('class', 'groups show');
 <div id="page-actions">
 </div>
 <div class="breadcrumbs">
-    <a href="<?= $this->url('admin/group') ?>" class="o-icon-left"><?= $translate('Back to group list') ?></a>
+    <a href="<?= $url('admin/group') ?>" class="o-icon-left"><?= $translate('Back to group list') ?></a>
 </div>
 
 <?php $this->trigger('view.show.before') ?>

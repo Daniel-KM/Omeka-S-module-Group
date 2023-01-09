@@ -1,8 +1,16 @@
 <?php
-use Group\Api\Adapter\GroupAdapter;
+/**
+ * @var \Laminas\View\Renderer\PhpRenderer $this
+ * @var \Group\Api\Representation\GroupRepresentation[] $resources
+ * @var \Group\Api\Representation\GroupRepresentation[] $groups
+ * @var array $groupCount
+ */
 
-$translate = $this->plugin('translate');
-$escape = $this->plugin('escapeHtml');
+$plugins = $this->getHelperPluginManager();
+$escape = $plugins->get('escapeHtml');
+$translate = $plugins->get('translate');
+$hyperlink = $plugins->get('hyperlink');
+
 $this->htmlElement('body')->appendAttribute('class', 'groups browse');
 $sortHeadings = [
     [
@@ -38,9 +46,9 @@ $sortHeadings = [
         'value' => 'id',
     ],
 ];
-$createRight = $this->userIsAllowed(GroupAdapter::class, 'create');
-$updateRight = $this->userIsAllowed(GroupAdapter::class, 'update');
-$deleteRight = $this->userIsAllowed(GroupAdapter::class, 'delete');
+$createRight = $this->userIsAllowed(\Group\Api\Adapter\GroupAdapter::class, 'create');
+$updateRight = $this->userIsAllowed(\Group\Api\Adapter\GroupAdapter::class, 'update');
+$deleteRight = $this->userIsAllowed(\Group\Api\Adapter\GroupAdapter::class, 'delete');
 ?>
 
 <?= $this->pageTitle($translate('Groups')) ?>
@@ -49,7 +57,7 @@ $deleteRight = $this->userIsAllowed(GroupAdapter::class, 'delete');
 
  <div class="browse-controls">
     <?= $this->pagination() ?>
-    <?php // echo $this->hyperlink($translate('Advanced search'), $this->url(null, ['action' => 'search'], ['query' => $this->params()->fromQuery()], true), ['class' => 'advanced-search']); ?>
+    <?php // echo $hyperlink($translate('Advanced search'), $this->url(null, ['action' => 'search'], ['query' => $this->params()->fromQuery()], true), ['class' => 'advanced-search']); ?>
     <?= $this->sortSelector($sortHeadings) ?>
 </div>
 
@@ -57,7 +65,7 @@ $deleteRight = $this->userIsAllowed(GroupAdapter::class, 'delete');
 
 <div id="page-actions">
     <?php if ($createRight): ?>
-    <?= $this->hyperlink($translate('Add new group'), $this->url('admin/group', ['action' => 'add'], true), ['class' => 'button']) ?>
+    <?= $hyperlink($translate('Add new group'), $this->url('admin/group', ['action' => 'add'], true), ['class' => 'button']) ?>
     <?php endif; ?>
 <?php if ($groups): ?>
     <?php if ($deleteRight): ?>
@@ -132,17 +140,17 @@ $deleteRight = $this->userIsAllowed(GroupAdapter::class, 'delete');
                 </ul>
             </td>
             <td><?php if ($groupCount[$name]['count']) echo $groupCount[$name]['count']; ?></td>
-            <td><?php if ($groupCount[$name]['users']) echo $this->hyperlink(
+            <td><?php if ($groupCount[$name]['users']) echo $hyperlink(
                 $groupCount[$name]['users'], $group->urlEntities('user'), ['class' => 'group-browse-user']
             ); ?></td>
             <td><?php if ($groupCount[$name]['resources']) echo $groupCount[$name]['resources']; ?></td>
-            <td><?php if ($groupCount[$name]['item_sets']) echo $this->hyperlink(
+            <td><?php if ($groupCount[$name]['item_sets']) echo $hyperlink(
                 $groupCount[$name]['item_sets'], $group->urlEntities('item-set'), ['class' => 'group-browse-item-sets']
             ); ?></td>
-            <td><?php if ($groupCount[$name]['media']) echo $this->hyperlink(
+            <td><?php if ($groupCount[$name]['media']) echo $hyperlink(
                 $groupCount[$name]['items'], $group->urlEntities('item'), ['class' => 'group-browse-items']
             ); ?></td>
-            <td><?php if ($groupCount[$name]['media']) echo $this->hyperlink(
+            <td><?php if ($groupCount[$name]['media']) echo $hyperlink(
                 $groupCount[$name]['media'], $group->urlEntities('media'), ['class' => 'group-browse-media']
             ); ?></td>
         </tr>

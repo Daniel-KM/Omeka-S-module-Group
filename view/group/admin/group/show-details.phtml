@@ -1,7 +1,17 @@
 <?php
-$translate = $this->plugin('translate');
-$escape = $this->plugin('escapeHtml');
+/**
+ * @var \Laminas\View\Renderer\PhpRenderer $this
+ * @var \Omeka\Api\Representation\AbstractEntityRepresentation $resource
+ * @var \Group\Api\Representation\GroupRepresentation $group
+ * @var array $groupCount
+ */
+
+$plugins = $this->getHelperPluginManager();
+$escape = $plugins->get('escapeHtml');
+$translate = $plugins->get('translate');
+$hyperlink = $plugins->get('hyperlink');
 ?>
+
 <?php $group = $resource; ?>
 <div class="resource-details" data-resource-values="<?php // echo $escape($values) ?>">
     <h3 class="o-module-group"><?= $group->link($group->name()) ?> <span class="internal-id"><?= sprintf('(id: %d)', $group->id()) ?></span></h3>
@@ -17,29 +27,29 @@ $escape = $this->plugin('escapeHtml');
     </div>
     <div class="meta-group">
         <h4><?= $escape($translate('Stats')) ?></h4>
-        <div class="value"><?= sprintf('%s: %s',
+        <div class="value"><?= sprintf($translate('%1$s: %2$s'),
             $escape($translate('Total')),
             $groupCount['count']);
         ?></div>
-        <div class="value"><?= sprintf('%s: %s',
+        <div class="value"><?= sprintf($translate('%1$s: %2$s'),
             $escape($translate('Users')),
-            $this->hyperlink($groupCount['users'], $group->urlEntities('users')));
+            $hyperlink($groupCount['users'], $group->urlEntities('users')));
         ?></div>
-        <div class="value"><?= sprintf('%s: %s',
+        <div class="value"><?= sprintf($translate('%1$s: %2$s'),
             $escape($translate('Resources')),
             $groupCount['resources']);
         ?></div>
-        <div class="value"><?= sprintf('%s: %s',
+        <div class="value"><?= sprintf($translate('%1$s: %2$s'),
             $escape($translate('Item sets')),
-            $this->hyperlink($groupCount['item_sets'], $group->urlEntities('item-set')));
+            $hyperlink($groupCount['item_sets'], $group->urlEntities('item-set')));
         ?></div>
-        <div class="value"><?= sprintf('%s: %s',
+        <div class="value"><?= sprintf($translate('%1$s: %2$s'),
             $escape($translate('Items')),
-            $this->hyperlink($groupCount['items'], $group->urlEntities('item')));
+            $hyperlink($groupCount['items'], $group->urlEntities('item')));
         ?></div>
-        <div class="value"><?= sprintf('%s: %s',
+        <div class="value"><?= sprintf($translate('%1$s: %2$s'),
             $escape($translate('Medias')),
-            $this->hyperlink($groupCount['media'], $group->urlEntities('media')));
+            $hyperlink($groupCount['media'], $group->urlEntities('media')));
         ?></div>
     </div>
 </div>

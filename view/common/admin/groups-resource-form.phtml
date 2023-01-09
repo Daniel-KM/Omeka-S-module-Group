@@ -1,8 +1,17 @@
 <?php
-$translate = $this->plugin('translate');
-$escape = $this->plugin('escapeHtml');
+/**
+ * @var \Laminas\View\Renderer\PhpRenderer $this
+ * @var \Omeka\Api\Representation\AbstractEntityRepresentation $resource
+ * @var \Group\Api\Representation\GroupRepresentation[] $groups
+ */
+
+$plugins = $this->getHelperPluginManager();
+$escape = $plugins->get('escapeHtml');
+$translate = $plugins->get('translate');
+
 $this->headLink()->appendStylesheet($this->assetUrl('css/group.css', 'Group'));
 $this->headScript()->appendFile($this->assetUrl('js/group.js', 'Group'), 'text/javascript', ['defer' => 'defer']);
+
 $removeStr = $escape($translate('Remove group'));
 $groupTemplate = '
 <tr>
@@ -17,6 +26,7 @@ $groupTemplate = '
     </td>
 </tr>';
 ?>
+
 <fieldset id="groups" class="section group" aria-labelledby="groups-label">
     <legend id="groups-legend"><?= $translate('Groups') ?></legend>
     <table id="group-resources" data-tablesaw-mode="stack" class="tablesaw tablesaw-stack <?= $resource && $groups ? '' : 'empty' ?>">
@@ -28,9 +38,7 @@ $groupTemplate = '
         <tbody>
         <?php
         if ($resource && $groups):
-            $resourceName = $resource->getControllerName();
             $group = reset($groups);
-            $updateRight = $group->userIsAllowed('update');
             $browseUserRight = $this->userIsAllowed('Omeka\Controller\Admin\User', 'browse');
         ?>
         <?php foreach ($groups as $group): ?>

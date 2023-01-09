@@ -1,6 +1,12 @@
 <?php
-$translate = $this->plugin('translate');
-$escape = $this->plugin('escapeHtml');
+/**
+ * @var \Laminas\View\Renderer\PhpRenderer $this
+ * @var \Group\Api\Representation\GroupRepresentation[] $groups
+ */
+
+$plugins = $this->getHelperPluginManager();
+$escape = $plugins->get('escapeHtml');
+$translate = $plugins->get('translate');
 
 // Groups are already sorted.
 $groupsByInitial = [];
