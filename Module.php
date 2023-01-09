@@ -300,19 +300,9 @@ class Module extends AbstractModule
             [$this, 'addBatchUpdateFormElement']
         );
         $sharedEventManager->attach(
-            \Omeka\Form\UserBatchUpdateForm::class,
-            'form.add_input_filters',
-            [$this, 'addBatchUpdateFormFilter']
-        );
-        $sharedEventManager->attach(
             \Omeka\Form\ResourceBatchUpdateForm::class,
             'form.add_elements',
             [$this, 'addBatchUpdateFormElement']
-        );
-        $sharedEventManager->attach(
-            \Omeka\Form\ResourceBatchUpdateForm::class,
-            'form.add_input_filters',
-            [$this, 'addBatchUpdateFormFilter']
         );
 
         if ($recursiveItemSets) {
@@ -822,11 +812,6 @@ class Module extends AbstractModule
         }
 
         // TODO Add a validator for the groups of user.
-        $inputFilter = $event->getParam('inputFilter');
-        $inputFilter->get('user-information')->add([
-            'name' => 'o-module-group:group',
-            'required' => false,
-        ]);
     }
 
     public function addUserFormValue(Event $event): void
@@ -903,48 +888,6 @@ class Module extends AbstractModule
                 ],
             ]);
         }
-    }
-
-    public function addBatchUpdateFormFilter(Event $event): void
-    {
-        $form = $event->getTarget();
-        $resourceType = $form->getOption('resource_type');
-        if ($resourceType) {
-            $resourcesTypes = [
-                'itemSet' => ItemSet::class,
-                'item' => Item::class,
-                'media' => Media::class,
-            ];
-            $resourceType = $resourcesTypes[$resourceType];
-        } else {
-            $resourceType = User::class;
-        }
-
-        $aboveGroups = $this->takeGroupsFromAbove($resourceType);
-        if ($aboveGroups) {
-            return;
-        }
-
-        $isUser = $resourceType === User::class;
-        $groupEntityClass = $isUser ? GroupUser::class : GroupResource::class;
-
-        $services = $this->getServiceLocator();
-        $acl = $services->get('Omeka\Acl');
-        if ($acl->userIsAllowed($groupEntityClass, 'delete')) {
-            $inputFilter = $event->getParam('inputFilter');
-            $inputFilter->add([
-                'name' => 'remove_groups',
-                'required' => false,
-            ]);
-        }
-        if ($acl->userIsAllowed($groupEntityClass, 'create')) {
-            $inputFilter = $event->getParam('inputFilter');
-            $inputFilter->add([
-                'name' => 'add_groups',
-                'required' => false,
-            ]);
-        }
-        // TODO Add a validator for the groups of resource.
     }
 
     /**
