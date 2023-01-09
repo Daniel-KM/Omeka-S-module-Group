@@ -109,6 +109,7 @@ class GroupRepresentation extends AbstractEntityRepresentation
                 ->search('groups', [
                     'id' => $this->id(),
                     'resource_type' => $resourceType,
+                    'limit' => 0,
                 ]);
             $this->cacheCounts[$resourceType] = $response->getTotalResults();
         }
