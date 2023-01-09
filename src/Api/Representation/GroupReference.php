@@ -24,7 +24,7 @@ class GroupReference extends ResourceReference
         return $this->name;
     }
 
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return [
             '@id' => $this->apiUrl(),
