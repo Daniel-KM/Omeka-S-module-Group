@@ -170,8 +170,8 @@ class Module extends AbstractModule
     {
         $services = $this->getServiceLocator();
         $config = $services->get('Config');
-        $recursiveItemSets = $config['group']['config']['group_recursive_item_sets'];
-        $recursiveItems = $config['group']['config']['group_recursive_items'];
+        $recursiveItemSets = !empty($config['group']['config']['group_recursive_item_sets']);
+        $recursiveItems = !empty($config['group']['config']['group_recursive_items']);
 
         // Add the Group term definition.
         $sharedEventManager->attach(
@@ -391,9 +391,8 @@ class Module extends AbstractModule
 
     public function getConfigForm(PhpRenderer $renderer)
     {
-        $services = $this->getServiceLocator();
-        $t = $services->get('MvcTranslator');
-        return $t->translate('The settings should be set in the file "config/local.config.php" of Omeka. See the file module.config.php of the module and readme.'); // @translate
+        $this->warnConfig();
+        return '';
     }
 
     public function filterApiContext(Event $event): void
@@ -1046,6 +1045,51 @@ class Module extends AbstractModule
         $event->setParam('filters', $filters);
     }
 
+    protected function warnConfig(): void
+    {
+        $services = $this->getServiceLocator();
+        $config = $services->get('Config');
+        $translator = $services->get('MvcTranslator');
+        $messenger = $services->get('ControllerPluginManager')->get('messenger');
+
+        $message = new \Omeka\Stdlib\Message(
+            $translator->translate('The settings should be set in the file "config/local.config.php" of Omeka. See the file module.config.php of the module and readme.') // @translate
+        );
+        $messenger->addWarning($message);
+
+        $recursiveItemSets = !empty($config['group']['config']['group_recursive_item_sets']);
+        $message = new \Omeka\Stdlib\Message(
+            $translator->translate('Recursive item sets: %s'), // @translate
+            $recursiveItemSets
+                ? $translator->translate('yes') // @translate
+               : $translator->translate('no') // @translate
+        );
+        $messenger->addSuccess($message);
+
+        if ($recursiveItemSets) {
+            $message = new \Omeka\Stdlib\Message(
+                $translator->translate('The groups for resources can be set only by item sets.') // @translate
+            );
+            $messenger->addSuccess($message);
+        }
+
+        $recursiveItems = !empty($config['group']['config']['group_recursive_items']);
+        $message = new \Omeka\Stdlib\Message(
+            $translator->translate('Recursive items: %s'), // @translate
+            $recursiveItems
+                ? $translator->translate('yes') // @translate
+                : $translator->translate('no') // @translate
+        );
+        $messenger->addSuccess($message);
+
+        if (!$recursiveItemSets && $recursiveItems) {
+            $message = new \Omeka\Stdlib\Message(
+                $translator->translate('The groups for medias can be set only at items level.') // @translate
+            );
+            $messenger->addSuccess($message);
+        }
+    }
+
     /**
      * Check rights to manage groups.
      */
@@ -1067,11 +1111,9 @@ class Module extends AbstractModule
             case ItemSet::class:
                 return false;
             case Item::class:
-                return $this->getServiceLocator()
-                    ->get('Config')['group']['config']['group_recursive_item_sets'];
+                return !empty($this->getServiceLocator()->get('Config')['group']['config']['group_recursive_item_sets']);
             case Media::class:
-                return $this->getServiceLocator()
-                    ->get('Config')['group']['config']['group_recursive_items'];
+                return !empty($this->getServiceLocator()->get('Config')['group']['config']['group_recursive_items']);
             case User::class:
             default:
                 return false;
@@ -1085,11 +1127,9 @@ class Module extends AbstractModule
     {
         switch ($resourceClass) {
             case ItemSet::class:
-                return $this->getServiceLocator()
-                    ->get('Config')['group']['config']['group_recursive_item_sets'];
+                return !empty($this->getServiceLocator()->get('Config')['group']['config']['group_recursive_item_sets']);
             case Item::class:
-                return $this->getServiceLocator()
-                    ->get('Config')['group']['config']['group_recursive_items'];
+                return !empty($this->getServiceLocator()->get('Config')['group']['config']['group_recursive_items']);
             case Media::class:
             case User::class:
             default:
