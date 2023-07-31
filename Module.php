@@ -98,6 +98,13 @@ class Module extends AbstractModule
         $services = $this->getServiceLocator();
         $acl = $services->get('Omeka\Acl');
 
+        if (!$acl->hasRole('guest')) {
+            $acl->addRole('guest');
+        }
+        if (!$acl->hasRole('guest_private')) {
+            $acl->addRole('guest_private');
+        }
+
         // Everybody can read own groups.
         $roles = $acl->getRoles();
         $adminRoles = [
@@ -112,35 +119,19 @@ class Module extends AbstractModule
                 null,
                 [
                     \Group\Entity\Group::class,
-                    \Group\Entity\GroupUser::class,
                     \Group\Entity\GroupResource::class,
+                    \Group\Api\Adapter\GroupAdapter::class,
                 ],
-                ['read']
+                ['search', 'read']
             )
-            //  TODO Add a permission to limit to read to own groups?
+            // TODO Add a permission to limit to read to own groups?
             ->allow(
                 $roles,
                 [
-                    \Group\Entity\Group::class,
                     \Group\Entity\GroupUser::class,
-                    \Group\Entity\GroupResource::class,
                 ],
                 ['search', 'read']
             )
-            ->allow(
-                $roles,
-                [\Group\Api\Adapter\GroupAdapter::class],
-                ['search', 'read']
-            )
-
-            // Deny access to the api for non admin.
-            /*
-            ->deny(
-                null,
-                [\Group\Api\Adapter\GroupAdapter::class],
-                null
-            )
-           */
 
             // Only admin can manage groups.
             ->allow(
