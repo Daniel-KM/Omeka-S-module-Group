@@ -16,7 +16,7 @@ class GroupSelect extends Select
     /**
      * @var Url
      */
-    protected $url;
+    protected $urlHelper;
 
     /**
      * @see https://github.com/zendframework/zendframework/issues/2761#issuecomment-14488216
